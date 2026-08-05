@@ -76,6 +76,18 @@ a {
   text-decoration: none;
 }
 
+/* Global focus-visible — keyboard navigation */
+:focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Remove default focus ring for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 button {
   cursor: pointer;
   border: none;
@@ -139,6 +151,16 @@ p {
   box-shadow: 0 6px 18px oklch(0.620 0.140 65 / 0.30);
 }
 
+.btn-primary:active {
+  transform: translateY(0) scale(0.97);
+  filter: brightness(0.98);
+}
+
+.btn-primary:focus-visible {
+  outline: 3px solid var(--color-amber);
+  outline-offset: 3px;
+}
+
 .btn-ghost {
   display: inline-flex;
   align-items: center;
@@ -158,24 +180,36 @@ p {
   background: oklch(1.000 0.000 0 / 0.10);
 }
 
-/* --- Fade-in animation ---------------------------------------------- */
+.btn-ghost:active {
+  transform: scale(0.97);
+}
+
+.btn-ghost:focus-visible {
+  outline: 3px solid oklch(1.000 0.000 0 / 0.7);
+  outline-offset: 3px;
+}
+
+/* --- Hero entrance -------------------------------------------------- */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Scroll fade-in animation --------------------------------------- */
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
   transition:
     opacity var(--dur-slow) var(--ease-out-quart),
     transform var(--dur-slow) var(--ease-out-quart);
+  /* Stagger via --i: 0, 1, 2, 3 set on the element */
+  transition-delay: calc(var(--i, 0) * 90ms);
 }
 
 .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
 }
-
-/* Stagger children via custom property */
-.fade-in:nth-child(2) { transition-delay: 80ms; }
-.fade-in:nth-child(3) { transition-delay: 160ms; }
-.fade-in:nth-child(4) { transition-delay: 240ms; }
 
 @media (prefers-reduced-motion: reduce) {
   .fade-in {
@@ -284,13 +318,17 @@ p {
   color: var(--color-brand);
 }
 
-/* Hamburger */
+/* Hamburger — 44x44 touch target */
 .navbar__hamburger {
   display: none;
   flex-direction: column;
   gap: 5px;
   margin-left: auto;
-  padding: 6px 4px;
+  padding: 10px 8px;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+  align-items: center;
 }
 
 .navbar__hamburger span {
@@ -398,6 +436,7 @@ p {
   text-transform: uppercase;
   color: var(--color-amber);
   margin-bottom: 1.5rem;
+  animation: hero-rise 700ms var(--ease-out-quart) 120ms both;
 }
 
 .hero__heading {
@@ -405,8 +444,8 @@ p {
   max-width: 17ch;
   margin-bottom: 1.5rem;
   line-height: 1.08;
-  /* Light text on dark needs extra leading */
   letter-spacing: -0.02em;
+  animation: hero-rise 800ms var(--ease-out-quart) 240ms both;
 }
 
 .hero__sub {
@@ -415,6 +454,7 @@ p {
   max-width: 52ch;
   margin-bottom: 2.75rem;
   line-height: 1.65;
+  animation: hero-rise 700ms var(--ease-out-quart) 380ms both;
 }
 
 .hero__cta {
@@ -422,6 +462,16 @@ p {
   flex-wrap: wrap;
   gap: 1rem;
   align-items: center;
+  animation: hero-rise 600ms var(--ease-out-quart) 500ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__eyebrow,
+  .hero__heading,
+  .hero__sub,
+  .hero__cta {
+    animation: none;
+  }
 }
 
 /* --- Palvelut ------------------------------------------------------- */
@@ -587,6 +637,7 @@ p {
   border-radius: var(--radius-md);
   overflow: hidden;
   min-height: 200px;
+  background: var(--color-rule); /* placeholder while image loads */
 }
 
 .galleria__item img {
