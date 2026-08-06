@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Pesosenpuoti">
+  <rect width="64" height="64" rx="15" fill="#eff4e8"/>
+  <g stroke="#1e2620" stroke-width="2.6" stroke-linejoin="round">
+    <path fill="#2f7d8c" d="M31 10v33H8z"/>
+    <path fill="#6f9a48" d="M34 10v33h23z"/>
+    <path fill="none" d="M7 47h52l-5 7H13zM33 7v40"/>
+  </g>
+  <g fill="#eff4e8" font-family="Arial, sans-serif" font-size="12" font-weight="800">
+    <text x="22" y="42">P</text><text x="39" y="42">P</text>
+  </g>
+</svg>

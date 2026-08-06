@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" role="img" aria-labelledby="title desc">
+  <title id="title">Pesosenpuoti – Telakka PP</title><desc id="desc">Kaksi lomittuvaa P-kirjainta veneen runkona.</desc>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M37 84c33 15 91 15 132 0l-13 17H51z" fill="#2f7d8c" stroke="#1e2620" stroke-width="5"/><path d="M67 79V26h29c27 0 28 35 0 35H67" stroke="#1e2620" stroke-width="9"/><path d="M111 79V26h29c27 0 28 35 0 35h-29" stroke="#6f9a48" stroke-width="9"/><path d="M28 108h154" stroke="#6f9a48" stroke-width="5"/></g>
+  <text x="204" y="62" fill="#1e2620" font-family="Arial, sans-serif" font-size="27" font-weight="800">Pesosen</text><text x="204" y="87" fill="#6f9a48" font-family="Arial, sans-serif" font-size="23" font-weight="700">puoti</text>
+</svg>
