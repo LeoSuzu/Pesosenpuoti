@@ -17,7 +17,6 @@ docx_qa/
 
 # Local build artifacts
 docs/
-web-elements/
 
 # Claude.ai local files
 .claude/
