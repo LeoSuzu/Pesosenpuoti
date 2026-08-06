@@ -1,0 +1,23 @@
+# Local macOS metadata
+.DS_Store
+
+# Private project planning and proposal source files
+PPPLAN.md
+build_ehdotus.py
+ehdotus.docx
+
+# Demo and inspiration material kept outside the production repository
+Inspiration_Photos/
+SamplePages/
+Sailing boat summer design.zip
+Korjaukset/
+
+# Local document-render QA output
+docx_qa/
+
+# Local build artifacts
+docs/
+web-elements/
+
+# Claude.ai local files
+.claude/
