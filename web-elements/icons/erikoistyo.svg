@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Erikoistyö" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m27 13 3 7 7 3-7 3-3 7-3-7-7-3 7-3zM44 31l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="m16 50 19-19 7 7-19 19H16zM40 20l4-4 7 7-4 4"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Erikoistyö" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Large 4-pointed star (sparkle): specialty/craftsmanship -->
+  <path d="M32 8 L35 28 L54 32 L35 36 L32 56 L29 36 L10 32 L29 28 Z"/>
+  <!-- Small accent sparkle (cross) upper-right -->
+  <line x1="52" y1="10" x2="52" y2="18"/>
+  <line x1="48" y1="14" x2="56" y2="14"/>
+  <!-- Center precision dot -->
+  <circle cx="32" cy="32" r="3" fill="currentColor" stroke="none"/>
+</svg>

@@ -1,5 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" role="img" aria-labelledby="title desc">
-  <title id="title">Pesosenpuoti – Telakka PP</title><desc id="desc">Kaksi lomittuvaa P-kirjainta veneen runkona.</desc>
-  <g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M37 84c33 15 91 15 132 0l-13 17H51z" fill="#2f7d8c" stroke="#1e2620" stroke-width="5"/><path d="M67 79V26h29c27 0 28 35 0 35H67" stroke="#1e2620" stroke-width="9"/><path d="M111 79V26h29c27 0 28 35 0 35h-29" stroke="#6f9a48" stroke-width="9"/><path d="M28 108h154" stroke="#6f9a48" stroke-width="5"/></g>
-  <text x="204" y="62" fill="#1e2620" font-family="Arial, sans-serif" font-size="27" font-weight="800">Pesosen</text><text x="204" y="87" fill="#6f9a48" font-family="Arial, sans-serif" font-size="23" font-weight="700">puoti</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" role="img" aria-labelledby="telakka-t telakka-d">
+  <title id="telakka-t">Pesosenpuoti – Telakka PP</title>
+  <desc id="telakka-d">PP-kirjainmerkki telakkarakenteen yllä.</desc>
+  <!-- PP typographic mark: bold block letters -->
+  <text x="10" y="76" font-family="'Barlow', 'Arial Black', Arial, sans-serif" font-size="62" font-weight="900" fill="#1b3c6a">P</text>
+  <text x="48" y="76" font-family="'Barlow', 'Arial Black', Arial, sans-serif" font-size="62" font-weight="900" fill="#2768b0">P</text>
+  <!-- Boat hull in dry dock (gold trapezoid) -->
+  <path d="M8 82 H90 L80 98 H18 Z" fill="#ca9810"/>
+  <!-- Dock keel supports -->
+  <line x1="30" y1="98" x2="30" y2="110" stroke="#1b3c6a" stroke-width="4" stroke-linecap="round"/>
+  <line x1="49" y1="98" x2="49" y2="110" stroke="#1b3c6a" stroke-width="4" stroke-linecap="round"/>
+  <line x1="68" y1="98" x2="68" y2="110" stroke="#1b3c6a" stroke-width="4" stroke-linecap="round"/>
+  <!-- Wordmark -->
+  <text x="110" y="57" fill="#1b3c6a" font-family="'Barlow', Arial, sans-serif" font-size="28" font-weight="700">Pesosen</text>
+  <text x="110" y="84" fill="#2768b0" font-family="'Barlow', Arial, sans-serif" font-size="22" font-weight="500" letter-spacing="4">PUOTI</text>
 </svg>
