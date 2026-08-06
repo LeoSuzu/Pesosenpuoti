@@ -1,6 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" role="img" aria-labelledby="title desc">
-  <title id="title">Pesosenpuoti – Kompassi PP</title><desc id="desc">PP-kirjaimet kompassiruusun keskellä aallon päällä.</desc>
-  <g transform="translate(68 60)" stroke="#1e2620" stroke-linejoin="round"><circle r="43" fill="#eff4e8" stroke-width="5"/><path d="M0-36 11 0 0 36-11 0z" fill="#2f7d8c" stroke-width="4"/><path d="m0-36 11 36-11 36-11-36z" fill="#6f9a48" stroke-width="4"/></g>
-  <text x="45" y="68" fill="#1e2620" font-family="Arial, sans-serif" font-size="25" font-weight="800">PP</text><path d="M20 108c14-9 28-9 42 0s28 9 42 0 28-9 42 0" fill="none" stroke="#2f7d8c" stroke-width="5" stroke-linecap="round"/>
-  <text x="142" y="62" fill="#1e2620" font-family="Arial, sans-serif" font-size="27" font-weight="800">Pesosen</text><text x="142" y="87" fill="#2f7d8c" font-family="Arial, sans-serif" font-size="23" font-weight="700">puoti</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" role="img" aria-labelledby="kompassi-t kompassi-d">
+  <title id="kompassi-t">Pesosenpuoti – Kompassi PP</title>
+  <desc id="kompassi-d">PP-kirjaimet kompassiruusussa aallon päällä.</desc>
+  <g id="compass-ring">
+    <circle cx="60" cy="57" r="50" fill="#eef3f8" stroke="#1b3c6a" stroke-width="3"/>
+  </g>
+  <g id="needle-north">
+    <path d="M60 13 L65 52 L60 58 L55 52 Z" fill="#2768b0"/>
+  </g>
+  <g id="needle-south">
+    <path d="M60 101 L65 62 L60 56 L55 62 Z" fill="#1b3c6a" opacity="0.25"/>
+  </g>
+  <g id="needle-east">
+    <path d="M106 57 L67 62 L61 57 L67 52 Z" fill="#1b3c6a" opacity="0.25"/>
+  </g>
+  <g id="needle-west">
+    <path d="M14 57 L53 62 L59 57 L53 52 Z" fill="#1b3c6a" opacity="0.25"/>
+  </g>
+  <g id="compass-pp-text">
+    <text x="60" y="65" text-anchor="middle" font-family="'Barlow', 'Arial Black', Arial, sans-serif" font-size="20" font-weight="900" fill="#1b3c6a" letter-spacing="3">PP</text>
+  </g>
+  <g id="wave">
+    <path d="M16 114 Q28 108 40 114 Q52 120 64 114 Q76 108 88 114 Q100 120 104 114" fill="none" stroke="#2768b0" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g id="wordmark-pesosen">
+    <text x="130" y="56" fill="#1b3c6a" font-family="'Barlow', Arial, sans-serif" font-size="27" font-weight="700">Pesosen</text>
+  </g>
+  <g id="wordmark-puoti">
+    <text x="130" y="82" fill="#2768b0" font-family="'Barlow', Arial, sans-serif" font-size="22" font-weight="500" letter-spacing="4">PUOTI</text>
+  </g>
 </svg>
