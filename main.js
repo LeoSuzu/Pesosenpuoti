@@ -128,4 +128,35 @@
     });
   }
 
+  /* ------------------------------------------------------------------ */
+  /* Theme toggle — vaalea / tumma sininen, tallennetaan localStorage    */
+  /* ------------------------------------------------------------------ */
+  const themeBtn = document.getElementById('theme-toggle');
+  const root     = document.documentElement;
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      root.setAttribute('data-theme', 'dark');
+    } else {
+      root.removeAttribute('data-theme');
+    }
+  }
+
+  /* Palauta tallennettu valinta tai käytä OS-asetusta */
+  const savedTheme = localStorage.getItem('pp-theme');
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    applyTheme('dark');
+  }
+
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const isDark = root.getAttribute('data-theme') === 'dark';
+      const next   = isDark ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('pp-theme', next);
+    });
+  }
+
 })();

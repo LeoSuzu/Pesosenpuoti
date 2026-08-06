@@ -7,15 +7,15 @@
 /* --- Tokens --------------------------------------------------------- */
 :root {
   /* Palette — Finnish summer dawn on the Baltic */
-  --color-bg:      oklch(1.000 0.000 0);        /* pure white — brand carries atmosphere */
-  --color-surface: oklch(0.965 0.008 228);      /* barely-tinted panel background */
-  --color-navy:    oklch(0.220 0.060 235);      /* deep Baltic navy — headings, dark fills */
-  --color-brand:   oklch(0.560 0.105 228);      /* committed Baltic blue — links, borders, accents */
-  --color-amber:   oklch(0.620 0.140 65);       /* warm amber — primary CTAs, white text */
-  --color-ink:     oklch(0.170 0.020 232);      /* near-black with blue cast — body copy */
-  --color-muted:   oklch(0.480 0.018 228);      /* secondary text — ≥3.5:1 vs bg */
-  --color-white:   oklch(1.000 0.000 0);        /* text on dark fills */
-  --color-rule:    oklch(0.890 0.012 228);      /* dividers, card borders */
+  --color-bg:      oklch(1.000 0.000 0);            /* pure white — brand carries atmosphere */
+  --color-surface: oklch(0.965 0.008 228);          /* barely-tinted panel background */
+  --color-navy:    oklch(44.5% 0.09 236);              /* light scandinavian navy — headings, dark fills */
+  --color-brand:   oklch(0.560 0.105 228);          /* committed Baltic blue — links, borders, accents */
+  --color-amber:   oklch(75.303% 0.12323 75.343);   /* warm amber — primary CTAs, white text */
+  --color-ink:     oklch(0.170 0.020 232);          /* near-black with blue cast — body copy */
+  --color-muted:   oklch(0.480 0.018 228);          /* secondary text — ≥3.5:1 vs bg */
+  --color-white:   oklch(1.000 0.000 0);            /* text on dark fills */
+  --color-rule:    oklch(0.890 0.012 228);          /* dividers, card borders */
 
   /* Typography */
   --font-heading: 'Barlow', system-ui, sans-serif;
@@ -414,7 +414,7 @@ p {
   background-image: url('Inspiration_Photos/Screenshot%202026-08-05%20at%2013.23.54.png');
   background-size: cover;
   background-position: center 35%;
-  opacity: 0.38;
+  opacity: 0.52;
 }
 
 .hero__content {
@@ -1063,4 +1063,177 @@ p {
 .footer__copy {
   font-size: 0.78rem;
   color: oklch(1.000 0.000 0 / 0.30);
+}
+
+/* --- Theme toggle --------------------------------------------------- */
+.navbar__theme {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 8px;
+  border-radius: 50%;
+  color: oklch(1.000 0.000 0 / 0.80);
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+
+.navbar__theme:hover {
+  background: oklch(1.000 0.000 0 / 0.12);
+}
+
+.navbar.scrolled .navbar__theme {
+  color: var(--color-navy);
+}
+
+.navbar.scrolled .navbar__theme:hover {
+  background: oklch(0.220 0.060 235 / 0.08);
+}
+
+/* Show sun in light mode, moon in dark mode */
+.navbar__theme-icon--moon { display: none; }
+[data-theme="dark"] .navbar__theme-icon--sun  { display: none; }
+[data-theme="dark"] .navbar__theme-icon--moon { display: block; }
+
+/* On mobile: links hidden, theme button takes auto margin to push right */
+@media (max-width: 760px) {
+  .navbar__theme { margin-left: auto; }
+}
+
+/* --- Palvelu card icon ---------------------------------------------- */
+.palvelu-card__icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 1rem;
+  color: var(--color-brand);
+}
+
+.palvelu-card__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Jäätelö icon ---------------------------------------------------- */
+.jaatelö__icon {
+  width: 3.25rem;
+  height: 3.25rem;
+  color: var(--color-amber);
+  margin-bottom: 1.5rem;
+}
+
+.jaatelö__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Yhteystiedot logo + map ---------------------------------------- */
+.yhteystiedot__logo {
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.yhteystiedot__logo img {
+  max-width: 160px;
+  height: auto;
+}
+
+.map-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 1.5rem;
+  padding: 2.5rem 1.5rem;
+  border-radius: var(--radius-md);
+  background: var(--color-navy);
+  color: var(--color-white);
+  text-decoration: none;
+  transition: opacity var(--dur-fast), transform var(--dur-fast);
+  min-height: 180px;
+}
+
+.map-placeholder:hover {
+  opacity: 0.88;
+  transform: translateY(-2px);
+}
+
+.map-placeholder__pin {
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--color-amber);
+  margin-bottom: 0.85rem;
+  flex-shrink: 0;
+}
+
+.map-placeholder__name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-white);
+  margin-bottom: 0.2rem;
+  max-width: none;
+}
+
+.map-placeholder__addr {
+  font-size: 0.88rem;
+  color: oklch(1 0 0 / 0.60);
+  margin-bottom: 1rem;
+  max-width: none;
+}
+
+.map-placeholder__cta {
+  font-family: var(--font-heading);
+  font-size: 0.80rem;
+  font-weight: 600;
+  color: var(--color-amber);
+  letter-spacing: 0.02em;
+}
+
+/* --- Dark theme ---------------------------------------------------- */
+[data-theme="dark"] {
+  --color-bg:      oklch(0.148 0.042 232);
+  --color-surface: oklch(0.192 0.050 230);
+  --color-navy:    oklch(0.900 0.010 228);
+  --color-brand:   oklch(0.680 0.115 228);
+  --color-amber:   oklch(0.750 0.128 73);
+  --color-ink:     oklch(0.860 0.012 228);
+  --color-muted:   oklch(0.680 0.022 228);
+  --color-white:   oklch(0.960 0.008 228);
+  --color-rule:    oklch(0.270 0.040 232);
+  --shadow-card:       0 1px 6px oklch(0 0 0 / 0.35);
+  --shadow-card-hover: 0 8px 28px oklch(0 0 0 / 0.50);
+}
+
+[data-theme="dark"] .navbar.scrolled {
+  background: oklch(0.148 0.042 232 / 0.94);
+}
+
+[data-theme="dark"] .hero {
+  background: oklch(0.110 0.038 234);
+}
+
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group textarea {
+  background: oklch(0.192 0.050 230);
+  border-color: var(--color-rule);
+  color: var(--color-ink);
+}
+
+[data-theme="dark"] .form-group input::placeholder,
+[data-theme="dark"] .form-group textarea::placeholder {
+  color: oklch(0.520 0.025 228);
+}
+
+[data-theme="dark"] .map-placeholder {
+  background: oklch(0.220 0.055 232);
+}
+
+[data-theme="dark"] .yhteystiedot__logo img {
+  filter: brightness(1.15) saturate(0.95);
+}
+
+[data-theme="dark"] .footer {
+  background: oklch(0.108 0.038 234);
 }

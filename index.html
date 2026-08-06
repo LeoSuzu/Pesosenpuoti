@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&display=swap" rel="stylesheet">
 
+  <link rel="icon" href="web-elements/logos/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,10 +23,17 @@
   <header class="navbar" id="navbar">
     <div class="navbar__inner">
       <a href="#" class="navbar__logo" aria-label="Pesosenpuoti — etusivulle">
-        <!-- PP-logo: kirjaimet + aaltoviiva -->
-        <svg class="navbar__logo-mark" width="38" height="26" viewBox="0 0 38 26" fill="none" aria-hidden="true" focusable="false">
-          <text x="0" y="20" font-family="Barlow, system-ui" font-weight="700" font-size="19" fill="currentColor" letter-spacing="-0.5">PP</text>
-          <path d="M2 24.5 C8 21 14 24.5 19 21.5 C24 18.5 30 22 36 19" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- Purjeet PP -logo: kaksi purjetta + PP kirjaimet -->
+        <svg class="navbar__logo-mark" width="60" height="37" viewBox="22 8 168 104" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="currentColor" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <path fill="#2f7d8c" d="M103 18v65H38z"/>
+            <path fill="#6f9a48" d="M113 18v65h65z"/>
+            <path fill="none" d="M28 91h152l-18 14H48zM113 12v78"/>
+          </g>
+          <g fill="#eff4e8" font-family="Arial, sans-serif" font-size="38" font-weight="800">
+            <text x="59" y="70">P</text>
+            <text x="134" y="70">P</text>
+          </g>
         </svg>
         <span class="navbar__logo-text">Pesosenpuoti</span>
       </a>
@@ -36,6 +44,20 @@
         <a href="#ajankohtaista">Ajankohtaista</a>
         <a href="#yhteystiedot">Yhteystiedot</a>
       </nav>
+
+      <button
+        class="navbar__theme"
+        id="theme-toggle"
+        aria-label="Vaihda väritema"
+        title="Vaihda teema"
+      >
+        <svg class="navbar__theme-icon navbar__theme-icon--sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="navbar__theme-icon navbar__theme-icon--moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
 
       <button
         class="navbar__hamburger"
@@ -97,6 +119,9 @@
       <div class="palvelut__grid">
         <!-- Korjaukset -->
         <article class="palvelu-card fade-in" style="--i:0">
+          <div class="palvelu-card__icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 34h48l-6 12H16zM18 34V21h28v13M16 27h32"/><path d="m45 13 6 6-12 12-6-6 12-12zM31 27l-5 5"/></svg>
+          </div>
           <div class="palvelu-card__num" aria-hidden="true">01</div>
           <h3>Veneiden korjaukset</h3>
           <p>Puuveneet, lasikuitu ja purjeveneet käsiemme kautta.</p>
@@ -111,6 +136,9 @@
 
         <!-- Huollot -->
         <article class="palvelu-card fade-in" style="--i:1">
+          <div class="palvelu-card__icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40h33l-5 10H15zM15 40V27h18v13"/><path d="M47 20v-5m0 34v-5m10-12h-5m-10 0h-5m12-9 5-5m-14 28 5-5m9 0 5 5m-14-28 5 5"/><circle cx="47" cy="32" r="10"/></svg>
+          </div>
           <div class="palvelu-card__num" aria-hidden="true">02</div>
           <h3>Kausi- ja perushuollot</h3>
           <p>Vene valmiina joka kauteen — kevät ja syksy.</p>
@@ -125,6 +153,9 @@
 
         <!-- Erikoistyöt -->
         <article class="palvelu-card fade-in" style="--i:2">
+          <div class="palvelu-card__icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m27 13 3 7 7 3-7 3-3 7-3-7-7-3 7-3zM44 31l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="m16 50 19-19 7 7-19 19H16zM40 20l4-4 7 7-4 4"/></svg>
+          </div>
           <div class="palvelu-card__num" aria-hidden="true">03</div>
           <h3>Erikoistyöt</h3>
           <p>Sähköt, rigaus, konsultointi ja materiaalit.</p>
@@ -134,6 +165,23 @@
             <li>Purjeveneiden rigaus</li>
             <li>Konsultointi ja korjaussuositukset</li>
             <li>Materiaalit, tarvikkeet ja laitevuokraus</li>
+          </ul>
+        </article>
+
+        <!-- Arviointi -->
+        <article class="palvelu-card fade-in" style="--i:3">
+          <div class="palvelu-card__icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h44v31H31L20 52v-9h-10z"/><path d="M25 24c0-4 4-6 8-6 5 0 8 2 8 6 0 7-8 6-8 12m0 4h.01"/><path d="m43 47 4 4 8-9"/></svg>
+          </div>
+          <div class="palvelu-card__num" aria-hidden="true">04</div>
+          <h3>Arviointi ja konsultointi</h3>
+          <p>Epäselvä vaurio tai iso projekti? Tuomo katsoo tilanteen ensin.</p>
+          <ul class="palvelu-card__list" aria-label="Esimerkkejä arvioinnista">
+            <li>Ilmainen puhelinarviointi</li>
+            <li>Paikan päällä käynti sopimuksen mukaan</li>
+            <li>Kirjallinen kustannusarvio</li>
+            <li>Materiaalivalinnat ja toimittajat</li>
+            <li>Tuki myös oman korjauksen suunnitteluun</li>
           </ul>
         </article>
       </div>
@@ -222,6 +270,9 @@
     <div class="container">
       <div class="jaatelö__inner">
         <div class="jaatelö__text fade-in">
+          <div class="jaatelö__icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 41h46l-7 12H17zM14 41V29h23v12"/><path d="M42 17c0-5 8-5 8 0 0 5-8 5-8 10 0 5 8 5 8 0M46 37l6-10M41 37l5-10"/><path d="M13 58c7-4 14-4 21 0s14 4 21 0"/></svg>
+          </div>
           <span class="jaatelö__eyebrow">Tarina</span>
           <h2 id="jaatelö-heading">Jäätelövene</h2>
           <p>
@@ -365,6 +416,9 @@
 
         <!-- Yhteystiedot -->
         <aside class="yhteystiedot__info fade-in" aria-label="Yhteystiedot">
+          <div class="yhteystiedot__logo">
+            <img src="web-elements/logos/purjeet-pp.svg" alt="Pesosenpuoti" width="180" height="68">
+          </div>
           <div class="info-block">
             <p class="info-block__label">Puhelin</p>
             <a href="tel:+358503120488">050 312 0488</a>
@@ -389,9 +443,23 @@
               rel="noopener noreferrer"
               class="map-link"
             >
-              Näytä kartalla →
+              Avaa kartalla →
             </a>
           </div>
+
+          <!-- Karttaplaceholder -->
+          <a
+            class="map-placeholder"
+            href="https://maps.google.com/?q=Kapteeninkatu+5,+00140+Helsinki"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Avaa sijainti Google Mapsissa (avautuu uudessa välilehdessä)"
+          >
+            <svg class="map-placeholder__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <p class="map-placeholder__name">Pesosenpuoti</p>
+            <p class="map-placeholder__addr">Kapteeninkatu 5, Helsinki</p>
+            <span class="map-placeholder__cta">Avaa Google Mapsissa →</span>
+          </a>
         </aside>
       </div>
     </div>

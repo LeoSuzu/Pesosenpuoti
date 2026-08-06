@@ -16,11 +16,11 @@
   /* Three wave layers — subtle depth through speed and opacity variance */
   const waves = [
     /* Slow deep ground swell */
-    { speed: 0.00045, amplitude: 44, freq: 0.0048, phase: 0.0,  alpha: 0.22, yFrac: 0.76 },
+    { speed: 0.0000005, amplitude: 44, freq: 0.0048, phase: 0.0,  alpha: 0.22, yFrac: 0.76 },
     /* Mid layer — slight chop */
-    { speed: 0.00075, amplitude: 26, freq: 0.0078, phase: 2.4,  alpha: 0.14, yFrac: 0.80 },
+    { speed: 0.0000012, amplitude: 26, freq: 0.0078, phase: 2.4,  alpha: 0.14, yFrac: 0.80 },
     /* Surface shimmer */
-    { speed: 0.00110, amplitude: 14, freq: 0.0118, phase: 4.9,  alpha: 0.09, yFrac: 0.84 },
+    { speed: 0.0000020, amplitude: 14, freq: 0.0118, phase: 4.9,  alpha: 0.09, yFrac: 0.84 },
   ];
 
   /* Baltic blue-grey — matches --color-brand oklch(0.560 0.105 228) */
