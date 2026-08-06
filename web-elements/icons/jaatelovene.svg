@@ -1,17 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Jäätelövene" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-  <!-- Snowflake: 3 crossing lines (6 arms) at center (32, 22) -->
-  <line x1="32" y1="6" x2="32" y2="38"/>
-  <line x1="18" y1="30" x2="46" y2="14"/>
-  <line x1="18" y1="14" x2="46" y2="30"/>
-  <!-- Branch tips on vertical arm -->
-  <path d="M32 9 L29 12 M32 9 L35 12"/>
-  <path d="M32 35 L29 32 M32 35 L35 32"/>
-  <!-- Branch tips on upper-right arm -->
-  <path d="M43 16 L41 19 M43 16 L46 18"/>
-  <!-- Branch tips on upper-left arm -->
-  <path d="M21 16 L18 18 M21 16 L23 19"/>
-  <!-- Water ripple (transition to winter storage) -->
-  <path d="M8 44 Q16 41 24 44 Q32 47 40 44 Q48 41 56 44"/>
-  <!-- Boat hull -->
-  <path d="M10 50 H54 L48 62 H16 Z"/>
+  <g id="snowflake-arms">
+    <line x1="32" y1="6" x2="32" y2="38"/>
+    <line x1="18" y1="30" x2="46" y2="14"/>
+    <line x1="18" y1="14" x2="46" y2="30"/>
+  </g>
+  <g id="snowflake-branch-tips">
+    <path d="M32 9 L29 12 M32 9 L35 12"/>
+    <path d="M32 35 L29 32 M32 35 L35 32"/>
+    <path d="M43 16 L41 19 M43 16 L46 18"/>
+    <path d="M21 16 L18 18 M21 16 L23 19"/>
+  </g>
+  <g id="water-ripple">
+    <path d="M8 44 Q16 41 24 44 Q32 47 40 44 Q48 41 56 44"/>
+  </g>
+  <g id="hull">
+    <path d="M10 50 H54 L48 62 H16 Z"/>
+  </g>
 </svg>

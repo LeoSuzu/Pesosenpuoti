@@ -1,16 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" role="img" aria-labelledby="telakka-t telakka-d">
   <title id="telakka-t">Pesosenpuoti – Telakka PP</title>
   <desc id="telakka-d">PP-kirjainmerkki telakkarakenteen yllä.</desc>
-  <!-- PP typographic mark: bold block letters -->
-  <text x="10" y="76" font-family="'Barlow', 'Arial Black', Arial, sans-serif" font-size="62" font-weight="900" fill="#1b3c6a">P</text>
-  <text x="48" y="76" font-family="'Barlow', 'Arial Black', Arial, sans-serif" font-size="62" font-weight="900" fill="#2768b0">P</text>
-  <!-- Boat hull in dry dock (gold trapezoid) -->
-  <path d="M8 82 H90 L80 98 H18 Z" fill="#ca9810"/>
-  <!-- Dock keel supports -->
-  <line x1="30" y1="98" x2="30" y2="110" stroke="#1b3c6a" stroke-width="4" stroke-linecap="round"/>
-  <line x1="49" y1="98" x2="49" y2="110" stroke="#1b3c6a" stroke-width="4" stroke-linecap="round"/>
-  <line x1="68" y1="98" x2="68" y2="110" stroke="#1b3c6a" stroke-width="4" stroke-linecap="round"/>
-  <!-- Wordmark -->
-  <text x="110" y="57" fill="#1b3c6a" font-family="'Barlow', Arial, sans-serif" font-size="28" font-weight="700">Pesosen</text>
-  <text x="110" y="84" fill="#2768b0" font-family="'Barlow', Arial, sans-serif" font-size="22" font-weight="500" letter-spacing="4">PUOTI</text>
+  <g id="letter-P1">
+    <text x="10" y="76" font-family="'Barlow', 'Arial Black', Arial, sans-serif" font-size="62" font-weight="900" fill="#1b3c6a">P</text>
+  </g>
+  <g id="letter-P2">
+    <text x="48" y="76" font-family="'Barlow', 'Arial Black', Arial, sans-serif" font-size="62" font-weight="900" fill="#2768b0">P</text>
+  </g>
+  <g id="hull">
+    <path d="M8 82 H90 L80 98 H18 Z" fill="#ca9810"/>
+  </g>
+  <g id="dock-support-left">
+    <line x1="30" y1="98" x2="30" y2="110" stroke="#1b3c6a" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g id="dock-support-center">
+    <line x1="49" y1="98" x2="49" y2="110" stroke="#1b3c6a" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g id="dock-support-right">
+    <line x1="68" y1="98" x2="68" y2="110" stroke="#1b3c6a" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g id="wordmark-pesosen">
+    <text x="110" y="57" fill="#1b3c6a" font-family="'Barlow', Arial, sans-serif" font-size="28" font-weight="700">Pesosen</text>
+  </g>
+  <g id="wordmark-puoti">
+    <text x="110" y="84" fill="#2768b0" font-family="'Barlow', Arial, sans-serif" font-size="22" font-weight="500" letter-spacing="4">PUOTI</text>
+  </g>
 </svg>

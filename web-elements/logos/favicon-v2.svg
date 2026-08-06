@@ -1,6 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Pesosenpuoti">
-  <rect width="64" height="64" rx="14" fill="#1b3c6a"/>
-  <path d="M18 14 L6 50 L30 50 Z" fill="#2768b0"/>
-  <path d="M46 14 L34 50 L58 50 Z" fill="#ca9810"/>
-  <line x1="4" y1="55" x2="60" y2="55" stroke="#eef3f8" stroke-width="3.5" stroke-linecap="round"/>
+  <g id="background">
+    <rect width="64" height="64" rx="14" fill="#1b3c6a"/>
+  </g>
+  <g id="sail-left">
+    <path d="M18 14 L6 50 L30 50 Z" fill="#2768b0"/>
+  </g>
+  <g id="sail-right">
+    <path d="M46 14 L34 50 L58 50 Z" fill="#ca9810"/>
+  </g>
+  <g id="waterline">
+    <line x1="4" y1="55" x2="60" y2="55" stroke="#eef3f8" stroke-width="3.5" stroke-linecap="round"/>
+  </g>
 </svg>
