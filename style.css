@@ -7,15 +7,19 @@
 /* --- Tokens --------------------------------------------------------- */
 :root {
   /* Palette — Finnish summer dawn on the Baltic */
-  --color-bg:      oklch(1.000 0.000 0);            /* pure white — brand carries atmosphere */
-  --color-surface: oklch(0.965 0.008 228);          /* barely-tinted panel background */
-  --color-navy:    oklch(44.5% 0.09 236);              /* light scandinavian navy — headings, dark fills */
-  --color-brand:   oklch(0.560 0.105 228);          /* committed Baltic blue — links, borders, accents */
-  --color-amber:   oklch(75.303% 0.12323 75.343);   /* warm amber — primary CTAs, white text */
-  --color-ink:     oklch(0.170 0.020 232);          /* near-black with blue cast — body copy */
-  --color-muted:   oklch(0.480 0.018 228);          /* secondary text — ≥3.5:1 vs bg */
-  --color-white:   oklch(1.000 0.000 0);            /* text on dark fills */
-  --color-rule:    oklch(0.890 0.012 228);          /* dividers, card borders */
+  --color-bg:      oklch(1.000 0.000 0);                      /* pure white — brand carries atmosphere */
+  --color-surface: oklch(0.965 0.008 228);                    /* barely-tinted panel background */
+  --color-navy:    oklch(44.5% 0.09 236);                     /* light scandinavian navy — headings, dark fills */
+  --color-brand:   oklch(0.560 0.105 228);                    /* committed Baltic blue — links, borders, accents */
+  --color-amber:   oklch(75.303% 0.12323 75.343);             /* warm amber — primary CTAs, white text */
+  --color-ink:     oklch(0.170 0.020 232);                    /* near-black with blue cast — body copy */
+  --color-muted:   oklch(0.480 0.018 228);                    /* secondary text — ≥3.5:1 vs bg */
+  --color-white:   oklch(1.000 0.000 0);                      /* text on dark fills */
+  --color-rule:    oklch(0.890 0.012 228);                    /* dividers, card borders */
+  --color-navbar:  oklch(17.024% 0.02072 288.565 / 0.60);     /* navbar background top — overlays hero photo, same in both themes */
+  --color-navbar-scrolled: oklch(1.000 0.000 0 / 0.60);       /* navbar background scrolled (light theme) */
+  --color-wave:    112 158 196;                                /* canvas wave fill "r g b" (light theme) — read by wave.js, not sampled from the photo */
+  --color-palvelut-bg: oklch(0.955 0.016 228);                 /* pale Baltic-blue section tint (light theme) */
 
   /* Typography */
   --font-heading: 'Barlow', system-ui, sans-serif;
@@ -106,7 +110,7 @@ h1, h2, h3, h4 {
 }
 
 /* Fluid modular scale — ratio ~1.35 */
-h1 { font-size: clamp(2.4rem, 5.5vw, 4.2rem); }
+h1 { font-size: clamp(2.2rem, 5.3vw, 4rem); }
 h2 { font-size: clamp(1.85rem, 3.8vw, 2.9rem); }
 h3 { font-size: clamp(1.1rem, 2vw, 1.3rem); font-weight: 600; }
 
@@ -226,7 +230,10 @@ p {
 
 /* --- Navbar --------------------------------------------------------- */
 .navbar {
+  margin-top: 5rem;
   position: fixed;
+  background-color: var(--color-navbar);
+  backdrop-filter: blur(5px);
   top: 0;
   left: 0;
   right: 0;
@@ -238,9 +245,8 @@ p {
 }
 
 .navbar.scrolled {
-  background: oklch(1.000 0.000 0 / 0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: var(--color-navbar-scrolled);
+  backdrop-filter: blur(5px);
   box-shadow: 0 1px 0 var(--color-rule);
 }
 
@@ -420,7 +426,7 @@ p {
 .hero__content {
   position: relative;
   z-index: 2;
-  padding-block: clamp(6rem, 12vw, 10rem);
+  padding-block: clamp(6rem, 12vw, 15rem);
   padding-inline: var(--pad-x);
   max-width: var(--max-w);
   margin-inline: auto;
@@ -431,11 +437,11 @@ p {
   display: inline-block;
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.78rem;
+  font-size: 1.25rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-amber);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   animation: hero-rise 700ms var(--ease-out-quart) 120ms both;
 }
 
@@ -476,7 +482,7 @@ p {
 
 /* --- Palvelut ------------------------------------------------------- */
 .palvelut {
-  background: var(--color-bg);
+  background: var(--color-palvelut-bg);
   padding-block: var(--pad-y);
 }
 
@@ -493,23 +499,86 @@ p {
   font-size: 1.05rem;
 }
 
-.palvelut__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+/* Alternating overlapping card + photo rows */
+.palvelut__rows {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 7vw, 5.5rem);
+}
+
+.palvelut__row {
+  display: flex;
+  align-items: center;
+}
+
+.palvelut__row--reverse {
+  flex-direction: row-reverse;
+}
+
+.palvelut__row .palvelu-card {
+  flex: 0 1 460px;
+  z-index: 2;
+  margin-right: clamp(-3rem, -6vw, -1.5rem);
+}
+
+.palvelut__row--reverse .palvelu-card {
+  margin-right: 0;
+  margin-left: clamp(-3rem, -6vw, -1.5rem);
+}
+
+.palvelut__row .palvelu-photo {
+  flex: 1 1 55%;
+  z-index: 1;
+  transform: translateY(1.75rem);
+}
+
+.palvelut__row--reverse .palvelu-photo {
+  transform: translateY(-1.75rem);
+}
+
+.palvelu-photo {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 4 / 3.1;
+  box-shadow: var(--shadow-card);
+}
+
+.palvelu-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 860px) {
+  .palvelut__row,
+  .palvelut__row--reverse {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .palvelut__row .palvelu-card,
+  .palvelut__row--reverse .palvelu-card {
+    flex: 1 1 auto;
+    margin: 0;
+  }
+  .palvelut__row .palvelu-photo,
+  .palvelut__row--reverse .palvelu-photo {
+    flex: 1 1 auto;
+    width: 100%;
+    transform: none;
+  }
 }
 
 /* Cards: no icon-above-h3 — use bold number as visual anchor */
 .palvelu-card {
   background: var(--color-bg);
-  border: 1px solid var(--color-rule);
   border-radius: var(--radius-md);
   padding: 2.25rem 2rem;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-card-hover);
   transition:
     box-shadow var(--dur-mid) var(--ease-out-quart),
-    border-color var(--dur-mid) var(--ease-out-quart),
     transform var(--dur-mid) var(--ease-out-quart);
 }
 
@@ -526,13 +595,25 @@ p {
 }
 
 .palvelu-card:hover {
-  box-shadow: var(--shadow-card-hover);
-  border-color: oklch(0.820 0.020 228);
   transform: translateY(-3px);
 }
 
 .palvelu-card:hover::before {
   opacity: 1;
+}
+
+.palvelu-card__link {
+  display: inline-block;
+  margin-top: 1.1rem;
+  color: var(--color-brand);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: color var(--dur-fast);
+}
+
+.palvelu-card__link:hover {
+  color: var(--color-navy);
 }
 
 .palvelu-card__num {
@@ -1138,57 +1219,103 @@ p {
   height: auto;
 }
 
-.map-placeholder {
+/* --- Tervetuloa telakalle — map + quote ------------------------------ */
+.telakalle {
+  position: relative;
+  background: var(--color-brand);
+  overflow: hidden;
+}
+
+.telakalle__map {
+  width: 100%;
+  height: clamp(240px, 30vw, 340px);
+  background: var(--color-rule); /* placeholder tone while the iframe loads */
+}
+
+.telakalle__map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.telakalle__inner {
+  padding-block: 0 clamp(3rem, 6vw, 4.5rem);
+}
+
+.telakalle__inner h2 {
+  color: var(--color-white);
+  padding-top: clamp(2rem, 4vw, 3rem);
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.telakalle__quote {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  max-width: 640px;
+}
+
+.telakalle__avatar {
+  flex-shrink: 0;
+  display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  margin-top: 1.5rem;
-  padding: 2.5rem 1.5rem;
-  border-radius: var(--radius-md);
-  background: var(--color-navy);
-  color: var(--color-white);
-  text-decoration: none;
-  transition: opacity var(--dur-fast), transform var(--dur-fast);
-  min-height: 180px;
-}
-
-.map-placeholder:hover {
-  opacity: 0.88;
-  transform: translateY(-2px);
-}
-
-.map-placeholder__pin {
-  width: 2.25rem;
-  height: 2.25rem;
-  color: var(--color-amber);
-  margin-bottom: 0.85rem;
-  flex-shrink: 0;
-}
-
-.map-placeholder__name {
+  width: clamp(5.5rem, 9vw, 7.5rem);
+  height: clamp(5.5rem, 9vw, 7.5rem);
+  border-radius: 50%;
+  background: oklch(0.220 0.055 232); /* fixed dark navy fill — same in both themes, unlike --color-navy which inverts */
+  border: 3px solid var(--color-amber);
+  color: oklch(0.960 0.008 228);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1rem;
-  color: var(--color-white);
-  margin-bottom: 0.2rem;
-  max-width: none;
-}
-
-.map-placeholder__addr {
-  font-size: 0.88rem;
-  color: oklch(1 0 0 / 0.60);
-  margin-bottom: 1rem;
-  max-width: none;
-}
-
-.map-placeholder__cta {
-  font-family: var(--font-heading);
-  font-size: 0.80rem;
-  font-weight: 600;
-  color: var(--color-amber);
+  font-size: 1.5rem;
   letter-spacing: 0.02em;
+  box-shadow: var(--shadow-card-hover);
+}
+
+.telakalle__card {
+  position: relative;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: 1.75rem 2rem;
+  box-shadow: var(--shadow-card-hover);
+}
+
+.telakalle__mark {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 2.75rem;
+  line-height: 1;
+  color: var(--color-brand);
+  opacity: 0.35;
+  margin-bottom: 0.25rem;
+}
+
+.telakalle__text {
+  color: var(--color-navy);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  line-height: 1.4;
+  max-width: none;
+}
+
+.telakalle__author {
+  margin-top: 0.85rem;
+  font-size: 0.88rem;
+  color: var(--color-muted);
+}
+
+.telakalle__author span {
+  color: var(--color-muted);
+}
+
+@media (max-width: 560px) {
+  .telakalle__quote {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 /* --- Dark theme ---------------------------------------------------- */
@@ -1202,12 +1329,11 @@ p {
   --color-muted:   oklch(0.680 0.022 228);
   --color-white:   oklch(0.960 0.008 228);
   --color-rule:    oklch(0.270 0.040 232);
+  --color-navbar-scrolled: oklch(0.148 0.042 232 / 0.94);      /* navbar background scrolled (dark theme) */
+  --color-wave:    134 184 214;                                /* brighter wave fill for contrast against the near-black dark-theme hero */
+  --color-palvelut-bg: oklch(0.170 0.048 230);                 /* pale-blue section tint, dark-theme equivalent */
   --shadow-card:       0 1px 6px oklch(0 0 0 / 0.35);
   --shadow-card-hover: 0 8px 28px oklch(0 0 0 / 0.50);
-}
-
-[data-theme="dark"] .navbar.scrolled {
-  background: oklch(0.148 0.042 232 / 0.94);
 }
 
 [data-theme="dark"] .hero {
@@ -1226,7 +1352,7 @@ p {
   color: oklch(0.520 0.025 228);
 }
 
-[data-theme="dark"] .map-placeholder {
+[data-theme="dark"] .telakalle__map {
   background: oklch(0.220 0.055 232);
 }
 

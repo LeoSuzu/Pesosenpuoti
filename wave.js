@@ -1,5 +1,5 @@
 /* wave.js — Canvas wave animation for Pesosenpuoti hero
-   Baltic Sea feel: slow, layered, grey-blue, not tropical
+   Scandinavian Sea feel: slow, layered, grey-blue, not tropical
    prefers-reduced-motion: fully disabled, no canvas drawn */
 
 (function () {
@@ -23,10 +23,29 @@
     { speed: 0.0000020, amplitude: 14, freq: 0.0118, phase: 4.9,  alpha: 0.09, yFrac: 0.84 },
   ];
 
-  /* Baltic blue-grey — matches --color-brand oklch(0.560 0.105 228) */
-  const WAVE_R = 112;
-  const WAVE_G = 158;
-  const WAVE_B = 196;
+  /* Wave fill colour lives in style.css as --color-wave ("r g b"), with a
+     separate value under [data-theme="dark"] — the canvas can't sample the
+     hero photo's colours itself, so light/dark values are set explicitly
+     there instead of computed here. */
+  let waveColor = [112, 158, 196];
+
+  function readWaveColor() {
+    const raw = getComputedStyle(document.documentElement)
+      .getPropertyValue('--color-wave')
+      .trim();
+    const parts = raw.split(/\s+/).map(Number);
+    if (parts.length === 3 && parts.every(n => !Number.isNaN(n))) {
+      waveColor = parts;
+    }
+  }
+
+  readWaveColor();
+
+  /* Re-read when the theme toggle flips data-theme on <html> */
+  new MutationObserver(readWaveColor).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
 
   let w = 0, h = 0;
 
@@ -55,7 +74,8 @@
 
     ctx.lineTo(w + 4, h);
     ctx.closePath();
-    ctx.fillStyle = `rgba(${WAVE_R}, ${WAVE_G}, ${WAVE_B}, ${wave.alpha})`;
+    const [r, g, b] = waveColor;
+    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${wave.alpha})`;
     ctx.fill();
   }
 

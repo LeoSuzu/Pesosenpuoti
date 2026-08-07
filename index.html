@@ -71,12 +71,14 @@
       </button>
     </div>
 
+    <!--
     <nav class="navbar__mobile" id="mobile-menu" aria-label="Mobiilivalikko" hidden>
       <a href="#palvelut">Palvelut</a>
       <a href="#tyon-jalki">Työn jälki</a>
       <a href="#ajankohtaista">Ajankohtaista</a>
       <a href="#yhteystiedot">Yhteystiedot</a>
     </nav>
+    -->
   </header>
 
   <!-- ================================================================
@@ -109,80 +111,124 @@
   <section class="palvelut" id="palvelut" aria-labelledby="palvelut-heading">
     <div class="container">
       <header class="palvelut__header">
-        <h2 id="palvelut-heading" class="fade-in">Mitä korjaamme</h2>
+        <h2 id="palvelut-heading" class="fade-in">Kun vene kaipaa pelastajaa</h2>
         <p class="fade-in">
-          Palvelut jakautuvat kolmeen kokonaisuuteen. Tapauskohtaisissa töissä
+          Palvelut jakautuvat neljään kokonaisuuteen. Tapauskohtaisissa töissä
           arvio kannattaa pyytää — hinnat vaihtelevat veneen koon ja kunnon mukaan.
         </p>
       </header>
 
-      <div class="palvelut__grid">
+      <div class="palvelut__rows">
         <!-- Korjaukset -->
-        <article class="palvelu-card fade-in" style="--i:0">
-          <div class="palvelu-card__icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 34h48l-6 12H16zM18 34V21h28v13M16 27h32"/><path d="m45 13 6 6-12 12-6-6 12-12zM31 27l-5 5"/></svg>
+        <article class="palvelut__row fade-in" style="--i:0">
+          <div class="palvelu-card">
+            <div class="palvelu-card__icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 34h48l-6 12H16zM18 34V21h28v13M16 27h32"/><path d="m45 13 6 6-12 12-6-6 12-12zM31 27l-5 5"/></svg>
+            </div>
+            <div class="palvelu-card__num" aria-hidden="true">01</div>
+            <h3>Veneiden korjaukset</h3>
+            <p>Puuveneet, lasikuitu ja purjeveneet käsiemme kautta.</p>
+            <ul class="palvelu-card__list" aria-label="Esimerkkejä korjauksista">
+              <li>Puuosien korjaukset ja pintakäsittelyt</li>
+              <li>Epoksityöt, pinnoitukset, tiikkien vaihdot</li>
+              <li>Myrkkymaalien poistot</li>
+              <li>Lasikuitukorjaukset</li>
+              <li>Kölipulttien teko ja vaihto</li>
+            </ul>
+            <a href="#yhteystiedot" class="palvelu-card__link">Kysy tästä →</a>
           </div>
-          <div class="palvelu-card__num" aria-hidden="true">01</div>
-          <h3>Veneiden korjaukset</h3>
-          <p>Puuveneet, lasikuitu ja purjeveneet käsiemme kautta.</p>
-          <ul class="palvelu-card__list" aria-label="Esimerkkejä korjauksista">
-            <li>Puuosien korjaukset ja pintakäsittelyt</li>
-            <li>Epoksityöt, pinnoitukset, tiikkien vaihdot</li>
-            <li>Myrkkymaalien poistot</li>
-            <li>Lasikuitukorjaukset</li>
-            <li>Kölipulttien teko ja vaihto</li>
-          </ul>
+          <figure class="palvelu-photo">
+            <img
+              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.11.00.png"
+              alt="Käsi levittää öljyä siveltimellä veneen tiikkikannelle"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
         </article>
 
         <!-- Huollot -->
-        <article class="palvelu-card fade-in" style="--i:1">
-          <div class="palvelu-card__icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40h33l-5 10H15zM15 40V27h18v13"/><path d="M47 20v-5m0 34v-5m10-12h-5m-10 0h-5m12-9 5-5m-14 28 5-5m9 0 5 5m-14-28 5 5"/><circle cx="47" cy="32" r="10"/></svg>
+        <article class="palvelut__row palvelut__row--reverse fade-in" style="--i:1">
+          <div class="palvelu-card">
+            <div class="palvelu-card__icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40h33l-5 10H15zM15 40V27h18v13"/><path d="M47 20v-5m0 34v-5m10-12h-5m-10 0h-5m12-9 5-5m-14 28 5-5m9 0 5 5m-14-28 5 5"/><circle cx="47" cy="32" r="10"/></svg>
+            </div>
+            <div class="palvelu-card__num" aria-hidden="true">02</div>
+            <h3>Kausi- ja perushuollot</h3>
+            <p>Vene valmiina joka kauteen — kevät ja syksy.</p>
+            <ul class="palvelu-card__list" aria-label="Esimerkkejä huolloista">
+              <li>Kevät- ja syyshuollot</li>
+              <li>Pesu ja puhdistus</li>
+              <li>Tankkien puhdistukset (polttoaine ja vesi)</li>
+              <li>Vesillelasku ja telakointi</li>
+              <li>Kylmälaitehuollot</li>
+            </ul>
+            <a href="#yhteystiedot" class="palvelu-card__link">Kysy tästä →</a>
           </div>
-          <div class="palvelu-card__num" aria-hidden="true">02</div>
-          <h3>Kausi- ja perushuollot</h3>
-          <p>Vene valmiina joka kauteen — kevät ja syksy.</p>
-          <ul class="palvelu-card__list" aria-label="Esimerkkejä huolloista">
-            <li>Kevät- ja syyshuollot</li>
-            <li>Pesu ja puhdistus</li>
-            <li>Tankkien puhdistukset (polttoaine ja vesi)</li>
-            <li>Vesillelasku ja telakointi</li>
-            <li>Kylmälaitehuollot</li>
-          </ul>
+          <figure class="palvelu-photo">
+            <img
+              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.16.29.png"
+              alt="Purjevene aamuauringossa tyynellä vedellä, valmiina kauteen"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
         </article>
 
         <!-- Erikoistyöt -->
-        <article class="palvelu-card fade-in" style="--i:2">
-          <div class="palvelu-card__icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m27 13 3 7 7 3-7 3-3 7-3-7-7-3 7-3zM44 31l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="m16 50 19-19 7 7-19 19H16zM40 20l4-4 7 7-4 4"/></svg>
+        <article class="palvelut__row fade-in" style="--i:2">
+          <div class="palvelu-card">
+            <div class="palvelu-card__icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m27 13 3 7 7 3-7 3-3 7-3-7-7-3 7-3zM44 31l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="m16 50 19-19 7 7-19 19H16zM40 20l4-4 7 7-4 4"/></svg>
+            </div>
+            <div class="palvelu-card__num" aria-hidden="true">03</div>
+            <h3>Erikoistyöt</h3>
+            <p>Sähköt, rigaus, konsultointi ja materiaalit.</p>
+            <ul class="palvelu-card__list" aria-label="Esimerkkejä erikoistöistä">
+              <li>Venesähköt, akkujen vaihdot, sähkökaaviot</li>
+              <li>Aurinkopaneelitekniikka ja Li-ion-järjestelmät</li>
+              <li>Purjeveneiden rigaus</li>
+              <li>Konsultointi ja korjaussuositukset</li>
+              <li>Materiaalit, tarvikkeet ja laitevuokraus</li>
+            </ul>
+            <a href="#yhteystiedot" class="palvelu-card__link">Kysy tästä →</a>
           </div>
-          <div class="palvelu-card__num" aria-hidden="true">03</div>
-          <h3>Erikoistyöt</h3>
-          <p>Sähköt, rigaus, konsultointi ja materiaalit.</p>
-          <ul class="palvelu-card__list" aria-label="Esimerkkejä erikoistöistä">
-            <li>Venesähköt, akkujen vaihdot, sähkökaaviot</li>
-            <li>Aurinkopaneelitekniikka ja Li-ion-järjestelmät</li>
-            <li>Purjeveneiden rigaus</li>
-            <li>Konsultointi ja korjaussuositukset</li>
-            <li>Materiaalit, tarvikkeet ja laitevuokraus</li>
-          </ul>
+          <figure class="palvelu-photo">
+            <img
+              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.12.21.png"
+              alt="Veistämön sisätila täynnä puuveneitä ja työkaluja"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
         </article>
 
         <!-- Arviointi -->
-        <article class="palvelu-card fade-in" style="--i:3">
-          <div class="palvelu-card__icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h44v31H31L20 52v-9h-10z"/><path d="M25 24c0-4 4-6 8-6 5 0 8 2 8 6 0 7-8 6-8 12m0 4h.01"/><path d="m43 47 4 4 8-9"/></svg>
+        <article class="palvelut__row palvelut__row--reverse fade-in" style="--i:3">
+          <div class="palvelu-card">
+            <div class="palvelu-card__icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h44v31H31L20 52v-9h-10z"/><path d="M25 24c0-4 4-6 8-6 5 0 8 2 8 6 0 7-8 6-8 12m0 4h.01"/><path d="m43 47 4 4 8-9"/></svg>
+            </div>
+            <div class="palvelu-card__num" aria-hidden="true">04</div>
+            <h3>Arviointi ja konsultointi</h3>
+            <p>Epäselvä vaurio tai iso projekti? Tuomo katsoo tilanteen ensin.</p>
+            <ul class="palvelu-card__list" aria-label="Esimerkkejä arvioinnista">
+              <li>Ilmainen puhelinarviointi</li>
+              <li>Paikan päällä käynti sopimuksen mukaan</li>
+              <li>Kirjallinen kustannusarvio</li>
+              <li>Materiaalivalinnat ja toimittajat</li>
+              <li>Tuki myös oman korjauksen suunnitteluun</li>
+            </ul>
+            <a href="#yhteystiedot" class="palvelu-card__link">Kysy tästä →</a>
           </div>
-          <div class="palvelu-card__num" aria-hidden="true">04</div>
-          <h3>Arviointi ja konsultointi</h3>
-          <p>Epäselvä vaurio tai iso projekti? Tuomo katsoo tilanteen ensin.</p>
-          <ul class="palvelu-card__list" aria-label="Esimerkkejä arvioinnista">
-            <li>Ilmainen puhelinarviointi</li>
-            <li>Paikan päällä käynti sopimuksen mukaan</li>
-            <li>Kirjallinen kustannusarvio</li>
-            <li>Materiaalivalinnat ja toimittajat</li>
-            <li>Tuki myös oman korjauksen suunnitteluun</li>
-          </ul>
+          <figure class="palvelu-photo">
+            <img
+              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.15.35.png"
+              alt="Puuvene rannassa piknik-varusteineen, tyyni järvimaisema"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
         </article>
       </div>
     </div>
@@ -194,7 +240,7 @@
   <section class="galleria" id="tyon-jalki" aria-labelledby="galleria-heading">
     <div class="container">
       <header class="galleria__header">
-        <h2 id="galleria-heading" class="fade-in">Korjaukset läheltä</h2>
+        <h2 id="galleria-heading" class="fade-in">Telakalla tapahtuu</h2>
         <a href="#yhteystiedot" aria-label="Pyydä arviota omasta veneestäsi">Pyydä arviota →</a>
       </header>
 
@@ -233,7 +279,7 @@
   <section class="kausi" id="ajankohtaista" aria-labelledby="kausi-heading">
     <div class="container">
       <header class="kausi__header">
-        <h2 id="kausi-heading" class="fade-in">Kausipalvelut</h2>
+        <h2 id="kausi-heading" class="fade-in">Kevät kuntoon, kesä vesille</h2>
         <p class="fade-in">
           Huoltokalenteri täyttyy nopeasti — ota yhteyttä hyvissä ajoin.
         </p>
@@ -274,7 +320,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 41h46l-7 12H17zM14 41V29h23v12"/><path d="M42 17c0-5 8-5 8 0 0 5-8 5-8 10 0 5 8 5 8 0M46 37l6-10M41 37l5-10"/><path d="M13 58c7-4 14-4 21 0s14 4 21 0"/></svg>
           </div>
           <span class="jaatelö__eyebrow">Tarina</span>
-          <h2 id="jaatelö-heading">Jäätelövene</h2>
+          <h2 id="jaatelö-heading">Jäätelöä laineilla</h2>
           <p>
             Korjaamon ohella Pesosenpuodilla kulkee oma tarina — jäätelövene,
             joka on yhtä paljon asenne kuin ajoneuvo. Se muistuttaa siitä,
@@ -311,7 +357,7 @@
   <section class="yhteystiedot" id="yhteystiedot" aria-labelledby="yhteystiedot-heading">
     <div class="container">
       <header class="yhteystiedot__header">
-        <h2 id="yhteystiedot-heading" class="fade-in">Kysy arviota</h2>
+        <h2 id="yhteystiedot-heading" class="fade-in">Kysy kipparilta arvio</h2>
         <p class="yhteystiedot__intro fade-in">
           Kerro veneestäsi ja työn tarpeesta — saat arvion siitä, miten
           korjaus kannattaa toteuttaa. Kuva veneestä tai vauriosta auttaa
@@ -446,21 +492,39 @@
               Avaa kartalla →
             </a>
           </div>
-
-          <!-- Karttaplaceholder -->
-          <a
-            class="map-placeholder"
-            href="https://maps.google.com/?q=Kapteeninkatu+5,+00140+Helsinki"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Avaa sijainti Google Mapsissa (avautuu uudessa välilehdessä)"
-          >
-            <svg class="map-placeholder__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <p class="map-placeholder__name">Pesosenpuoti</p>
-            <p class="map-placeholder__addr">Kapteeninkatu 5, Helsinki</p>
-            <span class="map-placeholder__cta">Avaa Google Mapsissa →</span>
-          </a>
         </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       TERVETULOA TELAKALLE — kartta + kipparin sitaatti
+       ================================================================ -->
+  <section class="telakalle" id="telakalle" aria-labelledby="telakalle-heading">
+    <div class="telakalle__map">
+      <iframe
+        src="https://maps.google.com/?q=Kapteeninkatu+5,+00140+Helsinki&output=embed"
+        title="Pesosenpuoti kartalla — Kapteeninkatu 5, Helsinki"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        aria-label="Kartta: Pesosenpuoti, Kapteeninkatu 5, Helsinki"
+      ></iframe>
+    </div>
+
+    <div class="container">
+      <div class="telakalle__inner">
+        <h2 id="telakalle-heading" class="fade-in">Tervetuloa telakalle</h2>
+
+        <div class="telakalle__quote fade-in">
+          <div class="telakalle__avatar" aria-hidden="true">TP</div>
+          <blockquote class="telakalle__card">
+            <span class="telakalle__mark" aria-hidden="true">&ldquo;</span>
+            <p class="telakalle__text">Korjauspalvelumme on vedenpitävä.</p>
+            <footer class="telakalle__author">
+              Tuomo Pesonen <span>— Pesosenpuoti</span>
+            </footer>
+          </blockquote>
+        </div>
       </div>
     </div>
   </section>
