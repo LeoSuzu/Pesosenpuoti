@@ -417,9 +417,9 @@ p {
 .hero__image {
   position: absolute;
   inset: 0;
-  background-image: url('Inspiration_Photos/Screenshot%202026-08-05%20at%2013.23.54.png');
+  background-image: url('images/hero-purjevene.jpg');
   background-size: cover;
-  background-position: center 35%;
+  background-position: center 45%;
   opacity: 0.52;
 }
 
