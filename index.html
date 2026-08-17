@@ -89,15 +89,9 @@
     <div class="hero__image" role="img" aria-label="Näkymä mereltä, vene vesillä suomalaisessa saaristossa"></div>
 
     <div class="hero__content">
-      <span class="hero__eyebrow">Venekorjaamo · Helsinki</span>
-      <h1 class="hero__heading">
-        Veneen jäljet kertovat tarinaa&nbsp;—
-        me pidämme sen vesillä.
-      </h1>
-      <p class="hero__sub">
-        Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt
-        ja asiantunteva arviointi pääkaupunkiseudulla.
-      </p>
+      <span class="hero__eyebrow" data-content="hero.eyebrow">Venekorjaamo · Helsinki</span>
+      <h1 class="hero__heading" data-content="hero.heading">Veneen jäljet kertovat tarinaa&nbsp;— me pidämme sen vesillä.</h1>
+      <p class="hero__sub" data-content="hero.sub">Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt ja asiantunteva arviointi pääkaupunkiseudulla.</p>
       <div class="hero__cta">
         <a href="#yhteystiedot" class="btn-primary">Kysy arviota →</a>
         <a href="tel:+358503120488" class="btn-ghost">050&nbsp;312&nbsp;0488</a>
@@ -120,15 +114,15 @@
 
       <div class="palvelut__rows">
         <!-- Korjaukset -->
-        <article class="palvelut__row fade-in" style="--i:0">
+        <article class="palvelut__row fade-in" style="--i:0" data-service-id="korjaukset">
           <div class="palvelu-card palvelu-card--service">
             <div class="palvelu-card__icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 34h48l-6 12H16zM18 34V21h28v13M16 27h32"/><path d="m45 13 6 6-12 12-6-6 12-12zM31 27l-5 5"/></svg>
             </div>
             <div class="palvelu-card__num" aria-hidden="true">01</div>
             <h3>Veneiden korjaukset</h3>
-            <p>Puuveneet, lasikuitu ja purjeveneet käsiemme kautta.</p>
-            <ul class="palvelu-card__list" aria-label="Esimerkkejä korjauksista">
+            <p data-content="lead">Puuveneet, lasikuitu ja purjeveneet käsiemme kautta.</p>
+            <ul class="palvelu-card__list" aria-label="Esimerkkejä korjauksista" data-content="items">
               <li>Puuosien korjaukset ja pintakäsittelyt</li>
               <li>Epoksityöt, pinnoitukset, tiikkien vaihdot</li>
               <li>Myrkkymaalien poistot</li>
@@ -139,8 +133,8 @@
           </div>
           <figure class="palvelu-photo">
             <img
-              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.11.00.png"
-              alt="Käsi levittää öljyä siveltimellä veneen tiikkikannelle"
+              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.11.00.png" data-content="image" data-content-attr="src"
+              alt="Käsi levittää öljyä siveltimellä veneen tiikkikannelle" data-content="imageAlt" data-content-attr="alt"
               loading="lazy"
               decoding="async"
             >
@@ -148,15 +142,15 @@
         </article>
 
         <!-- Huollot -->
-        <article class="palvelut__row fade-in" style="--i:1">
+        <article class="palvelut__row fade-in" style="--i:1" data-service-id="huollot">
           <div class="palvelu-card palvelu-card--service">
             <div class="palvelu-card__icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40h33l-5 10H15zM15 40V27h18v13"/><path d="M47 20v-5m0 34v-5m10-12h-5m-10 0h-5m12-9 5-5m-14 28 5-5m9 0 5 5m-14-28 5 5"/><circle cx="47" cy="32" r="10"/></svg>
             </div>
             <div class="palvelu-card__num" aria-hidden="true">02</div>
             <h3>Kausi- ja perushuollot</h3>
-            <p>Vene valmiina joka kauteen — kevät ja syksy.</p>
-            <ul class="palvelu-card__list" aria-label="Esimerkkejä huolloista">
+            <p data-content="lead">Vene valmiina joka kauteen — kevät ja syksy.</p>
+            <ul class="palvelu-card__list" aria-label="Esimerkkejä huolloista" data-content="items">
               <li>Kevät- ja syyshuollot</li>
               <li>Pesu ja puhdistus</li>
               <li>Tankkien puhdistukset (polttoaine ja vesi)</li>
@@ -167,8 +161,8 @@
           </div>
           <figure class="palvelu-photo">
             <img
-              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.16.29.png"
-              alt="Purjevene aamuauringossa tyynellä vedellä, valmiina kauteen"
+              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.16.29.png" data-content="image" data-content-attr="src"
+              alt="Purjevene aamuauringossa tyynellä vedellä, valmiina kauteen" data-content="imageAlt" data-content-attr="alt"
               loading="lazy"
               decoding="async"
             >
@@ -176,15 +170,15 @@
         </article>
 
         <!-- Erikoistyöt -->
-        <article class="palvelut__row fade-in" style="--i:2">
+        <article class="palvelut__row fade-in" style="--i:2" data-service-id="erikoistyot">
           <div class="palvelu-card palvelu-card--service">
             <div class="palvelu-card__icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m27 13 3 7 7 3-7 3-3 7-3-7-7-3 7-3zM44 31l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="m16 50 19-19 7 7-19 19H16zM40 20l4-4 7 7-4 4"/></svg>
             </div>
             <div class="palvelu-card__num" aria-hidden="true">03</div>
             <h3>Erikoistyöt</h3>
-            <p>Sähköt, rigaus, konsultointi ja materiaalit.</p>
-            <ul class="palvelu-card__list" aria-label="Esimerkkejä erikoistöistä">
+            <p data-content="lead">Sähköt, rigaus, konsultointi ja materiaalit.</p>
+            <ul class="palvelu-card__list" aria-label="Esimerkkejä erikoistöistä" data-content="items">
               <li>Venesähköt, akkujen vaihdot, sähkökaaviot</li>
               <li>Aurinkopaneelitekniikka ja Li-ion-järjestelmät</li>
               <li>Purjeveneiden rigaus</li>
@@ -195,8 +189,8 @@
           </div>
           <figure class="palvelu-photo">
             <img
-              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.12.21.png"
-              alt="Veistämön sisätila täynnä puuveneitä ja työkaluja"
+              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.12.21.png" data-content="image" data-content-attr="src"
+              alt="Veistämön sisätila täynnä puuveneitä ja työkaluja" data-content="imageAlt" data-content-attr="alt"
               loading="lazy"
               decoding="async"
             >
@@ -204,15 +198,15 @@
         </article>
 
         <!-- Arviointi -->
-        <article class="palvelut__row fade-in" style="--i:3">
+        <article class="palvelut__row fade-in" style="--i:3" data-service-id="arviointi">
           <div class="palvelu-card palvelu-card--service">
             <div class="palvelu-card__icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h44v31H31L20 52v-9h-10z"/><path d="M25 24c0-4 4-6 8-6 5 0 8 2 8 6 0 7-8 6-8 12m0 4h.01"/><path d="m43 47 4 4 8-9"/></svg>
             </div>
             <div class="palvelu-card__num" aria-hidden="true">04</div>
             <h3>Arviointi ja konsultointi</h3>
-            <p>Epäselvä vaurio tai iso projekti? Tuomo katsoo tilanteen ensin.</p>
-            <ul class="palvelu-card__list" aria-label="Esimerkkejä arvioinnista">
+            <p data-content="lead">Epäselvä vaurio tai iso projekti? Tuomo katsoo tilanteen ensin.</p>
+            <ul class="palvelu-card__list" aria-label="Esimerkkejä arvioinnista" data-content="items">
               <li>Ilmainen puhelinarviointi</li>
               <li>Paikan päällä käynti sopimuksen mukaan</li>
               <li>Kirjallinen kustannusarvio</li>
@@ -223,8 +217,8 @@
           </div>
           <figure class="palvelu-photo">
             <img
-              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.15.35.png"
-              alt="Puuvene rannassa piknik-varusteineen, tyyni järvimaisema"
+              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.15.35.png" data-content="image" data-content-attr="src"
+              alt="Puuvene rannassa piknik-varusteineen, tyyni järvimaisema" data-content="imageAlt" data-content-attr="alt"
               loading="lazy"
               decoding="async"
             >
@@ -240,31 +234,31 @@
   <section class="galleria" id="tyon-jalki" aria-labelledby="galleria-heading">
     <div class="container">
       <header class="galleria__header">
-        <h2 id="galleria-heading" class="fade-in">Telakalla tapahtuu</h2>
+        <h2 id="galleria-heading" class="fade-in" data-content="gallery.heading">Telakalla tapahtuu</h2>
         <a href="#yhteystiedot" aria-label="Pyydä arviota omasta veneestäsi">Pyydä arviota →</a>
       </header>
 
       <div class="galleria__grid">
         <figure class="galleria__item fade-in" style="--i:0">
           <img
-            src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.11.43.png"
-            alt="Käsi siveltimellä veneen pintakäsittelyssä — huolellista työtä läheltä"
+            src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.11.43.png" data-content="gallery.photos.0.image" data-content-attr="src"
+            alt="Käsi siveltimellä veneen pintakäsittelyssä — huolellista työtä läheltä" data-content="gallery.photos.0.imageAlt" data-content-attr="alt"
             loading="lazy"
             decoding="async"
           >
         </figure>
         <figure class="galleria__item fade-in" style="--i:1">
           <img
-            src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.18.51.png"
-            alt="Purjeveneen kannelta, purjeet nostettuina, merimaisema taustalla"
+            src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.18.51.png" data-content="gallery.photos.1.image" data-content-attr="src"
+            alt="Purjeveneen kannelta, purjeet nostettuina, merimaisema taustalla" data-content="gallery.photos.1.imageAlt" data-content-attr="alt"
             loading="lazy"
             decoding="async"
           >
         </figure>
         <figure class="galleria__item fade-in" style="--i:2">
           <img
-            src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.20.27.png"
-            alt="Vene telakalla, runko korjausvalmiina"
+            src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.20.27.png" data-content="gallery.photos.2.image" data-content-attr="src"
+            alt="Vene telakalla, runko korjausvalmiina" data-content="gallery.photos.2.imageAlt" data-content-attr="alt"
             loading="lazy"
             decoding="async"
           >
@@ -279,31 +273,23 @@
   <section class="kausi" id="ajankohtaista" aria-labelledby="kausi-heading">
     <div class="container">
       <header class="kausi__header">
-        <h2 id="kausi-heading" class="fade-in">Kevät kuntoon, kesä vesille</h2>
-        <p class="fade-in">
+        <h2 id="kausi-heading" class="fade-in" data-content="seasonal.heading">Kevät kuntoon, kesä vesille</h2>
+        <p class="fade-in" data-content="seasonal.lead">
           Huoltokalenteri täyttyy nopeasti — ota yhteyttä hyvissä ajoin.
         </p>
       </header>
 
       <div class="kausi__grid">
         <article class="kausi-card fade-in">
-          <span class="kausi-card__season">Kevät</span>
-          <h3>Keväthuolto</h3>
-          <p>
-            Huhtikuu–toukokuu. Veneen pesut, pohjamaalaukset, moottorin
-            tarkistus ja vesillelasku. Varaa aika hyvissä ajoin — kalenteri
-            täyttyy nopeasti.
-          </p>
+          <span class="kausi-card__season" data-content="seasonal.cards.0.season">Kevät</span>
+          <h3 data-content="seasonal.cards.0.title">Keväthuolto</h3>
+          <p data-content="seasonal.cards.0.body">Huhtikuu–toukokuu. Veneen pesut, pohjamaalaukset, moottorin tarkistus ja vesillelasku. Varaa aika hyvissä ajoin — kalenteri täyttyy nopeasti.</p>
         </article>
 
         <article class="kausi-card fade-in">
-          <span class="kausi-card__season">Syksy</span>
-          <h3>Syyshuolto</h3>
-          <p>
-            Syyskuu–lokakuu. Talvisäilytyspesu, suojaus, moottorin talvettaminen
-            ja mahdolliset korjaukset talven aikana. Vene valmiina seuraavaan
-            kauteen.
-          </p>
+          <span class="kausi-card__season" data-content="seasonal.cards.1.season">Syksy</span>
+          <h3 data-content="seasonal.cards.1.title">Syyshuolto</h3>
+          <p data-content="seasonal.cards.1.body">Syyskuu–lokakuu. Talvisäilytyspesu, suojaus, moottorin talvettaminen ja mahdolliset korjaukset talven aikana. Vene valmiina seuraavaan kauteen.</p>
         </article>
       </div>
     </div>
@@ -319,16 +305,10 @@
           <div class="jaatelö__icon" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 41h46l-7 12H17zM14 41V29h23v12"/><path d="M42 17c0-5 8-5 8 0 0 5-8 5-8 10 0 5 8 5 8 0M46 37l6-10M41 37l5-10"/><path d="M13 58c7-4 14-4 21 0s14 4 21 0"/></svg>
           </div>
-          <span class="jaatelö__eyebrow">Tarina</span>
-          <h2 id="jaatelö-heading">Jäätelöä laineilla</h2>
-          <p>
-            Korjaamon ohella Pesosenpuodilla kulkee oma tarina — jäätelövene,
-            joka on yhtä paljon asenne kuin ajoneuvo. Se muistuttaa siitä,
-            miksi veneet ovat olemassa: elämyksiä varten.
-          </p>
-          <p>
-            Seuraa matkoja ja korjausprojekteja Facebookissa.
-          </p>
+          <span class="jaatelö__eyebrow" data-content="iceCreamBoat.eyebrow">Tarina</span>
+          <h2 id="jaatelö-heading" data-content="iceCreamBoat.heading">Jäätelöä laineilla</h2>
+          <p data-content="iceCreamBoat.paragraphs.0">Korjaamon ohella Pesosenpuodilla kulkee oma tarina — jäätelövene, joka on yhtä paljon asenne kuin ajoneuvo. Se muistuttaa siitä, miksi veneet ovat olemassa: elämyksiä varten.</p>
+          <p data-content="iceCreamBoat.paragraphs.1">Seuraa matkoja ja korjausprojekteja Facebookissa.</p>
           <a
             href="https://www.facebook.com/p/Pesosenpuoti-61576941811671/"
             class="btn-primary"
@@ -341,8 +321,8 @@
 
         <div class="jaatelö__image fade-in">
           <img
-            src="Inspiration_Photos/Screenshot%202026-08-05%20at%2015.49.31.png"
-            alt="Kesäinen tunnelmakuva vedeltä — saariston valoa ja rauhaa"
+            src="Inspiration_Photos/Screenshot%202026-08-05%20at%2015.49.31.png" data-content="iceCreamBoat.image" data-content-attr="src"
+            alt="Kesäinen tunnelmakuva vedeltä — saariston valoa ja rauhaa" data-content="iceCreamBoat.imageAlt" data-content-attr="alt"
             loading="lazy"
             decoding="async"
           >
@@ -357,12 +337,8 @@
   <section class="yhteystiedot" id="yhteystiedot" aria-labelledby="yhteystiedot-heading">
     <div class="container">
       <header class="yhteystiedot__header">
-        <h2 id="yhteystiedot-heading" class="fade-in">Kysy kipparilta arvio</h2>
-        <p class="yhteystiedot__intro fade-in">
-          Kerro veneestäsi ja työn tarpeesta — saat arvion siitä, miten
-          korjaus kannattaa toteuttaa. Kuva veneestä tai vauriosta auttaa
-          jo ensimmäisessä vastauksessa.
-        </p>
+        <h2 id="yhteystiedot-heading" class="fade-in" data-content="contact.heading">Kysy kipparilta arvio</h2>
+        <p class="yhteystiedot__intro fade-in" data-content="contact.intro">Kerro veneestäsi ja työn tarpeesta — saat arvion siitä, miten korjaus kannattaa toteuttaa. Kuva veneestä tai vauriosta auttaa jo ensimmäisessä vastauksessa.</p>
       </header>
 
       <div class="yhteystiedot__layout">
@@ -374,21 +350,21 @@
           aria-label="Yhteydenottolomake"
         >
           <div class="form-group">
-            <label for="nimi">Nimi <span class="req" aria-hidden="true">*</span></label>
+            <label for="nimi"><span data-content="form.nameLabel">Nimi</span> <span class="req" aria-hidden="true">*</span></label>
             <input
               type="text"
               id="nimi"
               name="nimi"
               required
               autocomplete="name"
-              placeholder="Matti Virtanen"
+              placeholder="Matti Virtanen" data-content="form.namePlaceholder" data-content-attr="placeholder"
               aria-required="true"
             >
           </div>
 
           <div class="form-group">
             <label for="yhteystieto">
-              Puhelin tai sähköposti <span class="req" aria-hidden="true">*</span>
+              <span data-content="form.contactLabel">Puhelin tai sähköposti</span> <span class="req" aria-hidden="true">*</span>
             </label>
             <input
               type="text"
@@ -396,37 +372,37 @@
               name="yhteystieto"
               required
               autocomplete="email"
-              placeholder="050 123 4567 tai matti@esimerkki.fi"
+              placeholder="050 123 4567 tai matti@esimerkki.fi" data-content="form.contactPlaceholder" data-content-attr="placeholder"
               aria-required="true"
             >
           </div>
 
           <div class="form-group">
-            <label for="vene">Veneen tyyppi, valmistaja ja malli</label>
+            <label for="vene" data-content="form.boatLabel">Veneen tyyppi, valmistaja ja malli</label>
             <input
               type="text"
               id="vene"
               name="vene"
-              placeholder="Esim. puuvene, Nordic 28, 1978"
+              placeholder="Esim. puuvene, Nordic 28, 1978" data-content="form.boatPlaceholder" data-content-attr="placeholder"
             >
           </div>
 
           <div class="form-group">
             <label for="kuvaus">
-              Kuvaus korjaus- tai huoltotarpeesta <span class="req" aria-hidden="true">*</span>
+              <span data-content="form.descriptionLabel">Kuvaus korjaus- tai huoltotarpeesta</span> <span class="req" aria-hidden="true">*</span>
             </label>
             <textarea
               id="kuvaus"
               name="kuvaus"
               required
               rows="5"
-              placeholder="Kerro mahdollisimman tarkasti: mikä on vialla, milloin se havaittiin, onko vene vesillä vai telakalla."
+              placeholder="Kerro mahdollisimman tarkasti: mikä on vialla, milloin se havaittiin, onko vene vesillä vai telakalla." data-content="form.descriptionPlaceholder" data-content-attr="placeholder"
               aria-required="true"
             ></textarea>
           </div>
 
           <div class="form-group">
-            <label for="kuvat">Kuvia veneestä tai vauriosta</label>
+            <label for="kuvat" data-content="form.photosLabel">Kuvia veneestä tai vauriosta</label>
             <input
               type="file"
               id="kuvat"
@@ -435,14 +411,10 @@
               accept="image/*"
               aria-describedby="kuvat-hint"
             >
-            <span class="form-hint" id="kuvat-hint">
-              Useita kuvia voi valita kerralla. Kuvat auttavat arvion laskennassa.
-            </span>
+            <span class="form-hint" id="kuvat-hint" data-content="form.photosHint">Useita kuvia voi valita kerralla. Kuvat auttavat arvion laskennassa.</span>
           </div>
 
-          <button type="submit" class="btn-primary form-submit">
-            Lähetä viesti →
-          </button>
+          <button type="submit" class="btn-primary form-submit" data-content="form.submitLabel">Lähetä viesti →</button>
         </form>
 
         <!-- Lomakkeen onnistumisviesti (piilotettu aluksi) -->
@@ -455,8 +427,8 @@
         >
           <span class="form-success__icon" aria-hidden="true">✓</span>
           <div>
-            <p><strong>Viesti lähetetty!</strong></p>
-            <p>Tuomo vastaa yleensä saman päivän aikana.</p>
+            <p><strong data-content="form.successHeading">Viesti lähetetty!</strong></p>
+            <p data-content="form.successText">Tuomo vastaa yleensä saman päivän aikana.</p>
           </div>
         </div>
 
@@ -467,21 +439,21 @@
           </div>
           <div class="info-block">
             <p class="info-block__label">Puhelin</p>
-            <a href="tel:+358503120488">050 312 0488</a>
+            <a href="tel:+358503120488" data-content="contact.phone">050 312 0488</a>
           </div>
           <div class="info-block">
             <p class="info-block__label">WhatsApp</p>
-            <a href="https://wa.me/358407246494">040 724 6494</a>
+            <a href="https://wa.me/358407246494" data-content="contact.whatsapp">040 724 6494</a>
           </div>
           <div class="info-block">
             <p class="info-block__label">Sähköposti</p>
-            <a href="mailto:tuomo.pesonen@gmail.com">tuomo.pesonen@gmail.com</a>
+            <a href="mailto:tuomo.pesonen@gmail.com" data-content="contact.email">tuomo.pesonen@gmail.com</a>
           </div>
           <div class="info-block">
             <p class="info-block__label">Osoite</p>
             <address>
-              Kapteeninkatu 5 D 55<br>
-              00140 Helsinki
+              <span data-content="contact.address.0">Kapteeninkatu 5 D 55</span><br>
+              <span data-content="contact.address.1">00140 Helsinki</span>
             </address>
             <a
               href="https://maps.google.com/?q=Kapteeninkatu+5,+00140+Helsinki"

@@ -5,6 +5,27 @@
   'use strict';
 
   /* ------------------------------------------------------------------ */
+  /* Editable public content — static HTML remains as the safe fallback */
+  /* ------------------------------------------------------------------ */
+  async function loadSiteContent() {
+    try {
+      const response = await fetch('/content/site.json');
+      if (!response.ok) throw new Error(`Content request failed: ${response.status}`);
+
+      const content = await response.json();
+      const { applySiteContent, validateSiteContent } = await import('/content/schema.js');
+      const validation = validateSiteContent(content);
+      if (!validation.valid) throw new Error(validation.issues.join('; '));
+
+      applySiteContent(document, content);
+    } catch (error) {
+      console.warn('Editable site content was not loaded; using static HTML.', error);
+    }
+  }
+
+  loadSiteContent();
+
+  /* ------------------------------------------------------------------ */
   /* Sticky navbar — add .scrolled when hero bottom passes viewport top  */
   /* ------------------------------------------------------------------ */
   const navbar = document.getElementById('navbar');
