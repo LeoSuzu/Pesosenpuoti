@@ -2,14 +2,38 @@ import { responseResult } from './http.js';
 
 const GITHUB_API_URL = 'https://api.github.com';
 
-function encodedPath(path) {
-  return path.split('/').map(segment => encodeURIComponent(segment)).join('/');
+function isSafeSegment(segment) {
+  if (!segment || segment === '.' || segment === '..' || segment.includes('\\')) return false;
+
+  let decoded = segment;
+  for (let depth = 0; decoded.includes('%') && depth < 8; depth += 1) {
+    try {
+      decoded = decodeURIComponent(decoded);
+    } catch {
+      return false;
+    }
+    if (decoded === '.' || decoded === '..' || decoded.includes('/') || decoded.includes('\\')) return false;
+  }
+
+  return !decoded.includes('%');
+}
+
+function repositorySegments(value) {
+  if (typeof value !== 'string' || !value || value.startsWith('/') || value.endsWith('/') || value.includes('\\')) return null;
+
+  const segments = value.split('/');
+  return segments.every(isSafeSegment) ? segments : null;
 }
 
 function repositoryUrl(env, path) {
-  const repository = env.GITHUB_REPO;
+  const repository = repositorySegments(env.GITHUB_REPO);
   const branch = env.GITHUB_BRANCH;
-  return `${GITHUB_API_URL}/repos/${repository}/contents/${encodedPath(path)}?ref=${encodeURIComponent(branch)}`;
+  const filePath = repositorySegments(path);
+  if (!repository || repository.length !== 2 || !filePath || typeof branch !== 'string' || !branch) return null;
+
+  const encodedRepository = repository.map(segment => encodeURIComponent(segment)).join('/');
+  const encodedPath = filePath.map(segment => encodeURIComponent(segment)).join('/');
+  return `${GITHUB_API_URL}/repos/${encodedRepository}/contents/${encodedPath}?ref=${encodeURIComponent(branch)}`;
 }
 
 function githubHeaders(env) {
@@ -28,8 +52,11 @@ function base64Encode(content) {
 }
 
 async function requestGitHub(env, path, options) {
+  const url = repositoryUrl(env, path);
+  if (!url) return { status: 400, data: { message: 'Invalid GitHub repository path' } };
+
   try {
-    const response = await fetch(repositoryUrl(env, path), options);
+    const response = await fetch(url, options);
     return responseResult(response);
   } catch {
     return { status: 502, data: { message: 'GitHub request failed' } };

@@ -73,7 +73,7 @@ export async function isSessionValid(value, secret, now = Date.now()) {
   if (parts.length !== 3 || parts[0] !== 'v1' || !/^\d+$/.test(parts[1])) return false;
 
   const expiresAt = Number(parts[1]);
-  if (!Number.isSafeInteger(expiresAt) || now > expiresAt) return false;
+  if (!Number.isSafeInteger(expiresAt) || now >= expiresAt) return false;
 
   const receivedSignature = base64UrlToBytes(parts[2]);
   if (!receivedSignature) return false;
