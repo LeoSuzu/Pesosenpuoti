@@ -543,9 +543,7 @@ p {
   padding: 2.25rem 2rem;
   position: relative;
   overflow: hidden;
-  transition:
-    box-shadow var(--dur-mid) var(--ease-out-quart),
-    transform var(--dur-mid) var(--ease-out-quart);
+  transition: box-shadow var(--dur-mid) var(--ease-out-quart);
 }
 
 .palvelu-card--service {
@@ -564,10 +562,6 @@ p {
   background: var(--color-brand);
   opacity: 0;
   transition: opacity var(--dur-mid);
-}
-
-.palvelu-card:hover {
-  transform: translateY(-3px);
 }
 
 .palvelu-card:hover::before {
