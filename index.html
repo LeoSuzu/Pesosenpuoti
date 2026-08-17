@@ -14,6 +14,14 @@
 
   <link rel="icon" href="web-elements/logos/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
+
+  <!-- Scroll fade-ins start at opacity 0 and are revealed by main.js. Without
+       JS that would leave most of the page invisible, so opt out entirely. -->
+  <noscript>
+    <style>
+      .fade-in { opacity: 1 !important; transform: none !important; }
+    </style>
+  </noscript>
 </head>
 <body>
 
@@ -94,6 +102,9 @@
         Veneen jäljet kertovat tarinaa&nbsp;—
         me pidämme sen vesillä.
       </h1>
+      <p class="hero__slogan">
+        Emme voi muuttaa tuulen suuntaa, mutta voimme säätää purjeita.
+      </p>
       <p class="hero__sub">
         Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt
         ja asiantunteva arviointi pääkaupunkiseudulla.
@@ -138,12 +149,15 @@
             <a href="#yhteystiedot" class="palvelu-card__link">Kysy tästä →</a>
           </div>
           <figure class="palvelu-photo">
-            <img
-              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.11.00.png"
-              alt="Käsi levittää öljyä siveltimellä veneen tiikkikannelle"
-              loading="lazy"
-              decoding="async"
-            >
+            <div class="image-frame">
+              <img
+                src="images/tyo-tiikkikansi.jpg"
+                alt="Käsi levittää öljyä siveltimellä veneen tiikkikannelle"
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+            <figcaption>Tiikkikannen öljyäminen käsityönä</figcaption>
           </figure>
         </article>
 
@@ -166,12 +180,15 @@
             <a href="#yhteystiedot" class="palvelu-card__link">Kysy tästä →</a>
           </div>
           <figure class="palvelu-photo">
-            <img
-              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.16.29.png"
-              alt="Purjevene aamuauringossa tyynellä vedellä, valmiina kauteen"
-              loading="lazy"
-              decoding="async"
-            >
+            <div class="image-frame">
+              <img
+                src="images/purjevene-aamu.jpg"
+                alt="Purjevene aamuauringossa tyynellä vedellä, valmiina kauteen"
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+            <figcaption>Kausihuollettu vene aamun tyynellä</figcaption>
           </figure>
         </article>
 
@@ -194,12 +211,15 @@
             <a href="#yhteystiedot" class="palvelu-card__link">Kysy tästä →</a>
           </div>
           <figure class="palvelu-photo">
-            <img
-              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.12.21.png"
-              alt="Veistämön sisätila täynnä puuveneitä ja työkaluja"
-              loading="lazy"
-              decoding="async"
-            >
+            <div class="image-frame">
+              <img
+                src="images/merimaisema.jpg"
+                alt="Purjevene merellä täysin purjein, rigaus kunnossa"
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+            <figcaption>Rigaus ja sähköt kohdalleen — vene vesillä</figcaption>
           </figure>
         </article>
 
@@ -222,12 +242,15 @@
             <a href="#yhteystiedot" class="palvelu-card__link">Kysy tästä →</a>
           </div>
           <figure class="palvelu-photo">
-            <img
-              src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.15.35.png"
-              alt="Puuvene rannassa piknik-varusteineen, tyyni järvimaisema"
-              loading="lazy"
-              decoding="async"
-            >
+            <div class="image-frame">
+              <img
+                src="images/saaristo-tunnelma.jpg"
+                alt="Puinen purjevene saaristossa auringonlaskun aikaan"
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+            <figcaption>Arvio ensin — sitten huoletonta purjehdusta</figcaption>
           </figure>
         </article>
       </div>
@@ -246,28 +269,48 @@
 
       <div class="galleria__grid">
         <figure class="galleria__item fade-in" style="--i:0">
-          <img
-            src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.11.43.png"
-            alt="Käsi siveltimellä veneen pintakäsittelyssä — huolellista työtä läheltä"
-            loading="lazy"
-            decoding="async"
-          >
+          <div class="image-frame">
+            <img
+              src="images/telakka-tyomaa.jpg"
+              alt="Purjeveneen kansi purettuna telakalla, työkalut levällään kannella"
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
+          <figcaption>Kansi auki — tiikkikannen uusinta käynnissä</figcaption>
         </figure>
         <figure class="galleria__item fade-in" style="--i:1">
-          <img
-            src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.18.51.png"
-            alt="Purjeveneen kannelta, purjeet nostettuina, merimaisema taustalla"
-            loading="lazy"
-            decoding="async"
-          >
+          <div class="image-frame">
+            <img
+              src="images/tyo-pintakasittely.jpg"
+              alt="Veneen rungon halkeamaa tutkitaan valolla ennen lasikuitukorjausta"
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
+          <figcaption>Vauriokartoitus ennen lasikuitukorjausta</figcaption>
         </figure>
         <figure class="galleria__item fade-in" style="--i:2">
-          <img
-            src="Inspiration_Photos/Screenshot%202026-08-05%20at%2013.20.27.png"
-            alt="Vene telakalla, runko korjausvalmiina"
-            loading="lazy"
-            decoding="async"
-          >
+          <div class="image-frame">
+            <img
+              src="images/tyo-tiikkikansi.jpg"
+              alt="Tiikkikannen öljyäminen siveltimellä, saumat puhdistettuina"
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
+          <figcaption>Tiikin öljyäminen ja saumojen huolto</figcaption>
+        </figure>
+        <figure class="galleria__item fade-in" style="--i:3">
+          <div class="image-frame">
+            <img
+              src="images/veistamo-sisatila.jpg"
+              alt="Veistämön sisätila, puuveneitä pukeilla ja työkaluja seinustalla"
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
+          <figcaption>Puuveneet talven yli veistämön suojissa</figcaption>
         </figure>
       </div>
     </div>
@@ -340,12 +383,14 @@
         </div>
 
         <div class="jaatelö__image fade-in">
-          <img
-            src="Inspiration_Photos/Screenshot%202026-08-05%20at%2015.49.31.png"
-            alt="Kesäinen tunnelmakuva vedeltä — saariston valoa ja rauhaa"
-            loading="lazy"
-            decoding="async"
-          >
+          <div class="image-frame">
+            <img
+              src="images/puuvene-rannassa.jpg"
+              alt="Puinen kanootti rannassa herkkuineen — kesäinen tunnelma vedellä"
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
         </div>
       </div>
     </div>
