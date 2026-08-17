@@ -365,6 +365,14 @@ p {
 }
 
 /* Mobile menu */
+
+/* Same trap as .form-success: this display declaration outranks the UA rule
+   behind [hidden], so without this the menu hangs open under the navbar and
+   the hamburger toggle has no visible effect. */
+.navbar__mobile[hidden] {
+  display: none;
+}
+
 .navbar__mobile {
   display: flex;
   flex-direction: column;
