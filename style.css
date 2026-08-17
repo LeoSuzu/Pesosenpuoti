@@ -200,9 +200,11 @@ p {
 }
 
 /* --- Scroll fade-in animation --------------------------------------- */
+/* Visible by default. The hidden start state applies only under .js-reveal,
+   which the inline head script adds when JS can actually undo it — so a failed
+   script, a blocked script, or a renderer that never fires the observer shows
+   the content rather than a blank section. */
 .fade-in {
-  opacity: 0;
-  transform: translateY(20px);
   transition:
     opacity var(--dur-slow) var(--ease-out-quart),
     transform var(--dur-slow) var(--ease-out-quart);
@@ -210,9 +212,9 @@ p {
   transition-delay: calc(var(--i, 0) * 90ms);
 }
 
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
+.js-reveal .fade-in:not(.visible) {
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -577,10 +579,14 @@ p {
   background: var(--color-rule);
 }
 
+/* Focal point per photo, same convention as the Marjo Seki site: a tall source
+   cropped to a landscape frame loses its subject to a centred crop, so the
+   figure can nudge the crop with --image-position-x / -y. */
 .image-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: var(--image-position-x, 50%) var(--image-position-y, 50%);
   display: block;
   transition: transform 560ms var(--ease-out-quart);
 }
@@ -689,18 +695,6 @@ p {
 
 .palvelu-card__link:hover {
   color: var(--color-navy);
-}
-
-.palvelu-card__num {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 2.8rem;
-  color: var(--color-brand);
-  opacity: 0.18;
-  line-height: 1;
-  margin-bottom: 1.25rem;
-  letter-spacing: -0.04em;
-  user-select: none;
 }
 
 .palvelu-card h3 {
@@ -1278,10 +1272,12 @@ p {
 }
 
 /* --- Palvelu card icon ---------------------------------------------- */
+/* The icon is now the card's only visual anchor above the heading — the 01/02
+   numerals that used to carry this gap are gone — so it holds the spacing. */
 .palvelu-card__icon {
-  width: 2.75rem;
-  height: 2.75rem;
-  margin-bottom: 1rem;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1.5rem;
   color: var(--color-brand);
 }
 
