@@ -94,9 +94,12 @@
   /* ------------------------------------------------------------------ */
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  const revealAll = () =>
+    document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+
   if (reducedMotion) {
     /* Show everything immediately — CSS also handles this but belt+braces */
-    document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+    revealAll();
   } else {
     const observer = new IntersectionObserver(
       entries => {
@@ -111,6 +114,12 @@
     );
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    /* Safety net: the hidden state is only ever meant to be momentary. If the
+       observer hasn't fired by now — background tab, screenshot renderer, an
+       error higher up the file — drop the gate rather than ship blank
+       sections. Anything already revealed is unaffected. */
+    window.setTimeout(revealAll, 3000);
   }
 
   /* ------------------------------------------------------------------ */

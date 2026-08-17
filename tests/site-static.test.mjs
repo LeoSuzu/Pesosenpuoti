@@ -5,6 +5,7 @@ import test from 'node:test';
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 const css = await readFile(new URL('../style.css', import.meta.url), 'utf8');
 const main = await readFile(new URL('../main.js', import.meta.url), 'utf8');
+const buildScript = await readFile(new URL('../build-dist.sh', import.meta.url), 'utf8');
 const content = JSON.parse(await readFile(new URL('../content/site.json', import.meta.url), 'utf8'));
 
 test('static fallback image sources match editable uploaded images', () => {
@@ -42,6 +43,12 @@ test('admin provides a local demo login and editing controls for text and photos
   assert.match(adminScript, /pp-demo-content/);
   assert.match(main, /pp-demo-content/);
   assert.match(html, /href="admin\/"[^>]*>Muokkaa sivustoa</);
+});
+
+test('Cloudflare build output includes the editor and every editable public asset', () => {
+  assert.match(buildScript, /cp -R admin dist\/admin/);
+  assert.match(buildScript, /cp content\/site\.json content\/schema\.js dist\/content\//);
+  assert.match(buildScript, /cp -R assets\/uploads\/images dist\/assets\/uploads\/images/);
 });
 
 test('services use four alternating image-and-copy repair rows in the expected order', () => {

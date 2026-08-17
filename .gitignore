@@ -19,5 +19,8 @@ docx_qa/
 docs/
 .worktrees/
 
+# Cloudflare Pages deploy payload, assembled by build-dist.sh
+dist/
+
 # Claude.ai local files
 .claude/
