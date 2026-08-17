@@ -51,7 +51,7 @@ test('Cloudflare build output includes the editor and every editable public asse
   assert.match(buildScript, /cp -R assets\/uploads\/images dist\/assets\/uploads\/images/);
 });
 
-test('services use four alternating image-and-copy repair rows in the expected order', () => {
+test('services use four uniform card-over-photo repair rows in the expected order', () => {
   const section = html.match(/<section class="palvelut"[\s\S]*?<\/section>/)?.[0] ?? '';
   const titles = [...section.matchAll(/<h3>([^<]+)<\/h3>/g)].map((match) => match[1]);
   assert.deepEqual(titles, [
@@ -61,16 +61,28 @@ test('services use four alternating image-and-copy repair rows in the expected o
     'Arviointi ja konsultointi',
   ]);
   assert.equal((section.match(/class="palvelu-card palvelu-card--service"/g) ?? []).length, 4);
-  assert.match(css, /\.palvelut__row\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0, 1fr\) minmax\(0, 1fr\)/);
-  assert.match(css, /\.palvelut__row:nth-child\(even\)[\s\S]*?\.palvelu-photo[\s\S]*?order:\s*-1/);
-  assert.match(css, /aspect-ratio:\s*4\s*\/\s*3/);
-  assert.doesNotMatch(css, /palvelut__row \.palvelu-card[\s\S]*margin-right:\s*clamp\(-/);
+  assert.match(css, /\.palvelut__row\s*\{[\s\S]*?min-height:\s*var\(--service-row-height\)/);
+  assert.match(css, /\.palvelu-photo\s*\{[\s\S]*?width:\s*70%[\s\S]*?height:\s*var\(--service-row-height\)/);
+  assert.match(css, /\.palvelu-card--service\s*\{[\s\S]*?position:\s*absolute[\s\S]*?top:\s*10px/);
+  assert.doesNotMatch(css, /palvelut__row:nth-child\(even\)/);
 });
 
 test('service rows and gallery mosaic collapse without overlap on mobile', () => {
   const serviceCss = css.match(/\/\* --- Palvelut[\s\S]*?(?=\/\* ---|$)/)?.[0] ?? '';
-  assert.match(serviceCss, /@media \(max-width: 720px\)[\s\S]*?\.palvelut__row[\s\S]*?grid-template-columns:\s*1fr/);
+  assert.match(serviceCss, /@media \(max-width: 720px\)[\s\S]*?\.palvelut__row[\s\S]*?flex-direction:\s*column/);
+  assert.match(serviceCss, /@media \(max-width: 720px\)[\s\S]*?\.palvelu-card--service[\s\S]*?position:\s*relative/);
   assert.doesNotMatch(serviceCss, /translateY\(/);
   assert.match(css, /\.galleria__grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
   assert.equal((html.match(/class="galleria__note/g) ?? []).length, 3);
+});
+
+test('the editor has a visible contact-area button and the hero waves are visibly animated', async () => {
+  const wave = await readFile(new URL('../wave.js', import.meta.url), 'utf8');
+
+  assert.match(html, /class="editor-link" href="admin\/"/);
+  assert.match(css, /\.hero__canvas\s*\{[\s\S]*?z-index:\s*1/);
+  assert.match(css, /\.hero__image\s*\{[\s\S]*?z-index:\s*0/);
+  assert.match(wave, /speed:\s*0\.0001/);
+  assert.match(wave, /speed:\s*0\.00016/);
+  assert.match(wave, /speed:\s*0\.00022/);
 });

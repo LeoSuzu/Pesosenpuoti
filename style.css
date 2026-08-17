@@ -411,12 +411,14 @@ p {
   inset: 0;
   width: 100%;
   height: 100%;
+  z-index: 1;
   pointer-events: none;
 }
 
 .hero__image {
   position: absolute;
   inset: 0;
+  z-index: 0;
   opacity: 0.52;
   overflow: hidden;
 }
@@ -506,39 +508,27 @@ p {
   font-size: 1.05rem;
 }
 
-/* Offset repair stories — inspired by the supplied workshop reference */
+/* One consistent repair-story composition: card starts 10px below photo top. */
 .palvelut__rows {
   display: flex;
   flex-direction: column;
-  gap: clamp(2.75rem, 6vw, 5rem);
+  gap: clamp(2.5rem, 5vw, 4rem);
 }
 
 .palvelut__row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
+  --service-row-height: clamp(27rem, 44vw, 35rem);
   position: relative;
-}
-
-.palvelut__row .palvelu-photo {
-  grid-column: 2;
-  grid-row: 1;
-  margin-left: clamp(-3rem, -6vw, -1.5rem);
-  aspect-ratio: 4 / 3.15;
-  border-radius: 0;
-}
-
-.palvelut__row:nth-child(even) .palvelu-photo {
-  grid-column: 1;
-  order: -1;
-  margin-left: 0;
-  margin-right: clamp(-3rem, -6vw, -1.5rem);
+  display: flex;
+  align-items: flex-start;
+  min-height: var(--service-row-height);
 }
 
 .palvelu-photo {
-  border-radius: var(--radius-lg);
+  width: 70%;
+  height: var(--service-row-height);
+  margin-left: auto;
+  border-radius: 0;
   overflow: hidden;
-  aspect-ratio: 4 / 3;
   box-shadow: var(--shadow-card);
 }
 
@@ -553,9 +543,21 @@ p {
 }
 
 @media (max-width: 720px) {
-  .palvelut__row { grid-template-columns: 1fr; gap: 0; }
-  .palvelut__row .palvelu-photo,
-  .palvelut__row:nth-child(even) .palvelu-photo { grid-column: 1; grid-row: 1; margin: 0; }
+  .palvelut__rows { gap: 2rem; }
+
+  .palvelut__row {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .palvelu-photo {
+    order: -1;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    margin: 0;
+  }
 }
 
 /* Cards: no icon-above-h3 — use bold number as visual anchor */
@@ -567,11 +569,25 @@ p {
 }
 
 .palvelu-card--service {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  z-index: 2;
+  width: min(52%, 34rem);
   padding: 2.25rem 2rem;
   background: var(--color-bg);
   border-radius: 0;
   box-shadow: var(--shadow-card-hover);
-  z-index: 1;
+}
+
+@media (max-width: 720px) {
+  .palvelu-card--service {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: calc(100% - 2rem);
+    margin: -1rem 1rem 0;
+  }
 }
 
 .palvelu-card::before {
@@ -1213,6 +1229,28 @@ p {
 .yhteystiedot__logo img {
   max-width: 160px;
   height: auto;
+}
+
+.editor-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-bottom: 1.25rem;
+  padding: 0.7rem 1rem;
+  background: var(--color-navy);
+  color: var(--color-white);
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-align: center;
+  border-radius: var(--radius-sm);
+  transition: background var(--dur-fast), transform var(--dur-fast);
+}
+
+.editor-link:hover {
+  background: var(--color-brand);
+  transform: translateY(-1px);
 }
 
 /* --- Tervetuloa telakalle — map + quote ------------------------------ */

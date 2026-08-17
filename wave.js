@@ -17,11 +17,11 @@
   /* Three wave layers — subtle depth through speed and opacity variance */
   const waves = [
     /* Slow deep ground swell */
-    { speed: 0.0000010, amplitude: 42, freq: 0.0048, phase: 0.8,  alpha: 0.90, yFrac: 0.96 },
+    { speed: 0.0001,  amplitude: 42, freq: 0.0048, phase: 0.8,  alpha: 0.90, yFrac: 0.96 },
     /* Mid layer — slight chop */
-    { speed: 0.0000018, amplitude: 32, freq: 0.0078, phase: 2.4,  alpha: 0.40, yFrac: 0.80 },
+    { speed: 0.00016, amplitude: 32, freq: 0.0078, phase: 2.4,  alpha: 0.40, yFrac: 0.80 },
     /* Surface shimmer */
-    { speed: 0.0000025, amplitude: 28, freq: 0.0118, phase: 4.9,  alpha: 0.20, yFrac: 0.84 },
+    { speed: 0.00022, amplitude: 28, freq: 0.0118, phase: 4.9,  alpha: 0.20, yFrac: 0.84 },
   ];
 
   /* Wave fill colour lives in style.css as --color-wave ("r g b"), with a
