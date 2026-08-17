@@ -45,7 +45,7 @@ function githubHeaders(env) {
 }
 
 function base64Encode(content) {
-  const bytes = new TextEncoder().encode(content);
+  const bytes = content instanceof Uint8Array ? content : new TextEncoder().encode(content);
   let binary = '';
   for (const byte of bytes) binary += String.fromCharCode(byte);
   return btoa(binary);
