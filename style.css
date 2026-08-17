@@ -454,6 +454,35 @@ p {
   animation: hero-rise 800ms var(--ease-out-quart) 240ms both;
 }
 
+/* Slogan sits between the headline and the service summary: a quiet, ruled
+   aside so it reads as a motto rather than a second headline competing
+   with the h1 above it. */
+.hero__slogan {
+  position: relative;
+  padding-left: 1.1rem;
+  margin-bottom: 1.5rem;
+  max-width: 34ch;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--color-white);
+  animation: hero-rise 750ms var(--ease-out-quart) 320ms both;
+}
+
+.hero__slogan::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  bottom: 0.15em;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--color-amber);
+}
+
 .hero__sub {
   color: oklch(0.850 0.015 228);
   font-size: clamp(1rem, 1.6vw, 1.2rem);
@@ -474,6 +503,7 @@ p {
 @media (prefers-reduced-motion: reduce) {
   .hero__eyebrow,
   .hero__heading,
+  .hero__slogan,
   .hero__sub,
   .hero__cta {
     animation: none;
@@ -536,24 +566,69 @@ p {
   transform: translateY(-1.75rem);
 }
 
-.palvelu-photo {
-  border-radius: var(--radius-lg);
+/* Shared photo treatment (matching the Marjo Seki site): a padded, tinted
+   frame holding a rounded inner crop, with the caption outside the crop.
+   The frame does the framing, .image-frame does the cropping — keeping the
+   two jobs apart is what lets one rule set serve every photo on the page. */
+.image-frame {
+  position: relative;
   overflow: hidden;
-  aspect-ratio: 4 / 3.1;
-  box-shadow: var(--shadow-card);
+  border-radius: calc(var(--radius-lg) - 6px);
+  background: var(--color-rule);
 }
 
-.palvelu-photo img {
+.image-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 560ms var(--ease-out-quart);
+}
+
+.palvelu-photo {
+  margin: 0;
+  padding: 0.7rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    160deg,
+    oklch(0.560 0.105 228 / 0.16),
+    oklch(75.303% 0.12323 75.343 / 0.14)
+  );
+  border: 1px solid var(--color-rule);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--dur-mid) var(--ease-out-quart);
+}
+
+.palvelu-photo .image-frame {
+  aspect-ratio: 4 / 3.1;
+}
+
+.palvelu-photo:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.palvelu-photo:hover img {
+  transform: scale(1.04);
+}
+
+.palvelu-photo figcaption {
+  margin-top: 0.65rem;
+  padding: 0 0.15rem 0.1rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--color-brand);
 }
 
 @media (max-width: 860px) {
+  /* align-items:center is what centres the card against the photo on wide
+     screens, but once the row stacks it stops the children stretching, so
+     they size to their text and run off the side of the phone. */
   .palvelut__row,
   .palvelut__row--reverse {
     flex-direction: column;
+    align-items: stretch;
     gap: 1.5rem;
   }
   .palvelut__row .palvelu-card,
@@ -691,62 +766,68 @@ p {
   color: var(--color-navy);
 }
 
+/* Even 2×2 grid rather than the old asymmetric 3-up: the shop photos are a
+   mix of portrait and landscape, and a uniform crop is the only layout that
+   treats all of them fairly. Captions carry the story instead. */
 .galleria__grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: auto auto;
-  gap: 1rem;
-}
-
-/* Asymmetric layout — big left, two stacked right */
-.galleria__item:nth-child(1) {
-  grid-column: 1 / 8;
-  grid-row: 1 / 3;
-}
-
-.galleria__item:nth-child(2) {
-  grid-column: 8 / 13;
-  grid-row: 1 / 2;
-}
-
-.galleria__item:nth-child(3) {
-  grid-column: 8 / 13;
-  grid-row: 2 / 3;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1rem, 2.2vw, 1.75rem);
 }
 
 .galleria__item {
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  min-height: 200px;
-  background: var(--color-rule); /* placeholder while image loads */
+  margin: 0;
+  padding: 0.7rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    160deg,
+    oklch(0.560 0.105 228 / 0.16),
+    oklch(75.303% 0.12323 75.343 / 0.14)
+  );
+  border: 1px solid var(--color-rule);
+  box-shadow: var(--shadow-card);
+  transition:
+    transform var(--dur-mid) var(--ease-out-quart),
+    box-shadow var(--dur-mid) var(--ease-out-quart);
 }
 
-.galleria__item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition:
-    transform 560ms var(--ease-out-quart),
-    filter 400ms var(--ease-out-quart);
+.galleria__item .image-frame {
+  aspect-ratio: 4 / 3;
+}
+
+.galleria__item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .galleria__item:hover img {
-  transform: scale(1.04);
-  filter: brightness(0.85) saturate(1.1);
+  transform: scale(1.05);
+}
+
+.galleria__item figcaption {
+  margin-top: 0.7rem;
+  padding: 0 0.15rem 0.1rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--color-brand);
 }
 
 @media (max-width: 640px) {
   .galleria__grid {
     grid-template-columns: 1fr;
-    grid-template-rows: auto;
   }
-  .galleria__item:nth-child(1),
-  .galleria__item:nth-child(2),
-  .galleria__item:nth-child(3) {
-    grid-column: 1 / -1;
-    grid-row: auto;
-    min-height: 240px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galleria__item,
+  .galleria__item:hover,
+  .image-frame img,
+  .palvelu-photo:hover img,
+  .galleria__item:hover img {
+    transform: none;
+    transition: none;
   }
 }
 
@@ -862,6 +943,14 @@ p {
   overflow: hidden;
   aspect-ratio: 4 / 3;
   box-shadow: 0 20px 60px oklch(0.100 0.040 235 / 0.5);
+}
+
+/* The photo is wrapped in the shared .image-frame crop, so the frame — not
+   the img — is what has to fill the section's fixed 4/3 box. */
+.jaatelö__image .image-frame {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
 }
 
 .jaatelö__image img {
@@ -994,6 +1083,13 @@ p {
 .form-submit {
   align-self: flex-start;
   margin-top: 0.5rem;
+}
+
+/* An author `display` declaration outranks the UA rule behind the [hidden]
+   attribute, so without this the confirmation renders on page load — before
+   anyone has submitted anything. */
+.form-success[hidden] {
+  display: none;
 }
 
 .form-success {
