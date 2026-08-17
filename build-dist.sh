@@ -12,8 +12,8 @@ cd "$(dirname "$0")"
 rm -rf dist
 mkdir -p dist
 
-# Page + behaviour + Cloudflare header rules
-cp index.html style.css main.js wave.js _headers dist/
+# Page + behaviour + Cloudflare header rules + crawler files
+cp index.html style.css main.js wave.js _headers robots.txt sitemap.xml dist/
 
 # Photography
 cp -R images dist/images

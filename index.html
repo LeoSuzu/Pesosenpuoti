@@ -7,6 +7,99 @@
   <meta name="theme-color" content="#0d1f38">
   <title>Pesosenpuoti — Venekorjaamo Helsinki</title>
 
+  <!-- Absolute URLs below point at the pages.dev host. If a custom domain
+       (esim. pesosenpuoti.fi) is taken into use, update the canonical, the
+       og:url/og:image pair, the sitemap and the JSON-LD url/image together. -->
+  <link rel="canonical" href="https://pesosenpuoti.pages.dev/">
+
+  <!-- Open Graph — the Facebook page is the shop's main channel, so a shared
+       link needs to carry its own title, blurb and photo. -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Pesosenpuoti">
+  <meta property="og:locale" content="fi_FI">
+  <meta property="og:url" content="https://pesosenpuoti.pages.dev/">
+  <meta property="og:title" content="Pesosenpuoti — Venekorjaamo Helsinki">
+  <meta property="og:description" content="Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt ja asiantunteva arviointi pääkaupunkiseudulla.">
+  <meta property="og:image" content="https://pesosenpuoti.pages.dev/images/og-pesosenpuoti.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Purjevene vesillä kesäisessä saaristossa">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pesosenpuoti — Venekorjaamo Helsinki">
+  <meta name="twitter:description" content="Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt ja asiantunteva arviointi pääkaupunkiseudulla.">
+  <meta name="twitter:image" content="https://pesosenpuoti.pages.dev/images/og-pesosenpuoti.jpg">
+
+  <!-- LocalBusiness data: this is a one-location trade business, so the address
+       and phone are the ranking-relevant facts. Opening hours, geo coordinates
+       and price range are deliberately absent rather than guessed — wrong
+       structured data is worse than none. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Pesosenpuoti",
+    "description": "Venekorjaamo Helsingissä. Puuveneet, lasikuitu ja purjeveneet, kausihuollot, erikoistyöt ja asiantunteva arviointi pääkaupunkiseudulla.",
+    "url": "https://pesosenpuoti.pages.dev/",
+    "image": "https://pesosenpuoti.pages.dev/images/og-pesosenpuoti.jpg",
+    "telephone": "+358503120488",
+    "email": "tuomo.pesonen@gmail.com",
+    "taxID": "3354350-3",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Kapteeninkatu 5 D 55",
+      "postalCode": "00140",
+      "addressLocality": "Helsinki",
+      "addressCountry": "FI"
+    },
+    "areaServed": {
+      "@type": "Place",
+      "name": "Pääkaupunkiseutu"
+    },
+    "sameAs": [
+      "https://www.facebook.com/p/Pesosenpuoti-61576941811671/"
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Palvelut",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Veneiden korjaukset",
+            "description": "Puuosien korjaukset ja pintakäsittelyt, epoksityöt, tiikkien vaihdot, myrkkymaalien poistot, lasikuitukorjaukset ja kölipultit."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Kausi- ja perushuollot",
+            "description": "Kevät- ja syyshuollot, pesut, tankkien puhdistukset, vesillelasku ja telakointi sekä kylmälaitehuollot."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Erikoistyöt",
+            "description": "Venesähköt, akkujen vaihdot, aurinkopaneelitekniikka ja Li-ion-järjestelmät, purjeveneiden rigaus ja laitevuokraus."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Arviointi ja konsultointi",
+            "description": "Ilmainen puhelinarviointi, käynti paikan päällä, kirjallinen kustannusarvio ja materiaalivalinnat."
+          }
+        }
+      ]
+    }
+  }
+  </script>
+
   <!-- Fonts: Barlow 500, 600, 700 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,13 +108,16 @@
   <link rel="icon" href="web-elements/logos/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
 
-  <!-- Scroll fade-ins start at opacity 0 and are revealed by main.js. Without
-       JS that would leave most of the page invisible, so opt out entirely. -->
-  <noscript>
-    <style>
-      .fade-in { opacity: 1 !important; transform: none !important; }
-    </style>
-  </noscript>
+  <!-- The reveal is an enhancement, never a gate: the page is fully visible by
+       default and only opts into the hidden start state when JS is actually
+       able to reveal it again. Inline and in <head> so the opt-in lands before
+       first paint rather than flashing content in and back out. -->
+  <script>
+    if ('IntersectionObserver' in window &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('js-reveal');
+    }
+  </script>
 </head>
 <body>
 
@@ -136,7 +232,6 @@
             <div class="palvelu-card__icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 34h48l-6 12H16zM18 34V21h28v13M16 27h32"/><path d="m45 13 6 6-12 12-6-6 12-12zM31 27l-5 5"/></svg>
             </div>
-            <div class="palvelu-card__num" aria-hidden="true">01</div>
             <h3>Veneiden korjaukset</h3>
             <p>Puuveneet, lasikuitu ja purjeveneet käsiemme kautta.</p>
             <ul class="palvelu-card__list" aria-label="Esimerkkejä korjauksista">
@@ -151,13 +246,13 @@
           <figure class="palvelu-photo">
             <div class="image-frame">
               <img
-                src="images/tyo-tiikkikansi.jpg"
-                alt="Käsi levittää öljyä siveltimellä veneen tiikkikannelle"
+                src="images/tyo-puurunko.jpg"
+                alt="Puuveneen runkoa korjataan telakkapukkien päällä"
                 loading="lazy"
                 decoding="async"
               >
             </div>
-            <figcaption>Tiikkikannen öljyäminen käsityönä</figcaption>
+            <figcaption>Puurungon korjaus pukkien päällä</figcaption>
           </figure>
         </article>
 
@@ -167,7 +262,6 @@
             <div class="palvelu-card__icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40h33l-5 10H15zM15 40V27h18v13"/><path d="M47 20v-5m0 34v-5m10-12h-5m-10 0h-5m12-9 5-5m-14 28 5-5m9 0 5 5m-14-28 5 5"/><circle cx="47" cy="32" r="10"/></svg>
             </div>
-            <div class="palvelu-card__num" aria-hidden="true">02</div>
             <h3>Kausi- ja perushuollot</h3>
             <p>Vene valmiina joka kauteen — kevät ja syksy.</p>
             <ul class="palvelu-card__list" aria-label="Esimerkkejä huolloista">
@@ -182,13 +276,13 @@
           <figure class="palvelu-photo">
             <div class="image-frame">
               <img
-                src="images/purjevene-aamu.jpg"
-                alt="Purjevene aamuauringossa tyynellä vedellä, valmiina kauteen"
+                src="images/tyo-pohjamaalaus.jpg"
+                alt="Tuoreeltaan pohjamaalattu veneen runko telakkapukeilla"
                 loading="lazy"
                 decoding="async"
               >
             </div>
-            <figcaption>Kausihuollettu vene aamun tyynellä</figcaption>
+            <figcaption>Pohjamaalaus ennen vesillelaskua</figcaption>
           </figure>
         </article>
 
@@ -198,7 +292,6 @@
             <div class="palvelu-card__icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m27 13 3 7 7 3-7 3-3 7-3-7-7-3 7-3zM44 31l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="m16 50 19-19 7 7-19 19H16zM40 20l4-4 7 7-4 4"/></svg>
             </div>
-            <div class="palvelu-card__num" aria-hidden="true">03</div>
             <h3>Erikoistyöt</h3>
             <p>Sähköt, rigaus, konsultointi ja materiaalit.</p>
             <ul class="palvelu-card__list" aria-label="Esimerkkejä erikoistöistä">
@@ -210,16 +303,16 @@
             </ul>
             <a href="#yhteystiedot" class="palvelu-card__link">Kysy tästä →</a>
           </div>
-          <figure class="palvelu-photo">
+          <figure class="palvelu-photo" style="--image-position-y:64%">
             <div class="image-frame">
               <img
-                src="images/merimaisema.jpg"
-                alt="Purjevene merellä täysin purjein, rigaus kunnossa"
+                src="images/tyo-rigaus.jpg"
+                alt="Kiipeilyvaljaissa oleva asentaja työskentelee purjeveneen maston huipulla"
                 loading="lazy"
                 decoding="async"
               >
             </div>
-            <figcaption>Rigaus ja sähköt kohdalleen — vene vesillä</figcaption>
+            <figcaption>Maston yläpää tarkastetaan valjaissa</figcaption>
           </figure>
         </article>
 
@@ -229,7 +322,6 @@
             <div class="palvelu-card__icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h44v31H31L20 52v-9h-10z"/><path d="M25 24c0-4 4-6 8-6 5 0 8 2 8 6 0 7-8 6-8 12m0 4h.01"/><path d="m43 47 4 4 8-9"/></svg>
             </div>
-            <div class="palvelu-card__num" aria-hidden="true">04</div>
             <h3>Arviointi ja konsultointi</h3>
             <p>Epäselvä vaurio tai iso projekti? Tuomo katsoo tilanteen ensin.</p>
             <ul class="palvelu-card__list" aria-label="Esimerkkejä arvioinnista">
@@ -244,13 +336,13 @@
           <figure class="palvelu-photo">
             <div class="image-frame">
               <img
-                src="images/saaristo-tunnelma.jpg"
-                alt="Puinen purjevene saaristossa auringonlaskun aikaan"
+                src="images/tyo-pintakasittely.jpg"
+                alt="Rungon halkeamaa tutkitaan valolla vauriokartoituksessa"
                 loading="lazy"
                 decoding="async"
               >
             </div>
-            <figcaption>Arvio ensin — sitten huoletonta purjehdusta</figcaption>
+            <figcaption>Vaurio valaistaan ja mitataan ennen arviota</figcaption>
           </figure>
         </article>
       </div>
@@ -282,13 +374,13 @@
         <figure class="galleria__item fade-in" style="--i:1">
           <div class="image-frame">
             <img
-              src="images/tyo-pintakasittely.jpg"
-              alt="Veneen rungon halkeamaa tutkitaan valolla ennen lasikuitukorjausta"
+              src="images/telakka-purjevene.jpg"
+              alt="Puinen purjevene telakkapukeilla, runko odottamassa huoltoa"
               loading="lazy"
               decoding="async"
             >
           </div>
-          <figcaption>Vauriokartoitus ennen lasikuitukorjausta</figcaption>
+          <figcaption>Puupurjevene pukeilla, pohja odottaa huoltoa</figcaption>
         </figure>
         <figure class="galleria__item fade-in" style="--i:2">
           <div class="image-frame">
