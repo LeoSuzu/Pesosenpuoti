@@ -499,47 +499,31 @@ p {
   font-size: 1.05rem;
 }
 
-/* Alternating overlapping card + photo rows */
+/* Uniform service card grid */
 .palvelut__rows {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(3rem, 7vw, 5.5rem);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.25rem);
 }
 
 .palvelut__row {
-  display: flex;
-  align-items: center;
-}
-
-.palvelut__row--reverse {
-  flex-direction: row-reverse;
-}
-
-.palvelut__row .palvelu-card {
-  flex: 0 1 460px;
-  z-index: 2;
-  margin-right: clamp(-3rem, -6vw, -1.5rem);
-}
-
-.palvelut__row--reverse .palvelu-card {
-  margin-right: 0;
-  margin-left: clamp(-3rem, -6vw, -1.5rem);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .palvelut__row .palvelu-photo {
-  flex: 1 1 55%;
-  z-index: 1;
-  transform: translateY(1.75rem);
-}
-
-.palvelut__row--reverse .palvelu-photo {
-  transform: translateY(-1.75rem);
+  order: -1;
+  aspect-ratio: 4 / 3;
 }
 
 .palvelu-photo {
   border-radius: var(--radius-lg);
   overflow: hidden;
-  aspect-ratio: 4 / 3.1;
+  aspect-ratio: 4 / 3;
   box-shadow: var(--shadow-card);
 }
 
@@ -550,36 +534,24 @@ p {
   display: block;
 }
 
-@media (max-width: 860px) {
-  .palvelut__row,
-  .palvelut__row--reverse {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  .palvelut__row .palvelu-card,
-  .palvelut__row--reverse .palvelu-card {
-    flex: 1 1 auto;
-    margin: 0;
-  }
-  .palvelut__row .palvelu-photo,
-  .palvelut__row--reverse .palvelu-photo {
-    flex: 1 1 auto;
-    width: 100%;
-    transform: none;
-  }
+@media (max-width: 720px) {
+  .palvelut__rows { grid-template-columns: 1fr; }
 }
 
 /* Cards: no icon-above-h3 — use bold number as visual anchor */
 .palvelu-card {
-  background: var(--color-bg);
-  border-radius: var(--radius-md);
   padding: 2.25rem 2rem;
   position: relative;
   overflow: hidden;
-  box-shadow: var(--shadow-card-hover);
   transition:
     box-shadow var(--dur-mid) var(--ease-out-quart),
     transform var(--dur-mid) var(--ease-out-quart);
+}
+
+.palvelu-card--service {
+  padding: 2.25rem 2rem;
+  box-shadow: none;
+  border-radius: 0;
 }
 
 .palvelu-card::before {
