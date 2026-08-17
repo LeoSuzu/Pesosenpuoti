@@ -499,25 +499,33 @@ p {
   font-size: 1.05rem;
 }
 
-/* Uniform service card grid */
+/* Offset repair stories — inspired by the supplied workshop reference */
 .palvelut__rows {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(1.5rem, 3vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.75rem, 6vw, 5rem);
 }
 
 .palvelut__row {
   display: grid;
-  grid-template-rows: auto 1fr;
-  overflow: hidden;
-  background: var(--color-bg);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card-hover);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  position: relative;
 }
 
 .palvelut__row .palvelu-photo {
+  grid-column: 2;
+  grid-row: 1;
+  margin-left: clamp(-3rem, -6vw, -1.5rem);
+  aspect-ratio: 4 / 3.15;
+  border-radius: 0;
+}
+
+.palvelut__row:nth-child(even) .palvelu-photo {
+  grid-column: 1;
   order: -1;
-  aspect-ratio: 4 / 3;
+  margin-left: 0;
+  margin-right: clamp(-3rem, -6vw, -1.5rem);
 }
 
 .palvelu-photo {
@@ -535,7 +543,9 @@ p {
 }
 
 @media (max-width: 720px) {
-  .palvelut__rows { grid-template-columns: 1fr; }
+  .palvelut__row { grid-template-columns: 1fr; gap: 0; }
+  .palvelut__row .palvelu-photo,
+  .palvelut__row:nth-child(even) .palvelu-photo { grid-column: 1; grid-row: 1; margin: 0; }
 }
 
 /* Cards: no icon-above-h3 — use bold number as visual anchor */
@@ -548,8 +558,10 @@ p {
 
 .palvelu-card--service {
   padding: 2.25rem 2rem;
-  box-shadow: none;
+  background: var(--color-bg);
   border-radius: 0;
+  box-shadow: var(--shadow-card-hover);
+  z-index: 1;
 }
 
 .palvelu-card::before {
@@ -659,31 +671,17 @@ p {
 
 .galleria__grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: auto auto;
-  gap: 1rem;
-}
-
-/* Asymmetric layout — big left, two stacked right */
-.galleria__item:nth-child(1) {
-  grid-column: 1 / 8;
-  grid-row: 1 / 3;
-}
-
-.galleria__item:nth-child(2) {
-  grid-column: 8 / 13;
-  grid-row: 1 / 2;
-}
-
-.galleria__item:nth-child(3) {
-  grid-column: 8 / 13;
-  grid-row: 2 / 3;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(10rem, 1fr));
+  gap: 0;
+  background: var(--color-navy);
+  padding: clamp(0.75rem, 2vw, 1.25rem);
 }
 
 .galleria__item {
-  border-radius: var(--radius-md);
+  border-radius: 0;
   overflow: hidden;
-  min-height: 200px;
+  min-height: 0;
   background: var(--color-rule); /* placeholder while image loads */
 }
 
@@ -702,10 +700,26 @@ p {
   filter: brightness(0.85) saturate(1.1);
 }
 
+.galleria__note {
+  display: grid;
+  place-items: center;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  background: var(--color-bg);
+  color: var(--color-navy);
+  font-family: var(--font-heading);
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+  max-width: none;
+}
+
 @media (max-width: 640px) {
   .galleria__grid {
     grid-template-columns: 1fr;
-    grid-template-rows: auto;
+    grid-template-rows: none;
+    gap: 1px;
+    padding: 1px;
   }
   .galleria__item:nth-child(1),
   .galleria__item:nth-child(2),
