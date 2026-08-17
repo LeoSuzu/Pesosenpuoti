@@ -6,6 +6,37 @@ const formFields = [
 ];
 const imagePathPattern = /^(?!.*(?:^|\/)\.\.?\/)[A-Za-z0-9][A-Za-z0-9._%/-]*\.(?:avif|gif|jpe?g|png|svg|webp)$/i;
 
+export const contentTargetManifest = Object.freeze({
+  root: Object.freeze([
+    { path: 'hero.image', style: 'backgroundImage', alt: 'hero.imageAlt' },
+    { path: 'hero.eyebrow' }, { path: 'hero.heading' }, { path: 'hero.sub' }, { path: 'contact.phone' },
+    { path: 'gallery.heading' },
+    { path: 'gallery.photos.0.image', attribute: 'src' }, { path: 'gallery.photos.0.imageAlt', attribute: 'alt' },
+    { path: 'gallery.photos.1.image', attribute: 'src' }, { path: 'gallery.photos.1.imageAlt', attribute: 'alt' },
+    { path: 'gallery.photos.2.image', attribute: 'src' }, { path: 'gallery.photos.2.imageAlt', attribute: 'alt' },
+    { path: 'seasonal.heading' }, { path: 'seasonal.lead' },
+    { path: 'seasonal.cards.0.season' }, { path: 'seasonal.cards.0.title' }, { path: 'seasonal.cards.0.body' },
+    { path: 'seasonal.cards.1.season' }, { path: 'seasonal.cards.1.title' }, { path: 'seasonal.cards.1.body' },
+    { path: 'iceCreamBoat.eyebrow' }, { path: 'iceCreamBoat.heading' },
+    { path: 'iceCreamBoat.paragraphs.0' }, { path: 'iceCreamBoat.paragraphs.1' },
+    { path: 'iceCreamBoat.image', attribute: 'src' }, { path: 'iceCreamBoat.imageAlt', attribute: 'alt' },
+    { path: 'contact.heading' }, { path: 'contact.intro' }, { path: 'contact.phone' },
+    { path: 'contact.whatsapp' }, { path: 'contact.email' }, { path: 'contact.address.0' }, { path: 'contact.address.1' },
+    { path: 'form.nameLabel' }, { path: 'form.namePlaceholder', attribute: 'placeholder' },
+    { path: 'form.contactLabel' }, { path: 'form.contactPlaceholder', attribute: 'placeholder' },
+    { path: 'form.boatLabel' }, { path: 'form.boatPlaceholder', attribute: 'placeholder' },
+    { path: 'form.descriptionLabel' }, { path: 'form.descriptionPlaceholder', attribute: 'placeholder' },
+    { path: 'form.photosLabel' }, { path: 'form.photosHint' }, { path: 'form.submitLabel' },
+    { path: 'form.successHeading' }, { path: 'form.successText' },
+  ]),
+  service: Object.freeze([
+    { path: 'title', selector: '.palvelu-card h3' },
+    { path: 'lead' }, { path: 'items' }, { path: 'image', attribute: 'src' }, { path: 'imageAlt', attribute: 'alt' },
+  ]),
+  address: Object.freeze(['footer', 'map']),
+  actions: Object.freeze({ phone: 2, whatsapp: 1, email: 1, 'map-link': 1, 'map-frame': 1 }),
+});
+
 function isObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
@@ -41,7 +72,8 @@ function nonEmptyStringArray(value, path, issues) {
 
 function imagePath(value, path, issues) {
   requiredString(value, path, issues);
-  if (typeof value === 'string' && value.trim() !== '' && !imagePathPattern.test(value)) {
+  if (typeof value === 'string' && value.trim() !== '' &&
+      (!imagePathPattern.test(value) || /%(?!20)/i.test(value))) {
     issues.push(`${path} must be a local image path`);
   }
 }
@@ -185,24 +217,74 @@ function applyContactActions(root, contact) {
   });
 }
 
-export function applySiteContent(root, content) {
-  if (!validateSiteContent(content).valid) return;
+function targetSignature(target) {
+  return JSON.stringify({
+    path: target.dataset.content,
+    attribute: target.dataset.contentAttr ?? null,
+    style: target.dataset.contentStyle ?? null,
+    alt: target.dataset.contentAlt ?? null,
+  });
+}
+
+function manifestSignature(target) {
+  return JSON.stringify({
+    path: target.path,
+    attribute: target.attribute ?? null,
+    style: target.style ?? null,
+    alt: target.alt ?? null,
+  });
+}
+
+function hasExactTargets(targets, manifest) {
+  return targets.length === manifest.length &&
+    targets.map(targetSignature).sort().join('\n') === manifest.map(manifestSignature).sort().join('\n');
+}
+
+function hasExactActionTargets(root) {
+  const counts = [...root.querySelectorAll('[data-contact-action]')].reduce((current, target) => {
+    const action = target.dataset.contactAction;
+    current[action] = (current[action] ?? 0) + 1;
+    return current;
+  }, {});
+  return Object.keys(counts).length === Object.keys(contentTargetManifest.actions).length &&
+    Object.entries(contentTargetManifest.actions).every(([action, count]) => counts[action] === count);
+}
+
+function canApplySiteContent(root) {
+  const rootTargets = [...root.querySelectorAll('[data-content]')].filter(target => !target.closest('[data-service-id]'));
+  if (!hasExactTargets(rootTargets, contentTargetManifest.root)) return false;
+
+  const addressTargets = [...root.querySelectorAll('[data-address-target]')].map(target => target.dataset.addressTarget).sort();
+  if (addressTargets.join('\n') !== [...contentTargetManifest.address].sort().join('\n')) return false;
 
   const templates = [...root.querySelectorAll('[data-service-id]')];
-  const templatesMatch = templates.length === serviceIds.length && templates.every((template, index) =>
-    template.dataset.serviceId === serviceIds[index] && template.querySelector('.palvelu-card h3'),
-  );
-  if (!templatesMatch) return;
+  const templatesMatch = templates.length === serviceIds.length && templates.every((template, index) => {
+    const titleTargets = template.querySelectorAll(contentTargetManifest.service[0].selector);
+    if (template.dataset.serviceId !== serviceIds[index] || titleTargets.length !== 1) return false;
+    return hasExactTargets([...template.querySelectorAll('[data-content]')], contentTargetManifest.service.slice(1));
+  });
+  return templatesMatch && hasExactActionTargets(root);
+}
 
-  const actionCounts = [...root.querySelectorAll('[data-contact-action]')].reduce((counts, target) => {
-    counts[target.dataset.contactAction] = (counts[target.dataset.contactAction] ?? 0) + 1;
-    return counts;
-  }, {});
-  if (actionCounts.phone !== 2 || actionCounts.whatsapp !== 1 || actionCounts.email !== 1 ||
-      actionCounts['map-link'] !== 1 || actionCounts['map-frame'] !== 1) return;
+function applyAddressTargets(root, contact) {
+  const address = contact.address.join(', ');
+  root.querySelectorAll('[data-address-target]').forEach(target => {
+    if (target.dataset.addressTarget === 'footer') target.textContent = address;
+    else {
+      target.setAttribute('title', `Pesosenpuoti kartalla — ${address}`);
+      target.setAttribute('aria-label', `Kartta: Pesosenpuoti, ${address}`);
+    }
+  });
+}
+
+export function applySiteContent(root, content) {
+  if (!validateSiteContent(content).valid) return;
+  if (!canApplySiteContent(root)) return;
 
   const document = root.ownerDocument || root;
   if (!document?.createElement) return;
+
+  const templates = [...root.querySelectorAll('[data-service-id]')];
 
   root.querySelectorAll('[data-content]').forEach(target => {
     if (!target.closest('[data-service-id]')) applyTarget(target, content, document);
@@ -213,4 +295,5 @@ export function applySiteContent(root, content) {
     template.querySelectorAll('[data-content]').forEach(target => applyTarget(target, service, document));
   });
   applyContactActions(root, content.contact);
+  applyAddressTargets(root, content.contact);
 }
