@@ -2,7 +2,9 @@
   "hero": {
     "eyebrow": "Venekorjaamo · Helsinki",
     "heading": "Veneen jäljet kertovat tarinaa — me pidämme sen vesillä.",
-    "sub": "Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt ja asiantunteva arviointi pääkaupunkiseudulla."
+    "sub": "Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt ja asiantunteva arviointi pääkaupunkiseudulla.",
+    "image": "images/hero-purjevene.jpg",
+    "imageAlt": "Näkymä mereltä, vene vesillä suomalaisessa saaristossa"
   },
   "services": [
     {
@@ -51,7 +53,8 @@
     "lead": "Huoltokalenteri täyttyy nopeasti — ota yhteyttä hyvissä ajoin.",
     "cards": [
       { "season": "Kevät", "title": "Keväthuolto", "body": "Huhtikuu–toukokuu. Veneen pesut, pohjamaalaukset, moottorin tarkistus ja vesillelasku. Varaa aika hyvissä ajoin — kalenteri täyttyy nopeasti." },
-      { "season": "Syksy", "title": "Syyshuolto", "body": "Syyskuu–lokakuu. Talvisäilytyspesu, suojaus, moottorin talvettaminen ja mahdolliset korjaukset talven aikana. Vene valmiina seuraavaan kauteen." }
+      { "season": "Syksy", "title": "Syyshuolto", "body": "Syyskuu–lokakuu. Talvisäilytyspesu, suojaus, moottorin talvettaminen ja mahdolliset korjaukset talven aikana. Vene valmiina seuraavaan kauteen." },
+      { "season": "Talvi", "title": "Talvihuolto", "body": "Marraskuu–maaliskuu. Korjaukset, pintakäsittelyt ja kunnostukset tehdään valmiiksi seuraavaa veneilykautta varten." }
     ]
   },
   "iceCreamBoat": {
@@ -67,7 +70,7 @@
     "phone": "050 312 0488",
     "whatsapp": "040 724 6494",
     "email": "tuomo.pesonen@gmail.com",
-    "address": ["Kapteeninkatu 5 D 55", "00140 Helsinki"]
+    "address": ["Kapteeninkatu 5 D 55", "00140 Helsinki", "Suomi"]
   },
   "form": {
     "nameLabel": "Nimi",

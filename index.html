@@ -86,7 +86,15 @@
        ================================================================ -->
   <section class="hero" aria-label="Pesosenpuoti venekorjaamo">
     <canvas class="hero__canvas" id="wave-canvas" aria-hidden="true"></canvas>
-    <div class="hero__image" role="img" aria-label="Näkymä mereltä, vene vesillä suomalaisessa saaristossa"></div>
+    <div
+      class="hero__image"
+      role="img"
+      aria-label="Näkymä mereltä, vene vesillä suomalaisessa saaristossa"
+      data-content="hero.image"
+      data-content-style="backgroundImage"
+      data-content-alt="hero.imageAlt"
+      data-hero-alt-target="true"
+    ></div>
 
     <div class="hero__content">
       <span class="hero__eyebrow" data-content="hero.eyebrow">Venekorjaamo · Helsinki</span>
@@ -94,7 +102,7 @@
       <p class="hero__sub" data-content="hero.sub">Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt ja asiantunteva arviointi pääkaupunkiseudulla.</p>
       <div class="hero__cta">
         <a href="#yhteystiedot" class="btn-primary">Kysy arviota →</a>
-        <a href="tel:+358503120488" class="btn-ghost">050&nbsp;312&nbsp;0488</a>
+        <a href="tel:+358503120488" class="btn-ghost" data-content="contact.phone" data-contact-action="phone">050&nbsp;312&nbsp;0488</a>
       </div>
     </div>
   </section>
@@ -291,6 +299,12 @@
           <h3 data-content="seasonal.cards.1.title">Syyshuolto</h3>
           <p data-content="seasonal.cards.1.body">Syyskuu–lokakuu. Talvisäilytyspesu, suojaus, moottorin talvettaminen ja mahdolliset korjaukset talven aikana. Vene valmiina seuraavaan kauteen.</p>
         </article>
+
+        <article class="kausi-card fade-in">
+          <span class="kausi-card__season" data-content="seasonal.cards.2.season">Talvi</span>
+          <h3 data-content="seasonal.cards.2.title">Talvihuolto</h3>
+          <p data-content="seasonal.cards.2.body">Marraskuu–maaliskuu. Korjaukset, pintakäsittelyt ja kunnostukset tehdään valmiiksi seuraavaa veneilykautta varten.</p>
+        </article>
       </div>
     </div>
   </section>
@@ -439,27 +453,29 @@
           </div>
           <div class="info-block">
             <p class="info-block__label">Puhelin</p>
-            <a href="tel:+358503120488" data-content="contact.phone">050 312 0488</a>
+            <a href="tel:+358503120488" data-content="contact.phone" data-contact-action="phone">050 312 0488</a>
           </div>
           <div class="info-block">
             <p class="info-block__label">WhatsApp</p>
-            <a href="https://wa.me/358407246494" data-content="contact.whatsapp">040 724 6494</a>
+            <a href="https://wa.me/358407246494" data-content="contact.whatsapp" data-contact-action="whatsapp">040 724 6494</a>
           </div>
           <div class="info-block">
             <p class="info-block__label">Sähköposti</p>
-            <a href="mailto:tuomo.pesonen@gmail.com" data-content="contact.email">tuomo.pesonen@gmail.com</a>
+            <a href="mailto:tuomo.pesonen@gmail.com" data-content="contact.email" data-contact-action="email">tuomo.pesonen@gmail.com</a>
           </div>
           <div class="info-block">
             <p class="info-block__label">Osoite</p>
             <address>
               <span data-content="contact.address.0">Kapteeninkatu 5 D 55</span><br>
-              <span data-content="contact.address.1">00140 Helsinki</span>
+              <span data-content="contact.address.1">00140 Helsinki</span><br>
+              <span data-content="contact.address.2">Suomi</span>
             </address>
             <a
               href="https://maps.google.com/?q=Kapteeninkatu+5,+00140+Helsinki"
               target="_blank"
               rel="noopener noreferrer"
               class="map-link"
+              data-contact-action="map-link"
             >
               Avaa kartalla →
             </a>
@@ -476,6 +492,7 @@
     <div class="telakalle__map">
       <iframe
         src="https://maps.google.com/?q=Kapteeninkatu+5,+00140+Helsinki&output=embed"
+        data-contact-action="map-frame"
         title="Pesosenpuoti kartalla — Kapteeninkatu 5, Helsinki"
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
