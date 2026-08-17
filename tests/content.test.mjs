@@ -6,18 +6,19 @@ import { applySiteContent, contentTargetManifest, validateSiteContent } from '..
 const content = JSON.parse(await readFile(new URL('../content/site.json', import.meta.url), 'utf8'));
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 const rootTargetSpecs = [
-  ['hero.image', { style: 'backgroundImage', alt: 'hero.imageAlt' }],
+  ['hero.image', { attribute: 'src', alt: 'hero.imageAlt', settings: 'hero.imageSettings' }],
   ['hero.eyebrow'], ['hero.heading'], ['hero.sub'], ['contact.phone', { action: 'phone' }],
   ['gallery.heading'],
-  ['gallery.photos.0.image', { attribute: 'src' }], ['gallery.photos.0.imageAlt', { attribute: 'alt' }],
-  ['gallery.photos.1.image', { attribute: 'src' }], ['gallery.photos.1.imageAlt', { attribute: 'alt' }],
-  ['gallery.photos.2.image', { attribute: 'src' }], ['gallery.photos.2.imageAlt', { attribute: 'alt' }],
+  ['gallery.photos.0.image', { attribute: 'src', settings: 'gallery.photos.0.imageSettings' }], ['gallery.photos.0.imageAlt', { attribute: 'alt' }],
+  ['gallery.photos.1.image', { attribute: 'src', settings: 'gallery.photos.1.imageSettings' }], ['gallery.photos.1.imageAlt', { attribute: 'alt' }],
+  ['gallery.photos.2.image', { attribute: 'src', settings: 'gallery.photos.2.imageSettings' }], ['gallery.photos.2.imageAlt', { attribute: 'alt' }],
   ['seasonal.heading'], ['seasonal.lead'],
   ['seasonal.cards.0.season'], ['seasonal.cards.0.title'], ['seasonal.cards.0.body'],
   ['seasonal.cards.1.season'], ['seasonal.cards.1.title'], ['seasonal.cards.1.body'],
   ['iceCreamBoat.eyebrow'], ['iceCreamBoat.heading'],
   ['iceCreamBoat.paragraphs.0'], ['iceCreamBoat.paragraphs.1'],
-  ['iceCreamBoat.image', { attribute: 'src' }], ['iceCreamBoat.imageAlt', { attribute: 'alt' }],
+  ['iceCreamBoat.image', { attribute: 'src', settings: 'iceCreamBoat.imageSettings' }], ['iceCreamBoat.imageAlt', { attribute: 'alt' }],
+  ['welcome.image', { attribute: 'src', settings: 'welcome.imageSettings' }], ['welcome.imageAlt', { attribute: 'alt' }],
   ['contact.heading'], ['contact.intro'], ['contact.phone', { action: 'phone' }],
   ['contact.whatsapp', { action: 'whatsapp' }], ['contact.email', { action: 'email' }],
   ['contact.address.0'], ['contact.address.1'],
@@ -37,6 +38,19 @@ test('site content accepts the fixed public model and rejects a missing image al
     valid: false,
     issues: ['services[0].imageAlt is required'],
   });
+});
+
+test('every public photo has editable scale and crop-position settings', () => {
+  const expected = { imageScale: 100, imagePositionX: 50, imagePositionY: 50 };
+  const photos = [
+    content.hero,
+    ...content.services,
+    ...content.gallery.photos,
+    content.iceCreamBoat,
+    content.welcome,
+  ];
+
+  photos.forEach((photo) => assert.deepEqual(photo.imageSettings, expected));
 });
 
 test('site content preserves the original two seasonal cards and two address lines', () => {
@@ -91,7 +105,7 @@ test('content target manifest defines the complete fixed public target contract'
     'seasonal.cards.1.season', 'seasonal.cards.1.title', 'seasonal.cards.1.body',
     'iceCreamBoat.eyebrow', 'iceCreamBoat.heading',
     'iceCreamBoat.paragraphs.0', 'iceCreamBoat.paragraphs.1',
-    'iceCreamBoat.image', 'iceCreamBoat.imageAlt',
+    'iceCreamBoat.image', 'iceCreamBoat.imageAlt', 'welcome.image', 'welcome.imageAlt',
     'contact.heading', 'contact.intro', 'contact.phone', 'contact.whatsapp',
     'contact.email', 'contact.address.0', 'contact.address.1',
     'form.nameLabel', 'form.namePlaceholder', 'form.contactLabel',
@@ -128,7 +142,7 @@ test('static markup exposes the complete manifest with the production hero-alt t
     const actualCount = (html.match(new RegExp(`data-content="${path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`, 'g')) ?? []).length;
     assert.equal(actualCount, expectedCount, path);
   }
-  assert.match(html, /data-content="hero\.image"[\s\S]*data-content-style="backgroundImage"[\s\S]*data-content-alt="hero\.imageAlt"/);
+  assert.match(html, /data-content="hero\.image" data-content-attr="src"[\s\S]*data-content="hero\.imageAlt" data-content-attr="alt"/);
   assert.equal((html.match(/data-content="lead"/g) ?? []).length, 4);
   assert.equal((html.match(/data-content="items"/g) ?? []).length, 4);
   assert.equal((html.match(/data-content="image" data-content-attr="src"/g) ?? []).length, 4);
@@ -150,7 +164,9 @@ class FakeElement {
     this.attributes = { ...attributes };
     this.serviceTemplate = serviceTemplate;
     this.children = [];
-    this.style = {};
+    this.style = {
+      setProperty(name, value) { this[name] = value; },
+    };
   }
 
   setAttribute(name, value) {
@@ -196,6 +212,7 @@ function makeRoot() {
       ...(options.attribute ? { contentAttr: options.attribute } : {}),
       ...(options.style ? { contentStyle: options.style } : {}),
       ...(options.alt ? { contentAlt: options.alt } : {}),
+      ...(options.settings ? { imageSettings: options.settings } : {}),
       ...(options.action ? { contactAction: options.action } : {}),
     },
   }));
@@ -209,7 +226,7 @@ function makeRoot() {
     [
       new FakeElement({ dataset: { content: 'lead' } }),
       new FakeElement({ dataset: { content: 'items' } }),
-      new FakeElement({ dataset: { content: 'image', contentAttr: 'src' } }),
+      new FakeElement({ dataset: { content: 'image', contentAttr: 'src', imageSettings: 'imageSettings' } }),
       new FakeElement({ dataset: { content: 'imageAlt', contentAttr: 'alt' } }),
     ],
     new FakeElement(),
@@ -254,7 +271,7 @@ test('hydration applies every fixed target and derives safe matching contact act
 
   applySiteContent(root, edited);
 
-  assert.equal(rootTarget(root, 'hero.image').style.backgroundImage, 'url("images/uusi-hero.jpg")');
+  assert.equal(rootTarget(root, 'hero.image').getAttribute('src'), 'images/uusi-hero.jpg');
   assert.equal(rootTarget(root, 'hero.image').getAttribute('aria-label'), 'Uusi hero-kuva');
   assert.equal(rootTarget(root, 'gallery.photos.2.image').getAttribute('src'), 'images/galleria.jpg');
   assert.equal(rootTarget(root, 'seasonal.cards.1.title').textContent, 'Uudistettu syyshuolto');

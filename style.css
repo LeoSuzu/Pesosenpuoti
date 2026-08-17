@@ -417,10 +417,17 @@ p {
 .hero__image {
   position: absolute;
   inset: 0;
-  background-image: url('images/hero-purjevene.jpg');
-  background-size: cover;
-  background-position: center 45%;
   opacity: 0.52;
+  overflow: hidden;
+}
+
+.hero__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--image-position-x, 50%) var(--image-position-y, 50%);
+  transform: scale(var(--image-scale, 1));
+  transform-origin: var(--image-position-x, 50%) var(--image-position-y, 50%);
 }
 
 .hero__content {
@@ -540,6 +547,9 @@ p {
   height: 100%;
   object-fit: cover;
   display: block;
+  object-position: var(--image-position-x, 50%) var(--image-position-y, 50%);
+  transform: scale(var(--image-scale, 1));
+  transform-origin: var(--image-position-x, 50%) var(--image-position-y, 50%);
 }
 
 @media (max-width: 720px) {
@@ -690,13 +700,16 @@ p {
   height: 100%;
   object-fit: cover;
   display: block;
+  object-position: var(--image-position-x, 50%) var(--image-position-y, 50%);
+  transform: scale(var(--image-scale, 1));
+  transform-origin: var(--image-position-x, 50%) var(--image-position-y, 50%);
   transition:
     transform 560ms var(--ease-out-quart),
     filter 400ms var(--ease-out-quart);
 }
 
 .galleria__item:hover img {
-  transform: scale(1.04);
+  transform: scale(calc(var(--image-scale, 1) * 1.04));
   filter: brightness(0.85) saturate(1.1);
 }
 
@@ -849,6 +862,9 @@ p {
   height: 100%;
   object-fit: cover;
   display: block;
+  object-position: var(--image-position-x, 50%) var(--image-position-y, 50%);
+  transform: scale(var(--image-scale, 1));
+  transform-origin: var(--image-position-x, 50%) var(--image-position-y, 50%);
 }
 
 @media (max-width: 760px) {
@@ -1238,20 +1254,22 @@ p {
 
 .telakalle__avatar {
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
   width: clamp(5.5rem, 9vw, 7.5rem);
   height: clamp(5.5rem, 9vw, 7.5rem);
   border-radius: 50%;
   background: oklch(0.220 0.055 232); /* fixed dark navy fill — same in both themes, unlike --color-navy which inverts */
   border: 3px solid var(--color-amber);
-  color: oklch(0.960 0.008 228);
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: 0.02em;
   box-shadow: var(--shadow-card-hover);
+}
+
+.telakalle__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--image-position-x, 50%) var(--image-position-y, 50%);
+  transform: scale(var(--image-scale, 1));
+  transform-origin: var(--image-position-x, 50%) var(--image-position-y, 50%);
 }
 
 .telakalle__card {

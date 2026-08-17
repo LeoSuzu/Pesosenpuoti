@@ -9,10 +9,12 @@
   /* ------------------------------------------------------------------ */
   async function loadSiteContent() {
     try {
-      const response = await fetch('/content/site.json');
-      if (!response.ok) throw new Error(`Content request failed: ${response.status}`);
+      const isLocalDemo = ['localhost', '127.0.0.1'].includes(location.hostname);
+      const savedDemo = isLocalDemo ? localStorage.getItem('pp-demo-content') : null;
+      const response = savedDemo ? null : await fetch('/content/site.json');
+      if (response && !response.ok) throw new Error(`Content request failed: ${response.status}`);
 
-      const content = await response.json();
+      const content = savedDemo ? JSON.parse(savedDemo) : await response.json();
       const { applySiteContent, validateSiteContent } = await import('/content/schema.js');
       const validation = validateSiteContent(content);
       if (!validation.valid) throw new Error(validation.issues.join('; '));

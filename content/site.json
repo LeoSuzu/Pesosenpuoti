@@ -3,8 +3,9 @@
     "eyebrow": "Venekorjaamo · Helsinki",
     "heading": "Veneen jäljet kertovat tarinaa — me pidämme sen vesillä.",
     "sub": "Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt ja asiantunteva arviointi pääkaupunkiseudulla.",
-    "image": "images/hero-purjevene.jpg",
-    "imageAlt": "Näkymä mereltä, vene vesillä suomalaisessa saaristossa"
+    "image": "assets/uploads/images/hero-purjevene.jpg",
+    "imageAlt": "Näkymä mereltä, vene vesillä suomalaisessa saaristossa",
+    "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
   },
   "services": [
     {
@@ -12,40 +13,44 @@
       "title": "Veneiden korjaukset",
       "lead": "Puuveneet, lasikuitu ja purjeveneet käsiemme kautta.",
       "items": ["Puuosien korjaukset ja pintakäsittelyt", "Epoksityöt, pinnoitukset, tiikkien vaihdot", "Myrkkymaalien poistot", "Lasikuitukorjaukset", "Kölipulttien teko ja vaihto"],
-      "image": "Inspiration_Photos/Screenshot%202026-08-05%20at%2013.11.00.png",
-      "imageAlt": "Käsi levittää öljyä siveltimellä veneen tiikkikannelle"
+      "image": "assets/uploads/images/Vene_keula_vaurio.png",
+      "imageAlt": "Vaurioitunutta veneen runkoa korjataan telakalla",
+      "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
     },
     {
       "id": "huollot",
       "title": "Kausi- ja perushuollot",
       "lead": "Vene valmiina joka kauteen — kevät ja syksy.",
       "items": ["Kevät- ja syyshuollot", "Pesu ja puhdistus", "Tankkien puhdistukset (polttoaine ja vesi)", "Vesillelasku ja telakointi", "Kylmälaitehuollot"],
-      "image": "Inspiration_Photos/Screenshot%202026-08-05%20at%2013.16.29.png",
-      "imageAlt": "Purjevene aamuauringossa tyynellä vedellä, valmiina kauteen"
+      "image": "assets/uploads/images/Sivellin.png",
+      "imageAlt": "Veneen puukantta käsitellään siveltimellä",
+      "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
     },
     {
       "id": "erikoistyot",
       "title": "Erikoistyöt",
       "lead": "Sähköt, rigaus, konsultointi ja materiaalit.",
       "items": ["Venesähköt, akkujen vaihdot, sähkökaaviot", "Aurinkopaneelitekniikka ja Li-ion-järjestelmät", "Purjeveneiden rigaus", "Konsultointi ja korjaussuositukset", "Materiaalit, tarvikkeet ja laitevuokraus"],
-      "image": "Inspiration_Photos/Screenshot%202026-08-05%20at%2013.12.21.png",
-      "imageAlt": "Veistämön sisätila täynnä puuveneitä ja työkaluja"
+      "image": "assets/uploads/images/Telakka.png",
+      "imageAlt": "Veneveistämön sisätila puuveneineen ja työkaluineen",
+      "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
     },
     {
       "id": "arviointi",
       "title": "Arviointi ja konsultointi",
       "lead": "Epäselvä vaurio tai iso projekti? Tuomo katsoo tilanteen ensin.",
       "items": ["Ilmainen puhelinarviointi", "Paikan päällä käynti sopimuksen mukaan", "Kirjallinen kustannusarvio", "Materiaalivalinnat ja toimittajat", "Tuki myös oman korjauksen suunnitteluun"],
-      "image": "Inspiration_Photos/Screenshot%202026-08-05%20at%2013.15.35.png",
-      "imageAlt": "Puuvene rannassa piknik-varusteineen, tyyni järvimaisema"
+      "image": "assets/uploads/images/Vene_Vaurioitunut.png",
+      "imageAlt": "Veneen kansi korjaustyön aikana",
+      "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
     }
   ],
   "gallery": {
     "heading": "Telakalla tapahtuu",
     "photos": [
-      { "image": "Inspiration_Photos/Screenshot%202026-08-05%20at%2013.11.43.png", "imageAlt": "Käsi siveltimellä veneen pintakäsittelyssä — huolellista työtä läheltä" },
-      { "image": "Inspiration_Photos/Screenshot%202026-08-05%20at%2013.18.51.png", "imageAlt": "Purjeveneen kannelta, purjeet nostettuina, merimaisema taustalla" },
-      { "image": "Inspiration_Photos/Screenshot%202026-08-05%20at%2013.20.27.png", "imageAlt": "Vene telakalla, runko korjausvalmiina" }
+      { "image": "assets/uploads/images/huolellinen-tyo-alkaa.png", "imageAlt": "Huolellinen työ veneen kannella", "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 } },
+      { "image": "assets/uploads/images/korjausjalki-kestaa.png", "imageAlt": "Veneen korjausjälkeä lähikuvassa", "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 } },
+      { "image": "assets/uploads/images/vesille-lahto-tuntuu.png", "imageAlt": "Vene valmiina vesille", "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 } }
     ]
   },
   "seasonal": {
@@ -60,8 +65,14 @@
     "eyebrow": "Tarina",
     "heading": "Jäätelöä laineilla",
     "paragraphs": ["Korjaamon ohella Pesosenpuodilla kulkee oma tarina — jäätelövene, joka on yhtä paljon asenne kuin ajoneuvo. Se muistuttaa siitä, miksi veneet ovat olemassa: elämyksiä varten.", "Seuraa matkoja ja korjausprojekteja Facebookissa."],
-    "image": "Inspiration_Photos/Screenshot%202026-08-05%20at%2015.49.31.png",
-    "imageAlt": "Kesäinen tunnelmakuva vedeltä — saariston valoa ja rauhaa"
+    "image": "assets/uploads/images/Soutuvene_picnic.png",
+    "imageAlt": "Puuvene järvellä piknik-varusteineen",
+    "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
+  },
+  "welcome": {
+    "image": "assets/uploads/images/Tuomo-Pesonen.jpg",
+    "imageAlt": "Tuomo Pesonen",
+    "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
   },
   "contact": {
     "heading": "Kysy kipparilta arvio",

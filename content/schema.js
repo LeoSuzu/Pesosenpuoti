@@ -1,4 +1,5 @@
 const serviceIds = ['korjaukset', 'huollot', 'erikoistyot', 'arviointi'];
+const imageSettingFields = ['imageScale', 'imagePositionX', 'imagePositionY'];
 const formFields = [
   'nameLabel', 'namePlaceholder', 'contactLabel', 'contactPlaceholder',
   'boatLabel', 'boatPlaceholder', 'descriptionLabel', 'descriptionPlaceholder',
@@ -8,7 +9,7 @@ const imagePathPattern = /^(?!.*(?:^|\/)\.\.?\/)[A-Za-z0-9][A-Za-z0-9._%/-]*\.(?
 
 export const contentTargetManifest = Object.freeze({
   root: Object.freeze([
-    { path: 'hero.image', style: 'backgroundImage', alt: 'hero.imageAlt' },
+    { path: 'hero.image', attribute: 'src', alt: 'hero.imageAlt' },
     { path: 'hero.eyebrow' }, { path: 'hero.heading' }, { path: 'hero.sub' }, { path: 'contact.phone' },
     { path: 'gallery.heading' },
     { path: 'gallery.photos.0.image', attribute: 'src' }, { path: 'gallery.photos.0.imageAlt', attribute: 'alt' },
@@ -20,6 +21,7 @@ export const contentTargetManifest = Object.freeze({
     { path: 'iceCreamBoat.eyebrow' }, { path: 'iceCreamBoat.heading' },
     { path: 'iceCreamBoat.paragraphs.0' }, { path: 'iceCreamBoat.paragraphs.1' },
     { path: 'iceCreamBoat.image', attribute: 'src' }, { path: 'iceCreamBoat.imageAlt', attribute: 'alt' },
+    { path: 'welcome.image', attribute: 'src' }, { path: 'welcome.imageAlt', attribute: 'alt' },
     { path: 'contact.heading' }, { path: 'contact.intro' }, { path: 'contact.phone' },
     { path: 'contact.whatsapp' }, { path: 'contact.email' }, { path: 'contact.address.0' }, { path: 'contact.address.1' },
     { path: 'form.nameLabel' }, { path: 'form.namePlaceholder', attribute: 'placeholder' },
@@ -78,15 +80,28 @@ function imagePath(value, path, issues) {
   }
 }
 
+function imageSettings(value, path, issues) {
+  if (!exactObject(value, path, imageSettingFields, issues)) return;
+  const ranges = { imageScale: [80, 180], imagePositionX: [0, 100], imagePositionY: [0, 100] };
+  imageSettingFields.forEach(field => {
+    const number = value[field];
+    const [min, max] = ranges[field];
+    if (!Number.isFinite(number) || number < min || number > max) {
+      issues.push(`${path}.${field} must be between ${min} and ${max}`);
+    }
+  });
+}
+
 function validatePhoto(value, path, issues) {
-  if (!exactObject(value, path, ['image', 'imageAlt'], issues)) return;
+  if (!exactObject(value, path, ['image', 'imageAlt', 'imageSettings'], issues)) return;
   imagePath(value.image, `${path}.image`, issues);
   requiredString(value.imageAlt, `${path}.imageAlt`, issues);
+  imageSettings(value.imageSettings, `${path}.imageSettings`, issues);
 }
 
 function validateService(value, index, issues) {
   const path = `services[${index}]`;
-  if (!exactObject(value, path, ['id', 'title', 'lead', 'items', 'image', 'imageAlt'], issues)) return;
+  if (!exactObject(value, path, ['id', 'title', 'lead', 'items', 'image', 'imageAlt', 'imageSettings'], issues)) return;
   requiredString(value.id, `${path}.id`, issues);
   if (value.id !== serviceIds[index]) issues.push(`${path}.id must be ${serviceIds[index]}`);
   requiredString(value.title, `${path}.title`, issues);
@@ -94,6 +109,7 @@ function validateService(value, index, issues) {
   nonEmptyStringArray(value.items, `${path}.items`, issues);
   imagePath(value.image, `${path}.image`, issues);
   requiredString(value.imageAlt, `${path}.imageAlt`, issues);
+  imageSettings(value.imageSettings, `${path}.imageSettings`, issues);
 }
 
 function validatePhone(value, path, issues) {
@@ -113,13 +129,14 @@ function validateEmail(value, path, issues) {
 
 export function validateSiteContent(value) {
   const issues = [];
-  if (!exactObject(value, 'site content', ['hero', 'services', 'gallery', 'seasonal', 'iceCreamBoat', 'contact', 'form'], issues)) {
+  if (!exactObject(value, 'site content', ['hero', 'services', 'gallery', 'seasonal', 'iceCreamBoat', 'welcome', 'contact', 'form'], issues)) {
     return { valid: false, issues };
   }
 
-  if (exactObject(value.hero, 'hero', ['eyebrow', 'heading', 'sub', 'image', 'imageAlt'], issues)) {
+  if (exactObject(value.hero, 'hero', ['eyebrow', 'heading', 'sub', 'image', 'imageAlt', 'imageSettings'], issues)) {
     ['eyebrow', 'heading', 'sub', 'imageAlt'].forEach(field => requiredString(value.hero[field], `hero.${field}`, issues));
     imagePath(value.hero.image, 'hero.image', issues);
+    imageSettings(value.hero.imageSettings, 'hero.imageSettings', issues);
   }
 
   if (!Array.isArray(value.services) || value.services.length !== serviceIds.length) {
@@ -151,11 +168,14 @@ export function validateSiteContent(value) {
     });
   }
 
-  if (exactObject(value.iceCreamBoat, 'iceCreamBoat', ['eyebrow', 'heading', 'paragraphs', 'image', 'imageAlt'], issues)) {
+  if (exactObject(value.iceCreamBoat, 'iceCreamBoat', ['eyebrow', 'heading', 'paragraphs', 'image', 'imageAlt', 'imageSettings'], issues)) {
     ['eyebrow', 'heading', 'imageAlt'].forEach(field => requiredString(value.iceCreamBoat[field], `iceCreamBoat.${field}`, issues));
     fixedStringArray(value.iceCreamBoat.paragraphs, 'iceCreamBoat.paragraphs', 2, issues);
     imagePath(value.iceCreamBoat.image, 'iceCreamBoat.image', issues);
+    imageSettings(value.iceCreamBoat.imageSettings, 'iceCreamBoat.imageSettings', issues);
   }
+
+  validatePhoto(value.welcome, 'welcome', issues);
 
   if (exactObject(value.contact, 'contact', ['heading', 'intro', 'phone', 'whatsapp', 'email', 'address'], issues)) {
     requiredString(value.contact.heading, 'contact.heading', issues);
@@ -190,6 +210,12 @@ function applyTarget(target, content, document) {
   }));
   else target.textContent = value;
   if (target.dataset.contentAlt) target.setAttribute('aria-label', contentAtPath(content, target.dataset.contentAlt));
+  if (target.dataset.imageSettings) {
+    const settings = contentAtPath(content, target.dataset.imageSettings);
+    target.style.setProperty('--image-scale', String(settings.imageScale / 100));
+    target.style.setProperty('--image-position-x', `${settings.imagePositionX}%`);
+    target.style.setProperty('--image-position-y', `${settings.imagePositionY}%`);
+  }
 }
 
 function localPhone(value) {

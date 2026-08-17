@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Pesosenpuoti — muokkaus</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="../">Pesosenpuoti</a>
+      <a class="site-link" href="../" target="_blank" rel="noopener">Avaa sivu ↗</a>
+    </header>
+
+    <section id="login-view" class="login-card" aria-labelledby="login-title">
+      <p class="eyebrow">Sivuston muokkaus</p>
+      <h1 id="login-title">Kirjaudu sisään</h1>
+      <p id="login-help">Kirjaudu Tuomon käyttäjätunnuksella ja salasanalla.</p>
+      <form id="login-form">
+        <label>Käyttäjätunnus<input name="username" autocomplete="username" required></label>
+        <label>Salasana<input name="password" type="password" autocomplete="current-password" required></label>
+        <button type="submit">Kirjaudu</button>
+      </form>
+      <p id="login-message" class="message" role="alert"></p>
+    </section>
+
+    <section id="editor-view" hidden>
+      <div class="editor-head">
+        <div>
+          <p class="eyebrow">Muokkaustila</p>
+          <h1>Pesosenpuoti</h1>
+        </div>
+        <div class="editor-actions">
+          <button id="reset" class="quiet" type="button">Hylkää muutokset</button>
+          <button id="logout" class="quiet" type="button">Kirjaudu ulos</button>
+          <button id="publish" type="button">Julkaise muutokset</button>
+        </div>
+      </div>
+      <p id="editor-message" class="message" aria-live="polite"></p>
+      <div class="notice">Vinkki: tallenna kuva ensin, säädä sen jälkeen kokoa sekä vaakaa ja pystysuuntaa. Julkaisu päivittää sivun Cloudflaren seuraavassa rakennuksessa.</div>
+      <div id="editor" class="editor"></div>
+    </section>
+  </main>
+  <script src="admin.js"></script>
+</body>
+</html>

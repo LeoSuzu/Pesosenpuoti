@@ -2,6 +2,7 @@
    Scandinavian Sea feel: slow, layered, grey-blue, not tropical
    prefers-reduced-motion: fully disabled, no canvas drawn */
 
+
 (function () {
   'use strict';
 
@@ -16,18 +17,18 @@
   /* Three wave layers — subtle depth through speed and opacity variance */
   const waves = [
     /* Slow deep ground swell */
-    { speed: 0.0000005, amplitude: 44, freq: 0.0048, phase: 0.0,  alpha: 0.22, yFrac: 0.76 },
+    { speed: 0.0000010, amplitude: 42, freq: 0.0048, phase: 0.8,  alpha: 0.90, yFrac: 0.96 },
     /* Mid layer — slight chop */
-    { speed: 0.0000012, amplitude: 26, freq: 0.0078, phase: 2.4,  alpha: 0.14, yFrac: 0.80 },
+    { speed: 0.0000018, amplitude: 32, freq: 0.0078, phase: 2.4,  alpha: 0.40, yFrac: 0.80 },
     /* Surface shimmer */
-    { speed: 0.0000020, amplitude: 14, freq: 0.0118, phase: 4.9,  alpha: 0.09, yFrac: 0.84 },
+    { speed: 0.0000025, amplitude: 28, freq: 0.0118, phase: 4.9,  alpha: 0.20, yFrac: 0.84 },
   ];
 
   /* Wave fill colour lives in style.css as --color-wave ("r g b"), with a
      separate value under [data-theme="dark"] — the canvas can't sample the
      hero photo's colours itself, so light/dark values are set explicitly
      there instead of computed here. */
-  let waveColor = [112, 158, 196];
+  let waveColor = [64, 196,255]; /* fallback if CSS var is missing or invalid */
 
   function readWaveColor() {
     const raw = getComputedStyle(document.documentElement)

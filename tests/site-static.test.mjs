@@ -1,9 +1,48 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 const css = await readFile(new URL('../style.css', import.meta.url), 'utf8');
+const main = await readFile(new URL('../main.js', import.meta.url), 'utf8');
+const content = JSON.parse(await readFile(new URL('../content/site.json', import.meta.url), 'utf8'));
+
+test('static fallback image sources match editable uploaded images', () => {
+  const serviceSection = html.match(/<section class="palvelut"[\s\S]*?<\/section>/)?.[0] ?? '';
+  const serviceSources = [...serviceSection.matchAll(/data-service-id="[^"]+"[\s\S]*?<img\s+src="([^"]+)"\s+data-content="image"/g)]
+    .map((match) => match[1]);
+  const gallerySources = [...html.matchAll(/<img\s+src="([^"]+)"\s+data-content="gallery\.photos\.\d+\.image"/g)]
+    .map((match) => match[1]);
+  const iceCreamSource = html.match(/<img\s+src="([^"]+)"\s+data-content="iceCreamBoat\.image"/)?.[1];
+
+  assert.deepEqual(serviceSources, content.services.map((service) => service.image));
+  assert.deepEqual(gallerySources, content.gallery.photos.map((photo) => photo.image));
+  assert.equal(iceCreamSource, content.iceCreamBoat.image);
+  assert.match(html, new RegExp(`class="hero__image"[\\s\\S]*?src="${content.hero.image.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}"`));
+});
+
+test('Tuomo portrait has a static fallback and editable public content target', () => {
+  assert.match(html, /class="telakalle__avatar"[\s\S]*?src="assets\/uploads\/images\/Tuomo-Pesonen\.jpg"/);
+  assert.match(html, /data-content="welcome\.image" data-content-attr="src"/);
+  assert.match(html, /data-content="welcome\.imageAlt" data-content-attr="alt"/);
+});
+
+test('admin provides a local demo login and editing controls for text and photos', async () => {
+  await access(new URL('../admin/index.html', import.meta.url));
+  const adminHtml = await readFile(new URL('../admin/index.html', import.meta.url), 'utf8');
+  const adminScript = await readFile(new URL('../admin/admin.js', import.meta.url), 'utf8');
+
+  assert.match(adminHtml, /id="login-form"/);
+  assert.match(adminHtml, /id="editor"/);
+  assert.match(adminHtml, /id="publish"/);
+  assert.match(adminScript, /imageScale/);
+  assert.match(adminScript, /imagePositionX/);
+  assert.match(adminScript, /imagePositionY/);
+  assert.match(adminScript, /localhost/);
+  assert.match(adminScript, /pp-demo-content/);
+  assert.match(main, /pp-demo-content/);
+  assert.match(html, /href="admin\/"[^>]*>Muokkaa sivustoa</);
+});
 
 test('services use four alternating image-and-copy repair rows in the expected order', () => {
   const section = html.match(/<section class="palvelut"[\s\S]*?<\/section>/)?.[0] ?? '';
