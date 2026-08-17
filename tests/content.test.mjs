@@ -15,6 +15,19 @@ test('site content accepts the fixed public model and rejects a missing image al
   });
 });
 
+test('site content preserves the original two seasonal cards and two address lines', () => {
+  assert.equal(content.seasonal.cards.length, 2);
+  assert.equal(content.contact.address.length, 2);
+
+  const extraSeasonalCard = structuredClone(content);
+  extraSeasonalCard.seasonal.cards.push({ season: 'Talvi', title: 'Talvihuolto', body: 'Ei julkaistu.' });
+  assert.equal(validateSiteContent(extraSeasonalCard).valid, false);
+
+  const extraAddressLine = structuredClone(content);
+  extraAddressLine.contact.address.push('Suomi');
+  assert.equal(validateSiteContent(extraAddressLine).valid, false);
+});
+
 test('site content rejects model values that cannot safely fill its fixed public targets', () => {
   const cases = [
     ['empty service list', value => { value.services[0].items = []; }],
@@ -93,9 +106,9 @@ function makeRoot() {
     new FakeElement({ dataset: { content: 'hero.image', contentStyle: 'backgroundImage' } }),
     new FakeElement({ dataset: { content: 'hero.imageAlt', contentAttr: 'aria-label' } }),
     new FakeElement({ dataset: { content: 'gallery.photos.2.image', contentAttr: 'src' } }),
-    new FakeElement({ dataset: { content: 'seasonal.cards.2.title' } }),
+    new FakeElement({ dataset: { content: 'seasonal.cards.1.title' } }),
     new FakeElement({ dataset: { content: 'iceCreamBoat.paragraphs.1' } }),
-    new FakeElement({ dataset: { content: 'contact.address.2' } }),
+    new FakeElement({ dataset: { content: 'contact.address.1' } }),
     new FakeElement({ dataset: { content: 'contact.phone' }, attributes: { href: 'tel:old' } }),
     new FakeElement({ dataset: { content: 'contact.phone' }, attributes: { href: 'tel:old' } }),
     new FakeElement({ dataset: { content: 'contact.whatsapp' }, attributes: { href: 'https://wa.me/old' } }),
@@ -132,17 +145,12 @@ test('hydration applies every fixed target and derives safe matching contact act
   const edited = structuredClone(content);
   edited.hero.image = 'images/uusi-hero.jpg';
   edited.hero.imageAlt = 'Uusi hero-kuva';
-  edited.seasonal.cards[2] = {
-    season: 'Talvi',
-    title: 'Talvihuolto',
-    body: 'Talven huoltotyöt tehdään telakalla.',
-  };
-  edited.contact.address[2] = 'Suomi';
   edited.hero.image = 'images/uusi-hero.jpg';
   edited.hero.imageAlt = 'Uusi hero-kuva';
   edited.gallery.photos[2].image = 'images/galleria.jpg';
   edited.iceCreamBoat.paragraphs[1] = 'Uusi jäätelöveneteksti.';
-  edited.contact.address[2] = 'Suomi';
+  edited.seasonal.cards[1].title = 'Uudistettu syyshuolto';
+  edited.contact.address[1] = '00200 Helsinki';
   edited.contact.phone = '040 123 4567';
   edited.contact.whatsapp = '040 765 4321';
   edited.contact.email = 'uusi@example.fi';
@@ -152,16 +160,16 @@ test('hydration applies every fixed target and derives safe matching contact act
   assert.equal(root.targets[0].style.backgroundImage, 'url("images/uusi-hero.jpg")');
   assert.equal(root.targets[1].getAttribute('aria-label'), 'Uusi hero-kuva');
   assert.equal(root.targets[2].getAttribute('src'), 'images/galleria.jpg');
-  assert.equal(root.targets[3].textContent, 'Talvihuolto');
+  assert.equal(root.targets[3].textContent, 'Uudistettu syyshuolto');
   assert.equal(root.targets[4].textContent, 'Uusi jäätelöveneteksti.');
-  assert.equal(root.targets[5].textContent, 'Suomi');
+  assert.equal(root.targets[5].textContent, '00200 Helsinki');
   assert.equal(root.targets[6].textContent, '040 123 4567');
   assert.equal(root.targets[7].textContent, '040 123 4567');
   assert.equal(root.targets[10].getAttribute('href'), 'tel:0401234567');
   assert.equal(root.targets[11].getAttribute('href'), 'tel:0401234567');
   assert.equal(root.targets[12].getAttribute('href'), 'https://wa.me/358407654321');
   assert.equal(root.targets[13].getAttribute('href'), 'mailto:uusi@example.fi');
-  assert.match(root.targets[14].getAttribute('href'), /Kapteeninkatu%205%20D%2055%2C%2000140%20Helsinki%2C%20Suomi/);
+  assert.match(root.targets[14].getAttribute('href'), /Kapteeninkatu%205%20D%2055%2C%2000200%20Helsinki/);
   assert.match(root.targets[15].getAttribute('src'), /output=embed$/);
   assert.equal(root.serviceTemplates[0].title.textContent, edited.services[0].title);
   assert.deepEqual(root.serviceTemplates[0].targets[0].children.map(item => item.textContent), edited.services[0].items);

@@ -109,8 +109,8 @@ export function validateSiteContent(value) {
   if (exactObject(value.seasonal, 'seasonal', ['heading', 'lead', 'cards'], issues)) {
     requiredString(value.seasonal.heading, 'seasonal.heading', issues);
     requiredString(value.seasonal.lead, 'seasonal.lead', issues);
-    if (!Array.isArray(value.seasonal.cards) || value.seasonal.cards.length !== 3) {
-      issues.push('seasonal.cards must contain exactly three cards');
+    if (!Array.isArray(value.seasonal.cards) || value.seasonal.cards.length !== 2) {
+      issues.push('seasonal.cards must contain exactly two cards');
     } else value.seasonal.cards.forEach((card, index) => {
       const path = `seasonal.cards[${index}]`;
       if (exactObject(card, path, ['season', 'title', 'body'], issues)) {
@@ -131,7 +131,7 @@ export function validateSiteContent(value) {
     validatePhone(value.contact.phone, 'contact.phone', issues);
     validatePhone(value.contact.whatsapp, 'contact.whatsapp', issues);
     validateEmail(value.contact.email, 'contact.email', issues);
-    fixedStringArray(value.contact.address, 'contact.address', 3, issues);
+    fixedStringArray(value.contact.address, 'contact.address', 2, issues);
   }
 
   if (exactObject(value.form, 'form', formFields, issues)) {

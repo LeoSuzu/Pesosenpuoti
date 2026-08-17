@@ -53,8 +53,7 @@
     "lead": "Huoltokalenteri täyttyy nopeasti — ota yhteyttä hyvissä ajoin.",
     "cards": [
       { "season": "Kevät", "title": "Keväthuolto", "body": "Huhtikuu–toukokuu. Veneen pesut, pohjamaalaukset, moottorin tarkistus ja vesillelasku. Varaa aika hyvissä ajoin — kalenteri täyttyy nopeasti." },
-      { "season": "Syksy", "title": "Syyshuolto", "body": "Syyskuu–lokakuu. Talvisäilytyspesu, suojaus, moottorin talvettaminen ja mahdolliset korjaukset talven aikana. Vene valmiina seuraavaan kauteen." },
-      { "season": "Talvi", "title": "Talvihuolto", "body": "Marraskuu–maaliskuu. Korjaukset, pintakäsittelyt ja kunnostukset tehdään valmiiksi seuraavaa veneilykautta varten." }
+      { "season": "Syksy", "title": "Syyshuolto", "body": "Syyskuu–lokakuu. Talvisäilytyspesu, suojaus, moottorin talvettaminen ja mahdolliset korjaukset talven aikana. Vene valmiina seuraavaan kauteen." }
     ]
   },
   "iceCreamBoat": {
@@ -70,7 +69,7 @@
     "phone": "050 312 0488",
     "whatsapp": "040 724 6494",
     "email": "tuomo.pesonen@gmail.com",
-    "address": ["Kapteeninkatu 5 D 55", "00140 Helsinki", "Suomi"]
+    "address": ["Kapteeninkatu 5 D 55", "00140 Helsinki"]
   },
   "form": {
     "nameLabel": "Nimi",
