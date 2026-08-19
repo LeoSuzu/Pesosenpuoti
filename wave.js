@@ -48,6 +48,16 @@
     attributeFilter: ['data-theme'],
   });
 
+  /* Wave geometry was authored in absolute pixels against a desktop-width
+     hero: `freq` is radians per pixel, so the number of crests on screen
+     shrank with the viewport. At 1440px that is roughly one full wave; at
+     390px it is under a third of one, which renders as a near-flat line that
+     barely moves — the waves looked broken on a phone. Frequency is now
+     scaled against this reference width so the same number of crests spans
+     the hero at every size, and amplitude eases down on narrow screens so the
+     swell stays in proportion rather than swamping the hero. */
+  const REF_W = 1440;
+
   let w = 0, h = 0;
 
   function resize() {
@@ -62,14 +72,17 @@
 
   function drawWave(wave, t) {
     const baseline = h * wave.yFrac;
+    const scale = REF_W / Math.max(w, 1);
+    const freq = wave.freq * scale;
+    const amplitude = wave.amplitude * Math.min(1, Math.max(0.55, w / REF_W + 0.28));
     ctx.beginPath();
     ctx.moveTo(0, h);
 
     /* Two overlapping sines give a more organic, Baltic feel */
     for (let x = 0; x <= w + 4; x += 3) {
-      const primary   = Math.sin(x * wave.freq + wave.phase + t * wave.speed * 1000);
-      const secondary = Math.sin(x * wave.freq * 1.62 + wave.phase * 1.3 + t * wave.speed * 620);
-      const y = baseline + primary * wave.amplitude + secondary * (wave.amplitude * 0.28);
+      const primary   = Math.sin(x * freq + wave.phase + t * wave.speed * 1000);
+      const secondary = Math.sin(x * freq * 1.62 + wave.phase * 1.3 + t * wave.speed * 620);
+      const y = baseline + primary * amplitude + secondary * (amplitude * 0.28);
       ctx.lineTo(x, y);
     }
 

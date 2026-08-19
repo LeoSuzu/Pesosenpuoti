@@ -363,6 +363,17 @@ p {
 }
 
 /* Mobile menu */
+
+/* Two rules that must both hold, or the menu misbehaves:
+   1) [hidden] — an author `display` declaration outranks the UA rule behind
+      the hidden attribute, so without this the menu hangs open permanently
+      and the hamburger toggle has no visible effect.
+   2) the desktop guard below — the hamburger is only shown under 760px, so
+      above that the panel must never be able to appear at all. */
+.navbar__mobile[hidden] {
+  display: none;
+}
+
 .navbar__mobile {
   display: flex;
   flex-direction: column;
@@ -394,6 +405,12 @@ p {
 @media (max-width: 760px) {
   .navbar__links { display: none; }
   .navbar__hamburger { display: flex; }
+}
+
+/* Desktop: the hamburger is hidden, so the panel it controls must be too —
+   regardless of any stale aria-expanded/hidden state left by a resize. */
+@media (min-width: 761px) {
+  .navbar__mobile { display: none; }
 }
 
 /* --- Hero ----------------------------------------------------------- */
