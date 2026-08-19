@@ -480,6 +480,34 @@ p {
   animation: hero-rise 800ms var(--ease-out-quart) 240ms both;
 }
 
+/* Slogan istuu otsikon ja palvelutiivistelmän välissä: hillitty, viivalla
+   merkitty sivuhuomio, jotta se luetaan mottona eikä kilpaile h1:n kanssa. */
+.hero__slogan {
+  position: relative;
+  padding-left: 1.1rem;
+  margin-bottom: 1.5rem;
+  max-width: 34ch;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--color-white);
+  animation: hero-rise 750ms var(--ease-out-quart) 320ms both;
+}
+
+.hero__slogan::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  bottom: 0.15em;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--color-amber);
+}
+
 .hero__sub {
   color: oklch(0.850 0.015 228);
   font-size: clamp(1rem, 1.6vw, 1.2rem);
@@ -500,6 +528,7 @@ p {
 @media (prefers-reduced-motion: reduce) {
   .hero__eyebrow,
   .hero__heading,
+  .hero__slogan,
   .hero__sub,
   .hero__cta {
     animation: none;

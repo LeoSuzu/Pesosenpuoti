@@ -81,7 +81,7 @@ test('the editor has a visible contact-area button and the hero waves use the sl
   assert.match(html, /class="editor-link" href="admin\/"/);
   assert.match(css, /\.hero__canvas\s*\{[\s\S]*?z-index:\s*1/);
   assert.match(css, /\.hero__image\s*\{[\s\S]*?z-index:\s*0/);
-  assert.match(wave, /speed:\s*0\.00001/);
-  assert.match(wave, /speed:\s*0\.000016/);
-  assert.match(wave, /speed:\s*0\.000022/);
+  assert.match(wave, /speed:\s*0\.0000008/);
+  assert.match(wave, /speed:\s*0\.0000012/);
+  assert.match(wave, /speed:\s*0\.0000016/);
 });

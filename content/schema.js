@@ -10,7 +10,7 @@ const imagePathPattern = /^(?!.*(?:^|\/)\.\.?\/)[A-Za-z0-9][A-Za-z0-9._%/-]*\.(?
 export const contentTargetManifest = Object.freeze({
   root: Object.freeze([
     { path: 'hero.image', attribute: 'src', alt: 'hero.imageAlt' },
-    { path: 'hero.eyebrow' }, { path: 'hero.heading' }, { path: 'hero.sub' }, { path: 'contact.phone' },
+    { path: 'hero.eyebrow' }, { path: 'hero.heading' }, { path: 'hero.slogan' }, { path: 'hero.sub' }, { path: 'contact.phone' },
     { path: 'gallery.heading' },
     { path: 'gallery.photos.0.image', attribute: 'src' }, { path: 'gallery.photos.0.imageAlt', attribute: 'alt' },
     { path: 'gallery.photos.1.image', attribute: 'src' }, { path: 'gallery.photos.1.imageAlt', attribute: 'alt' },
@@ -133,8 +133,8 @@ export function validateSiteContent(value) {
     return { valid: false, issues };
   }
 
-  if (exactObject(value.hero, 'hero', ['eyebrow', 'heading', 'sub', 'image', 'imageAlt', 'imageSettings'], issues)) {
-    ['eyebrow', 'heading', 'sub', 'imageAlt'].forEach(field => requiredString(value.hero[field], `hero.${field}`, issues));
+  if (exactObject(value.hero, 'hero', ['eyebrow', 'heading', 'slogan', 'sub', 'image', 'imageAlt', 'imageSettings'], issues)) {
+    ['eyebrow', 'heading', 'slogan', 'sub', 'imageAlt'].forEach(field => requiredString(value.hero[field], `hero.${field}`, issues));
     imagePath(value.hero.image, 'hero.image', issues);
     imageSettings(value.hero.imageSettings, 'hero.imageSettings', issues);
   }

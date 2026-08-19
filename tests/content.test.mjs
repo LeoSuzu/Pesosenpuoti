@@ -7,7 +7,7 @@ const content = JSON.parse(await readFile(new URL('../content/site.json', import
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 const rootTargetSpecs = [
   ['hero.image', { attribute: 'src', alt: 'hero.imageAlt', settings: 'hero.imageSettings' }],
-  ['hero.eyebrow'], ['hero.heading'], ['hero.sub'], ['contact.phone', { action: 'phone' }],
+  ['hero.eyebrow'], ['hero.heading'], ['hero.slogan'], ['hero.sub'], ['contact.phone', { action: 'phone' }],
   ['gallery.heading'],
   ['gallery.photos.0.image', { attribute: 'src', settings: 'gallery.photos.0.imageSettings' }], ['gallery.photos.0.imageAlt', { attribute: 'alt' }],
   ['gallery.photos.1.image', { attribute: 'src', settings: 'gallery.photos.1.imageSettings' }], ['gallery.photos.1.imageAlt', { attribute: 'alt' }],
@@ -95,7 +95,7 @@ test('site content rejects model values that cannot safely fill its fixed public
 
 test('content target manifest defines the complete fixed public target contract', () => {
   assert.deepEqual(contentTargetManifest.root.map(target => target.path), [
-    'hero.image', 'hero.eyebrow', 'hero.heading', 'hero.sub', 'contact.phone',
+    'hero.image', 'hero.eyebrow', 'hero.heading', 'hero.slogan', 'hero.sub', 'contact.phone',
     'gallery.heading',
     'gallery.photos.0.image', 'gallery.photos.0.imageAlt',
     'gallery.photos.1.image', 'gallery.photos.1.imageAlt',

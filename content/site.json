@@ -2,77 +2,165 @@
   "hero": {
     "eyebrow": "Venekorjaamo · Helsinki",
     "heading": "Veneen jäljet kertovat tarinaa — me pidämme sen vesillä.",
+    "slogan": "Emme voi muuttaa tuulen suuntaa, mutta voimme säätää purjeita.",
     "sub": "Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt ja asiantunteva arviointi pääkaupunkiseudulla.",
     "image": "assets/uploads/images/hero-purjevene.jpg",
     "imageAlt": "Näkymä mereltä, vene vesillä suomalaisessa saaristossa",
-    "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
+    "imageSettings": {
+      "imageScale": 100,
+      "imagePositionX": 50,
+      "imagePositionY": 50
+    }
   },
   "services": [
     {
       "id": "korjaukset",
       "title": "Veneiden korjaukset",
       "lead": "Puuveneet, lasikuitu ja purjeveneet käsiemme kautta.",
-      "items": ["Puuosien korjaukset ja pintakäsittelyt", "Epoksityöt, pinnoitukset, tiikkien vaihdot", "Myrkkymaalien poistot", "Lasikuitukorjaukset", "Kölipulttien teko ja vaihto"],
+      "items": [
+        "Puuosien korjaukset ja pintakäsittelyt",
+        "Epoksityöt, pinnoitukset, tiikkien vaihdot",
+        "Myrkkymaalien poistot",
+        "Lasikuitukorjaukset",
+        "Kölipulttien teko ja vaihto"
+      ],
       "image": "assets/uploads/images/Vene_keula_vaurio.png",
       "imageAlt": "Vaurioitunutta veneen runkoa korjataan telakalla",
-      "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
+      "imageSettings": {
+        "imageScale": 100,
+        "imagePositionX": 50,
+        "imagePositionY": 50
+      }
     },
     {
       "id": "huollot",
       "title": "Kausi- ja perushuollot",
       "lead": "Vene valmiina joka kauteen — kevät ja syksy.",
-      "items": ["Kevät- ja syyshuollot", "Pesu ja puhdistus", "Tankkien puhdistukset (polttoaine ja vesi)", "Vesillelasku ja telakointi", "Kylmälaitehuollot"],
+      "items": [
+        "Kevät- ja syyshuollot",
+        "Pesu ja puhdistus",
+        "Tankkien puhdistukset (polttoaine ja vesi)",
+        "Vesillelasku ja telakointi",
+        "Kylmälaitehuollot"
+      ],
       "image": "assets/uploads/images/Sivellin.png",
       "imageAlt": "Veneen puukantta käsitellään siveltimellä",
-      "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
+      "imageSettings": {
+        "imageScale": 100,
+        "imagePositionX": 50,
+        "imagePositionY": 50
+      }
     },
     {
       "id": "erikoistyot",
       "title": "Erikoistyöt",
       "lead": "Sähköt, rigaus, konsultointi ja materiaalit.",
-      "items": ["Venesähköt, akkujen vaihdot, sähkökaaviot", "Aurinkopaneelitekniikka ja Li-ion-järjestelmät", "Purjeveneiden rigaus", "Konsultointi ja korjaussuositukset", "Materiaalit, tarvikkeet ja laitevuokraus"],
+      "items": [
+        "Venesähköt, akkujen vaihdot, sähkökaaviot",
+        "Aurinkopaneelitekniikka ja Li-ion-järjestelmät",
+        "Purjeveneiden rigaus",
+        "Konsultointi ja korjaussuositukset",
+        "Materiaalit, tarvikkeet ja laitevuokraus"
+      ],
       "image": "assets/uploads/images/Telakka.png",
       "imageAlt": "Veneveistämön sisätila puuveneineen ja työkaluineen",
-      "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
+      "imageSettings": {
+        "imageScale": 100,
+        "imagePositionX": 50,
+        "imagePositionY": 50
+      }
     },
     {
       "id": "arviointi",
       "title": "Arviointi ja konsultointi",
       "lead": "Epäselvä vaurio tai iso projekti? Tuomo katsoo tilanteen ensin.",
-      "items": ["Ilmainen puhelinarviointi", "Paikan päällä käynti sopimuksen mukaan", "Kirjallinen kustannusarvio", "Materiaalivalinnat ja toimittajat", "Tuki myös oman korjauksen suunnitteluun"],
+      "items": [
+        "Ilmainen puhelinarviointi",
+        "Paikan päällä käynti sopimuksen mukaan",
+        "Kirjallinen kustannusarvio",
+        "Materiaalivalinnat ja toimittajat",
+        "Tuki myös oman korjauksen suunnitteluun"
+      ],
       "image": "assets/uploads/images/Vene_Vaurioitunut.png",
       "imageAlt": "Veneen kansi korjaustyön aikana",
-      "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
+      "imageSettings": {
+        "imageScale": 100,
+        "imagePositionX": 50,
+        "imagePositionY": 50
+      }
     }
   ],
   "gallery": {
     "heading": "Telakalla tapahtuu",
     "photos": [
-      { "image": "assets/uploads/images/huolellinen-tyo-alkaa.png", "imageAlt": "Huolellinen työ veneen kannella", "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 } },
-      { "image": "assets/uploads/images/korjausjalki-kestaa.png", "imageAlt": "Veneen korjausjälkeä lähikuvassa", "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 } },
-      { "image": "assets/uploads/images/vesille-lahto-tuntuu.png", "imageAlt": "Vene valmiina vesille", "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 } }
+      {
+        "image": "assets/uploads/images/huolellinen-tyo-alkaa.png",
+        "imageAlt": "Huolellinen työ veneen kannella",
+        "imageSettings": {
+          "imageScale": 100,
+          "imagePositionX": 50,
+          "imagePositionY": 50
+        }
+      },
+      {
+        "image": "assets/uploads/images/korjausjalki-kestaa.png",
+        "imageAlt": "Veneen korjausjälkeä lähikuvassa",
+        "imageSettings": {
+          "imageScale": 100,
+          "imagePositionX": 50,
+          "imagePositionY": 50
+        }
+      },
+      {
+        "image": "assets/uploads/images/vesille-lahto-tuntuu.png",
+        "imageAlt": "Vene valmiina vesille",
+        "imageSettings": {
+          "imageScale": 100,
+          "imagePositionX": 50,
+          "imagePositionY": 50
+        }
+      }
     ]
   },
   "seasonal": {
     "heading": "Kevät kuntoon, kesä vesille",
     "lead": "Huoltokalenteri täyttyy nopeasti — ota yhteyttä hyvissä ajoin.",
     "cards": [
-      { "season": "Kevät", "title": "Keväthuolto", "body": "Huhtikuu–toukokuu. Veneen pesut, pohjamaalaukset, moottorin tarkistus ja vesillelasku. Varaa aika hyvissä ajoin — kalenteri täyttyy nopeasti." },
-      { "season": "Syksy", "title": "Syyshuolto", "body": "Syyskuu–lokakuu. Talvisäilytyspesu, suojaus, moottorin talvettaminen ja mahdolliset korjaukset talven aikana. Vene valmiina seuraavaan kauteen." }
+      {
+        "season": "Kevät",
+        "title": "Keväthuolto",
+        "body": "Huhtikuu–toukokuu. Veneen pesut, pohjamaalaukset, moottorin tarkistus ja vesillelasku. Varaa aika hyvissä ajoin — kalenteri täyttyy nopeasti."
+      },
+      {
+        "season": "Syksy",
+        "title": "Syyshuolto",
+        "body": "Syyskuu–lokakuu. Talvisäilytyspesu, suojaus, moottorin talvettaminen ja mahdolliset korjaukset talven aikana. Vene valmiina seuraavaan kauteen."
+      }
     ]
   },
   "iceCreamBoat": {
     "eyebrow": "Tarina",
     "heading": "Jäätelöä laineilla",
-    "paragraphs": ["Korjaamon ohella Pesosenpuodilla kulkee oma tarina — jäätelövene, joka on yhtä paljon asenne kuin ajoneuvo. Se muistuttaa siitä, miksi veneet ovat olemassa: elämyksiä varten.", "Seuraa matkoja ja korjausprojekteja Facebookissa."],
+    "paragraphs": [
+      "Korjaamon ohella Pesosenpuodilla kulkee oma tarina — jäätelövene, joka on yhtä paljon asenne kuin ajoneuvo. Se muistuttaa siitä, miksi veneet ovat olemassa: elämyksiä varten.",
+      "Seuraa matkoja ja korjausprojekteja Facebookissa."
+    ],
     "image": "assets/uploads/images/Soutuvene_picnic.png",
     "imageAlt": "Puuvene järvellä piknik-varusteineen",
-    "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
+    "imageSettings": {
+      "imageScale": 100,
+      "imagePositionX": 50,
+      "imagePositionY": 50
+    }
   },
   "welcome": {
     "image": "assets/uploads/images/Tuomo-Pesonen.jpg",
     "imageAlt": "Tuomo Pesonen",
-    "imageSettings": { "imageScale": 100, "imagePositionX": 50, "imagePositionY": 50 }
+    "imageSettings": {
+      "imageScale": 100,
+      "imagePositionX": 50,
+      "imagePositionY": 50
+    }
   },
   "contact": {
     "heading": "Kysy kipparilta arvio",
@@ -80,7 +168,10 @@
     "phone": "050 312 0488",
     "whatsapp": "040 724 6494",
     "email": "tuomo.pesonen@gmail.com",
-    "address": ["Kapteeninkatu 5 D 55", "00140 Helsinki"]
+    "address": [
+      "Kapteeninkatu 5 D 55",
+      "00140 Helsinki"
+    ]
   },
   "form": {
     "nameLabel": "Nimi",
