@@ -24,3 +24,10 @@ dist/
 
 # Claude.ai local files
 .claude/
+
+# Offer documentation and related files
+Tarjousmateriaalit/
+
+# Local tooling, not part of the site
+.agents/
+skills-lock.json
