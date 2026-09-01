@@ -1,9 +1,9 @@
 {
   "hero": {
-    "eyebrow": "Venekorjaamo · Helsinki",
-    "heading": "Veneen jäljet kertovat tarinaa — me pidämme sen vesillä.",
+    "eyebrow": "Hoidamme veneet Hangosta Haminaan",
+    "heading": "Jokaisella veneellä on sielu. Me huolehdimme sen kunnosta.",
     "slogan": "Emme voi muuttaa tuulen suuntaa, mutta voimme säätää purjeita.",
-    "sub": "Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt ja asiantunteva arviointi pääkaupunkiseudulla.",
+    "sub": "Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt ja asiantunteva arviointi Hangosta Haminaan.",
     "image": "assets/uploads/images/hero-purjevene.jpg",
     "imageAlt": "Näkymä mereltä, vene vesillä suomalaisessa saaristossa",
     "imageSettings": {
@@ -163,7 +163,7 @@
     }
   },
   "contact": {
-    "heading": "Kysy kipparilta arvio",
+    "heading": "Kysy kipparilta!",
     "intro": "Kerro veneestäsi ja työn tarpeesta — saat arvion siitä, miten korjaus kannattaa toteuttaa. Kuva veneestä tai vauriosta auttaa jo ensimmäisessä vastauksessa.",
     "phone": "050 312 0488",
     "whatsapp": "040 724 6494",

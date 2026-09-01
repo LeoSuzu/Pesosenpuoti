@@ -9,9 +9,11 @@
   /* Palette — Finnish summer dawn on the Baltic */
   --color-bg:      oklch(1.000 0.000 0);                      /* pure white — brand carries atmosphere */
   --color-surface: oklch(0.965 0.008 228);                    /* barely-tinted panel background */
-  --color-navy:    oklch(44.5% 0.09 236);                     /* light scandinavian navy — headings, dark fills */
-  --color-brand:   oklch(0.560 0.105 228);                    /* committed Baltic blue — links, borders, accents */
-  --color-amber:   oklch(70% 0.16 60 / 0.8);             /* warm amber — primary CTAs, white text */
+  --color-navy:    oklch(44.5% 0.115 236);                    /* light scandinavian navy — headings, dark fills */
+  --color-brand:   oklch(0.560 0.145 232);                    /* committed Baltic blue — links, borders, accents */
+  --color-amber:   oklch(68% 0.19 48 / 0.9);             /* warm amber — primary CTAs, white text */
+  --color-oak:      oklch(72% 0.09 75);                       /* oak-tan wood accent */
+  --color-mahogany: oklch(38% 0.09 30);                       /* mahogany wood accent */
   --color-ink:     oklch(0.170 0.020 232);                    /* near-black with blue cast — body copy */
   --color-muted:   oklch(0.480 0.018 228);                    /* secondary text — ≥3.5:1 vs bg */
   --color-white:   oklch(1.000 0.000 0);                      /* text on dark fills */
@@ -284,6 +286,10 @@ p {
 .navbar__logo-mark {
   flex-shrink: 0;
   color: inherit;
+}
+
+.navbar__logo-text {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .navbar__links {
@@ -1174,6 +1180,13 @@ p {
 .footer {
   background: var(--color-navy);
   color: var(--color-white);
+}
+
+.footer::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-oak), var(--color-mahogany));
 }
 
 .footer .container {
