@@ -562,15 +562,6 @@
               <span data-content="contact.address.0">Kapteeninkatu 5 D 55</span><br>
               <span data-content="contact.address.1">00140 Helsinki</span>
             </address>
-            <a
-              href="https://maps.google.com/?q=Kapteeninkatu+5,+00140+Helsinki"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="map-link"
-              data-contact-action="map-link"
-            >
-              Avaa kartalla →
-            </a>
           </div>
         </aside>
       </div>
@@ -581,16 +572,16 @@
        TERVETULOA TELAKALLE — kartta + kipparin sitaatti
        ================================================================ -->
   <section class="telakalle" id="telakalle" aria-labelledby="telakalle-heading">
-    <div class="telakalle__map">
-      <iframe
-        src="https://maps.google.com/?q=Kapteeninkatu+5,+00140+Helsinki&output=embed"
-        data-contact-action="map-frame"
-        data-address-target="map"
-        title="Pesosenpuoti kartalla — Kapteeninkatu 5, Helsinki"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        aria-label="Kartta: Pesosenpuoti, Kapteeninkatu 5, Helsinki"
-      ></iframe>
+    <!-- Kartta odottaa Pesosen toimittamaa kuvaa; siihen merkitään Purjevene-logolla
+         rannikkokaupungit Hangosta Haminaan. Placeholder pitää tilan varattuna. -->
+    <div class="telakalle__map" role="img" aria-label="Toiminta-alue: Hangosta Haminaan">
+      <svg class="telakalle__map-icon" width="34" height="33" viewBox="22 4 120 118" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+        <path d="M82 14 L36 98 L82 98 Z" fill="#2768b0"/>
+        <path d="M82 14 L82 98 L128 98 Z" fill="#ca9810"/>
+        <line x1="82" y1="10" x2="82" y2="100" stroke="#1b3c6a" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M28 104 Q82 116 136 104" fill="none" stroke="#1b3c6a" stroke-width="4.5" stroke-linecap="round"/>
+      </svg>
+      <span class="telakalle__map-label">Hangosta Haminaan</span>
     </div>
 
     <div class="container">

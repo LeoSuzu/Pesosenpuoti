@@ -35,8 +35,8 @@ export const contentTargetManifest = Object.freeze({
     { path: 'title', selector: '.palvelu-card h3' },
     { path: 'lead' }, { path: 'items' }, { path: 'image', attribute: 'src' }, { path: 'imageAlt', attribute: 'alt' },
   ]),
-  address: Object.freeze(['footer', 'map']),
-  actions: Object.freeze({ phone: 2, whatsapp: 1, email: 1, 'map-link': 1, 'map-frame': 1 }),
+  address: Object.freeze(['footer']),
+  actions: Object.freeze({ phone: 2, whatsapp: 1, email: 1 }),
 });
 
 function isObject(value) {
@@ -228,18 +228,13 @@ function whatsappNumber(value) {
 }
 
 function applyContactActions(root, contact) {
-  const address = encodeURIComponent(contact.address.join(', '));
   const links = {
     phone: `tel:${localPhone(contact.phone)}`,
     whatsapp: `https://wa.me/${whatsappNumber(contact.whatsapp)}`,
     email: `mailto:${contact.email}`,
-    'map-link': `https://maps.google.com/?q=${address}`,
-    'map-frame': `https://maps.google.com/?q=${address}&output=embed`,
   };
   root.querySelectorAll('[data-contact-action]').forEach(target => {
-    const action = target.dataset.contactAction;
-    if (action === 'map-frame') target.setAttribute('src', links[action]);
-    else target.setAttribute('href', links[action]);
+    target.setAttribute('href', links[target.dataset.contactAction]);
   });
 }
 
@@ -296,10 +291,6 @@ function applyAddressTargets(root, contact) {
   const address = contact.address.join(', ');
   root.querySelectorAll('[data-address-target]').forEach(target => {
     if (target.dataset.addressTarget === 'footer') target.textContent = address;
-    else {
-      target.setAttribute('title', `Pesosenpuoti kartalla — ${address}`);
-      target.setAttribute('aria-label', `Kartta: Pesosenpuoti, ${address}`);
-    }
   });
 }
 

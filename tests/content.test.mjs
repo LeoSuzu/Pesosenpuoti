@@ -113,7 +113,7 @@ test('content target manifest defines the complete fixed public target contract'
     'form.descriptionLabel', 'form.descriptionPlaceholder', 'form.photosLabel',
     'form.photosHint', 'form.submitLabel', 'form.successHeading', 'form.successText',
   ]);
-  assert.deepEqual(contentTargetManifest.address, ['footer', 'map']);
+  assert.deepEqual(contentTargetManifest.address, ['footer']);
   assert.deepEqual(contentTargetManifest.service, [
     { path: 'title', selector: '.palvelu-card h3' },
     { path: 'lead' },
@@ -125,8 +125,6 @@ test('content target manifest defines the complete fixed public target contract'
     phone: 2,
     whatsapp: 1,
     email: 1,
-    'map-link': 1,
-    'map-frame': 1,
   });
   assert.deepEqual(contentTargetManifest.root, rootTargetSpecs.map(([path, options = {}]) => ({
     path,
@@ -148,7 +146,8 @@ test('static markup exposes the complete manifest with the production hero-alt t
   assert.equal((html.match(/data-content="image" data-content-attr="src"/g) ?? []).length, 4);
   assert.equal((html.match(/data-content="imageAlt" data-content-attr="alt"/g) ?? []).length, 4);
   assert.equal((html.match(/data-address-target="footer"/g) ?? []).length, 1);
-  assert.equal((html.match(/data-address-target="map"/g) ?? []).length, 1);
+  assert.equal((html.match(/data-address-target="map"/g) ?? []).length, 0);
+  assert.doesNotMatch(html, /maps\.google\.com/);
 });
 
 test('service bullet lists remain editable while requiring at least one item', () => {
@@ -216,11 +215,7 @@ function makeRoot() {
       ...(options.action ? { contactAction: options.action } : {}),
     },
   }));
-  targets.push(
-    new FakeElement({ dataset: { addressTarget: 'footer' } }),
-    new FakeElement({ dataset: { addressTarget: 'map', contactAction: 'map-frame' } }),
-    new FakeElement({ dataset: { contactAction: 'map-link' } }),
-  );
+  targets.push(new FakeElement({ dataset: { addressTarget: 'footer' } }));
   const serviceTemplates = content.services.map(service => new FakeTemplate(
     service.id,
     [
@@ -281,11 +276,7 @@ test('hydration applies every fixed target and derives safe matching contact act
   assert.equal(actionTarget(root, 'phone').getAttribute('href'), 'tel:0401234567');
   assert.equal(actionTarget(root, 'whatsapp').getAttribute('href'), 'https://wa.me/358407654321');
   assert.equal(actionTarget(root, 'email').getAttribute('href'), 'mailto:uusi@example.fi');
-  assert.match(actionTarget(root, 'map-link').getAttribute('href'), /Kapteeninkatu%205%20D%2055%2C%2000200%20Helsinki/);
-  assert.match(actionTarget(root, 'map-frame').getAttribute('src'), /output=embed$/);
   assert.equal(root.targets.find(target => target.dataset.addressTarget === 'footer').textContent, 'Kapteeninkatu 5 D 55, 00200 Helsinki');
-  assert.equal(actionTarget(root, 'map-frame').getAttribute('title'), 'Pesosenpuoti kartalla — Kapteeninkatu 5 D 55, 00200 Helsinki');
-  assert.equal(actionTarget(root, 'map-frame').getAttribute('aria-label'), 'Kartta: Pesosenpuoti, Kapteeninkatu 5 D 55, 00200 Helsinki');
   assert.equal(root.serviceTemplates[0].title.textContent, edited.services[0].title);
   assert.deepEqual(root.serviceTemplates[0].targets[1].children.map(item => item.textContent), edited.services[0].items);
 });
@@ -313,7 +304,7 @@ test('invalid content leaves all static targets untouched', () => {
 
 test('an unrenderable target set leaves all static targets untouched', () => {
   const root = makeRoot();
-  root.targets = root.targets.filter(target => target.dataset.contactAction !== 'map-frame');
+  root.targets = root.targets.filter(target => target.dataset.contactAction !== 'whatsapp');
   const before = JSON.stringify(root.targets.map(target => ({
     textContent: target.textContent,
     attributes: target.attributes,

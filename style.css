@@ -1164,18 +1164,6 @@ p {
   font-size: 0.95rem;
 }
 
-.map-link {
-  display: inline-block;
-  margin-top: 0.5rem;
-  color: var(--color-brand) !important;
-  font-size: 0.88rem !important;
-  font-weight: 500 !important;
-}
-
-.map-link:hover {
-  color: var(--color-navy) !important;
-}
-
 /* --- Footer --------------------------------------------------------- */
 .footer {
   background: var(--color-navy);
@@ -1350,14 +1338,23 @@ p {
 .telakalle__map {
   width: 100%;
   height: clamp(240px, 30vw, 340px);
-  background: var(--color-rule); /* placeholder tone while the iframe loads */
+  background: var(--color-rule); /* placeholder tone until Pesonen's map image is added */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
 }
 
-.telakalle__map iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
+.telakalle__map-icon {
+  opacity: 0.8;
+}
+
+.telakalle__map-label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-muted);
 }
 
 .telakalle__inner {
