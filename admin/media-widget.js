@@ -14,7 +14,7 @@ function pointerDistance(a, b) {
   return Math.hypot(a.x - b.x, a.y - b.y);
 }
 
-export function createMediaCard({ media, labelText, accept = 'image/*', mediaType = 'image', uploadFile, onPersist, onNotify }) {
+export function createMediaCard({ media, labelText, accept = 'image/*', mediaType = 'image', imageKey = 'image', altKey = 'imageAlt', uploadFile, onPersist, onNotify }) {
   const settings = media.imageSettings;
 
   const card = document.createElement('article');
@@ -28,9 +28,9 @@ export function createMediaCard({ media, labelText, accept = 'image/*', mediaTyp
 
   const el = document.createElement(mediaType === 'video' ? 'video' : 'img');
   el.className = 'media-frame__el';
-  el.src = media.image;
+  el.src = media[imageKey];
   if (mediaType === 'video') { el.muted = true; el.loop = true; el.playsInline = true; el.autoplay = true; }
-  else { el.alt = media.imageAlt; }
+  else { el.alt = media[altKey]; }
 
   const hint = document.createElement('p');
   hint.className = 'media-frame__hint';
@@ -73,7 +73,7 @@ export function createMediaCard({ media, labelText, accept = 'image/*', mediaTyp
     fileInput.disabled = true;
     try {
       const path = await uploadFile(file);
-      media.image = path;
+      media[imageKey] = path;
       el.src = path;
       persist('Tiedosto ladattu. Julkaise muutokset, kun olet valmis.');
     } catch (error) {
@@ -181,9 +181,9 @@ export function createMediaCard({ media, labelText, accept = 'image/*', mediaTyp
     const altLabel = document.createElement('label');
     altLabel.textContent = 'Kuvan kuvaus';
     const altInput = document.createElement('input');
-    altInput.value = media.imageAlt;
+    altInput.value = media[altKey];
     altInput.addEventListener('input', () => {
-      media.imageAlt = altInput.value;
+      media[altKey] = altInput.value;
       el.alt = altInput.value;
       onPersist?.();
     });

@@ -14,7 +14,7 @@ import { onRequestPost as login } from '../functions/api/login.js';
 import { onRequestPost as logout } from '../functions/api/logout.js';
 import { onRequestGet as session } from '../functions/api/session.js';
 import { onRequestGet as content } from '../functions/api/content.js';
-import { onRequestPost as uploadImage } from '../functions/api/upload-image.js';
+import { onRequestPost as uploadImage } from '../functions/api/upload-media.js';
 import { onRequestPost as contact } from '../functions/api/contact.js';
 import { sendEmail } from '../functions/_lib/resend.js';
 
@@ -133,14 +133,14 @@ test('image upload requires a session and accepts only small supported image fil
   const anonymousForm = new FormData();
   anonymousForm.append('image', new Blob(['image'], { type: 'image/png' }), 'boat.png');
   const unauthorized = await uploadImage({
-    request: new Request('https://example.test/api/upload-image', { method: 'POST', body: anonymousForm }), env,
+    request: new Request('https://example.test/api/upload-media', { method: 'POST', body: anonymousForm }), env,
   });
   assert.equal(unauthorized.status, 401);
 
   const unsupportedForm = new FormData();
   unsupportedForm.append('image', new Blob(['text'], { type: 'text/plain' }), 'boat.txt');
   const unsupported = await uploadImage({
-    request: await authenticatedRequest('https://example.test/api/upload-image', { method: 'POST', body: unsupportedForm }), env,
+    request: await authenticatedRequest('https://example.test/api/upload-media', { method: 'POST', body: unsupportedForm }), env,
   });
   assert.equal(unsupported.status, 400);
 
@@ -148,10 +148,31 @@ test('image upload requires a session and accepts only small supported image fil
     const imageForm = new FormData();
     imageForm.append('image', new Blob([new Uint8Array([0, 255, 17])], { type: 'image/webp' }), 'Boat.webp');
     const response = await uploadImage({
-      request: await authenticatedRequest('https://example.test/api/upload-image', { method: 'POST', body: imageForm }), env,
+      request: await authenticatedRequest('https://example.test/api/upload-media', { method: 'POST', body: imageForm }), env,
     });
     assert.equal(response.status, 201);
     assert.match((await response.json()).path, /^assets\/uploads\/\d+-[a-z0-9]+\.webp$/);
+  });
+});
+
+test('media upload also accepts video within a larger size cap than images', async () => {
+  const oversizedImage = await uploadImage({
+    request: await authenticatedRequest('https://example.test/api/upload-media', {
+      method: 'POST',
+      body: (() => { const form = new FormData(); form.append('image', new Blob([new Uint8Array(9 * 1024 * 1024)], { type: 'image/png' }), 'big.png'); return form; })(),
+    }),
+    env,
+  });
+  assert.equal(oversizedImage.status, 400);
+
+  await withFetch(async () => new Response(JSON.stringify({ content: { sha: 'upload-sha' } }), { status: 201 }), async () => {
+    const videoForm = new FormData();
+    videoForm.append('image', new Blob([new Uint8Array(9 * 1024 * 1024)], { type: 'video/mp4' }), 'clip.mp4');
+    const response = await uploadImage({
+      request: await authenticatedRequest('https://example.test/api/upload-media', { method: 'POST', body: videoForm }), env,
+    });
+    assert.equal(response.status, 201);
+    assert.match((await response.json()).path, /^assets\/uploads\/\d+-[a-z0-9]+\.mp4$/);
   });
 });
 

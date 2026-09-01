@@ -795,6 +795,55 @@ p {
   }
 }
 
+/* --- Me teimme sen (referenssit) ------------------------------------ */
+.referenssit {
+  background: var(--color-bg);
+  padding-block: var(--pad-y);
+}
+
+.referenssit__header {
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.referenssit__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(1.25rem, 3vw, 2rem);
+}
+
+.referenssit__window {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--color-rule); /* placeholder while media loads */
+  margin: 0;
+}
+
+.referenssit__window img,
+.referenssit__window video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  object-position: var(--image-position-x, 50%) var(--image-position-y, 50%);
+  transform: scale(var(--image-scale, 1));
+  transform-origin: var(--image-position-x, 50%) var(--image-position-y, 50%);
+  transition: transform 560ms var(--ease-out-quart);
+}
+
+.referenssit__item:hover .referenssit__window img,
+.referenssit__item:hover .referenssit__window video {
+  transform: scale(calc(var(--image-scale, 1) * 1.04));
+}
+
+.referenssit__story {
+  margin-top: 1rem;
+  color: var(--color-navy);
+  font-size: 1rem;
+  line-height: 1.55;
+  max-width: none;
+}
+
 /* --- Kausi ---------------------------------------------------------- */
 .kausi {
   background: var(--color-bg);

@@ -13,7 +13,11 @@ import { createMediaCard } from './media-widget.js';
     ['gallery.photos.2', 'Telakalla tapahtuu — kuva 3'], ['gallery.photos.3', 'Telakalla tapahtuu — kuva 4'],
     ['iceCreamBoat', 'Jäätelövene'], ['welcome', 'Tuomon kuva'],
   ];
-  const sectionNames = { hero: 'Aloitus', services: 'Palvelut', gallery: 'Telakalla tapahtuu', seasonal: 'Kausihuollot', iceCreamBoat: 'Jäätelövene', welcome: 'Tuomon kuva', contact: 'Yhteystiedot', form: 'Lomake' };
+  const referenceFields = [
+    ['reference.items.0', 'Me teimme sen — ikkuna 1'], ['reference.items.1', 'Me teimme sen — ikkuna 2'],
+    ['reference.items.2', 'Me teimme sen — ikkuna 3'],
+  ];
+  const sectionNames = { hero: 'Aloitus', services: 'Palvelut', gallery: 'Telakalla tapahtuu', reference: 'Me teimme sen', seasonal: 'Kausihuollot', iceCreamBoat: 'Jäätelövene', welcome: 'Tuomon kuva', contact: 'Yhteystiedot', form: 'Lomake' };
   let content;
   let localSession = false;
 
@@ -58,7 +62,7 @@ import { createMediaCard } from './media-widget.js';
       label.append(input); label.classList.add('field-wide'); fields.append(label); return;
     }
     if (value && typeof value === 'object') Object.entries(value).forEach(([key, child]) => {
-      if (key === 'image' || key === 'imageAlt' || key === 'imageSettings' || key === 'id') return;
+      if (['image', 'imageAlt', 'imageSettings', 'id', 'media', 'mediaType', 'mediaAlt'].includes(key)) return;
       addTextFields(child, path ? `${path}.${key}` : key, fields);
     });
   }
@@ -66,7 +70,7 @@ import { createMediaCard } from './media-widget.js';
   async function uploadPhoto(file) {
     if (isLocalDemo) { message('Demo: kuva näkyy tässä muokkaimessa. Pilvijulkaisua varten käytä Cloudflare-kirjautumista.', true); return URL.createObjectURL(file); }
     const form = new FormData(); form.append('image', file);
-    const path = (await api('/api/upload-image', { method:'POST', body:form })).path;
+    const path = (await api('/api/upload-media', { method:'POST', body:form })).path;
     return path;
   }
 
@@ -83,6 +87,21 @@ import { createMediaCard } from './media-widget.js';
     });
   }
 
+  function renderReferenceItem(path, labelText) {
+    const item = get(content, path);
+    return createMediaCard({
+      media: item,
+      labelText,
+      accept: item.mediaType === 'video' ? 'video/mp4,video/webm' : 'image/png,image/jpeg,image/webp',
+      mediaType: item.mediaType,
+      imageKey: 'media',
+      altKey: 'mediaAlt',
+      uploadFile: uploadPhoto,
+      onPersist: saveDemo,
+      onNotify: message,
+    });
+  }
+
   function renderEditor() {
     const root = $('editor'); root.replaceChildren();
     Object.entries(content).forEach(([key, value]) => {
@@ -90,6 +109,7 @@ import { createMediaCard } from './media-widget.js';
       const section = document.createElement('section'); section.className = 'editor-section'; const heading = document.createElement('h2'); heading.textContent = sectionNames[key] || key; const fields = document.createElement('div'); fields.className = 'fields'; addTextFields(value, key, fields); section.append(heading, fields); root.append(section);
     });
     const photos = document.createElement('section'); photos.className = 'editor-section'; photos.innerHTML = '<h2>Kuvat ja rajaus</h2>'; const grid = document.createElement('div'); grid.className = 'media-grid'; imageFields.forEach(([path, labelText]) => grid.append(renderPhoto(path, labelText))); photos.append(grid); root.append(photos);
+    const reference = document.createElement('section'); reference.className = 'editor-section'; reference.innerHTML = '<h2>Me teimme sen — kuvat/videot</h2>'; const referenceGrid = document.createElement('div'); referenceGrid.className = 'media-grid'; referenceFields.forEach(([path, labelText]) => referenceGrid.append(renderReferenceItem(path, labelText))); reference.append(referenceGrid); root.append(reference);
   }
 
   async function authenticate(event) {
