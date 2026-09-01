@@ -30,13 +30,18 @@ textarea { min-height:6.5rem; resize:vertical; }
 .editor-section > h2 { margin:0 0 1.25rem; font-size:1.35rem; }
 .fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1rem; }
 .field-wide { grid-column:1 / -1; }
-.photo-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1.25rem; }
-.photo-card { border:1px solid var(--line); border-radius:10px; overflow:hidden; }
-.photo-preview { height:190px; overflow:hidden; background:#dce7e6; }
-.photo-preview img { display:block; width:100%; height:100%; object-fit:cover; transform-origin:var(--x,50%) var(--y,50%); transform:scale(var(--scale,1)); object-position:var(--x,50%) var(--y,50%); }
-.photo-controls { display:grid; gap:.8rem; padding:1rem; }
-.photo-controls h3 { margin:0; font-size:1rem; }
-.range-label { display:flex; justify-content:space-between; gap:.5rem; font-size:.88rem; font-weight:700; }
-.range-label input { padding:0; border:0; accent-color:var(--blue); }
+.media-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1.25rem; }
+.media-card { border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+.media-frame { position:relative; height:190px; overflow:hidden; background:#dce7e6; cursor:grab; touch-action:none; outline-offset:-3px; }
+.media-frame:active { cursor:grabbing; }
+.media-frame:focus-visible { outline:3px solid var(--blue); }
+.media-frame__el { display:block; width:100%; height:100%; object-fit:cover; pointer-events:none; user-select:none; transform-origin:var(--x,50%) var(--y,50%); transform:scale(var(--scale,1)); object-position:var(--x,50%) var(--y,50%); }
+.media-frame__hint { position:absolute; inset:auto 0 0 0; margin:0; padding:.4rem .6rem; font-size:.75rem; font-weight:700; color:#fff; background:#10233dcc; opacity:0; transition:opacity .15s; pointer-events:none; text-align:center; }
+.media-frame:hover .media-frame__hint, .media-frame:focus-visible .media-frame__hint, .media-frame.is-dragover .media-frame__hint { opacity:1; }
+.media-frame.is-dragover { outline:3px dashed var(--blue); outline-offset:-3px; }
+.media-frame.is-uploading { opacity:.55; cursor:wait; }
+.media-controls { display:grid; gap:.8rem; padding:1rem; }
+.media-controls h3 { margin:0; font-size:1rem; }
+.media-controls__reset { justify-self:start; padding:.5rem .85rem; font-size:.85rem; }
 .small { color:#586872; font-size:.83rem; }
 @media (max-width:640px) { .shell { width:min(100% - 1.25rem,1120px); } .editor-actions { width:100%; } .editor-actions button { flex:1 1 40%; } }

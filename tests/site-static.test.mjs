@@ -32,17 +32,32 @@ test('admin provides a local demo login and editing controls for text and photos
   await access(new URL('../admin/index.html', import.meta.url));
   const adminHtml = await readFile(new URL('../admin/index.html', import.meta.url), 'utf8');
   const adminScript = await readFile(new URL('../admin/admin.js', import.meta.url), 'utf8');
+  const mediaWidgetScript = await readFile(new URL('../admin/media-widget.js', import.meta.url), 'utf8');
 
   assert.match(adminHtml, /id="login-form"/);
   assert.match(adminHtml, /id="editor"/);
   assert.match(adminHtml, /id="publish"/);
-  assert.match(adminScript, /imageScale/);
-  assert.match(adminScript, /imagePositionX/);
-  assert.match(adminScript, /imagePositionY/);
+  assert.match(mediaWidgetScript, /imageScale/);
+  assert.match(mediaWidgetScript, /imagePositionX/);
+  assert.match(mediaWidgetScript, /imagePositionY/);
   assert.match(adminScript, /localhost/);
   assert.match(adminScript, /pp-demo-content/);
   assert.match(main, /pp-demo-content/);
   assert.match(html, /href="admin\/"[^>]*>Muokkaa sivustoa</);
+});
+
+test('media widget supports drag-and-drop upload and pointer-driven pan/zoom, and is reusable for video', async () => {
+  const mediaWidgetScript = await readFile(new URL('../admin/media-widget.js', import.meta.url), 'utf8');
+
+  assert.match(mediaWidgetScript, /export function createMediaCard/);
+  assert.match(mediaWidgetScript, /addEventListener\('drop'/);
+  assert.match(mediaWidgetScript, /addEventListener\('pointerdown'/);
+  assert.match(mediaWidgetScript, /addEventListener\('pointermove'/);
+  assert.match(mediaWidgetScript, /addEventListener\('wheel'/);
+  assert.match(mediaWidgetScript, /mediaType === 'video'/);
+
+  const adminScript = await readFile(new URL('../admin/admin.js', import.meta.url), 'utf8');
+  assert.match(adminScript, /import \{ createMediaCard \} from '\.\/media-widget\.js';/);
 });
 
 test('Cloudflare build output includes the editor and every editable public asset', () => {
