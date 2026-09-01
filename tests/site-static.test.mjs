@@ -43,7 +43,7 @@ test('admin provides a local demo login and editing controls for text and photos
   assert.match(adminScript, /localhost/);
   assert.match(adminScript, /pp-demo-content/);
   assert.match(main, /pp-demo-content/);
-  assert.match(html, /href="admin\/"[^>]*>Muokkaa sivustoa</);
+  assert.match(html, /href="admin\/" class="editor-link editor-link--footer" aria-label="Muokkaa sivustoa/);
 });
 
 test('media widget supports drag-and-drop upload and pointer-driven pan/zoom, and is reusable for video', async () => {

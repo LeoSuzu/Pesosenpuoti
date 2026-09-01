@@ -1100,6 +1100,14 @@ p {
   margin-top: 0.5rem;
 }
 
+/* [hidden] alone loses to the display:flex below (author rules outrank the
+   UA [hidden] default) — without this override both boxes stayed visible
+   on every page load, submitted or not. */
+.form-success[hidden],
+.form-error[hidden] {
+  display: none;
+}
+
 .form-success {
   display: flex;
   align-items: flex-start;
@@ -1357,22 +1365,33 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
+  width: 44px;
+  height: 44px;
   margin-bottom: 1.25rem;
-  padding: 0.7rem 1rem;
-  background: var(--color-navy);
-  color: var(--color-white);
-  font-family: var(--font-heading);
-  font-size: 0.92rem;
-  font-weight: 600;
-  text-align: center;
-  border-radius: var(--radius-sm);
-  transition: background var(--dur-fast), transform var(--dur-fast);
+  color: var(--color-muted);
+  border: 1px solid var(--color-rule);
+  border-radius: 50%;
+  opacity: 0.7;
+  transition: opacity var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
 }
 
 .editor-link:hover {
-  background: var(--color-brand);
-  transform: translateY(-1px);
+  opacity: 1;
+  color: var(--color-brand);
+  border-color: var(--color-brand);
+}
+
+.editor-link--footer {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 0;
+  color: oklch(1.000 0.000 0 / 0.55);
+  border-color: oklch(1.000 0.000 0 / 0.25);
+}
+
+.editor-link--footer:hover {
+  color: var(--color-white);
+  border-color: oklch(1.000 0.000 0 / 0.55);
 }
 
 /* --- Tervetuloa telakalle — map + quote ------------------------------ */
