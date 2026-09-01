@@ -70,16 +70,46 @@
   <header class="navbar" id="navbar">
     <div class="navbar__inner">
       <a href="#" class="navbar__logo" aria-label="Pesosenpuoti — etusivulle">
-        <!-- Purjeet PP -logo: kaksi purjetta + PP kirjaimet -->
-        <svg class="navbar__logo-mark" width="60" height="37" viewBox="22 8 168 104" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-          <g stroke="currentColor" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
-            <path fill="#2f7d8c" d="M103 18v65H38z"/>
-            <path fill="#6f9a48" d="M113 18v65h65z"/>
-            <path fill="none" d="M28 91h152l-18 14H48zM113 12v78"/>
+        <!-- Purjeet PP -merkki (pp-logo-final.svg, ikoni ilman tekstiä) -->
+        <svg class="navbar__logo-mark" width="44" height="43" viewBox="22 4 120 118" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="navlogo-hull-wash" style="color-interpolation-filters:sRGB" x="-0.02" y="-0.375" width="1.04" height="1.75">
+              <feComposite in2="SourceGraphic" operator="arithmetic" k1="0" k2="1" result="composite1"/>
+              <feColorMatrix in="composite1" values="1" type="saturate" result="colormatrix1"/>
+              <feFlood flood-opacity="0.451" flood-color="rgb(94,94,94)" result="flood1"/>
+              <feBlend in="flood1" in2="colormatrix1" mode="multiply" result="blend1"/>
+              <feBlend in2="blend1" mode="screen" result="blend2"/>
+              <feColorMatrix in="blend2" values="1" type="saturate" result="colormatrix2"/>
+              <feComposite in="colormatrix2" in2="SourceGraphic" operator="in" k2="1"/>
+            </filter>
+            <filter id="navlogo-sail-orange" style="color-interpolation-filters:sRGB">
+              <feComposite in2="SourceGraphic" operator="arithmetic" k1="0" k2="1" result="composite1"/>
+              <feColorMatrix in="composite1" values="1" type="saturate" result="colormatrix1"/>
+              <feFlood flood-opacity="1" flood-color="rgb(229,130,18)" result="flood1"/>
+              <feBlend in="flood1" in2="colormatrix1" mode="multiply" result="blend1"/>
+              <feBlend in2="blend1" mode="screen" result="blend2"/>
+              <feColorMatrix in="blend2" values="1" type="saturate" result="colormatrix2"/>
+              <feComposite in="colormatrix2" in2="SourceGraphic" operator="in" k2="1"/>
+            </filter>
+            <filter id="navlogo-sail-blue" style="color-interpolation-filters:sRGB">
+              <feComposite in2="SourceGraphic" operator="arithmetic" k1="0" k2="1" result="composite1"/>
+              <feColorMatrix in="composite1" values="1" type="saturate" result="colormatrix1"/>
+              <feFlood flood-opacity="1" flood-color="rgb(18,128,165)" result="flood1"/>
+              <feBlend in="flood1" in2="colormatrix1" mode="multiply" result="blend1"/>
+              <feBlend in2="blend1" mode="screen" result="blend2"/>
+              <feColorMatrix in="blend2" values="1" type="saturate" result="colormatrix2"/>
+              <feComposite in="colormatrix2" in2="SourceGraphic" operator="in" k2="1"/>
+            </filter>
+          </defs>
+          <g style="filter:url(#navlogo-sail-blue)">
+            <path d="M82 14 L36 98 L82 98 Z" fill="#2768b0"/>
           </g>
-          <g fill="#eff4e8" font-family="Arial, sans-serif" font-size="38" font-weight="800">
-            <text x="59" y="70">P</text>
-            <text x="134" y="70">P</text>
+          <g style="filter:url(#navlogo-sail-orange)">
+            <path d="M82 14 L82 98 L128 98 Z" fill="#ca9810"/>
+          </g>
+          <line x1="82" y1="10" x2="82" y2="100" stroke="#1b3c6a" stroke-width="3.5" stroke-linecap="round"/>
+          <g style="filter:url(#navlogo-hull-wash)">
+            <path d="M28 104 Q82 116 136 104" fill="none" stroke="#1b3c6a" stroke-width="4.5" stroke-linecap="round"/>
           </g>
         </svg>
         <span class="navbar__logo-text">Pesosenpuoti</span>

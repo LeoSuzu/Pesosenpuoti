@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="22 4 120 118" role="img" aria-label="Pesosenpuoti">
+  <defs>
+    <filter id="favicon-hull-wash" style="color-interpolation-filters:sRGB" x="-0.02" y="-0.375" width="1.04" height="1.75">
+      <feComposite in2="SourceGraphic" operator="arithmetic" k1="0" k2="1" result="composite1"/>
+      <feColorMatrix in="composite1" values="1" type="saturate" result="colormatrix1"/>
+      <feFlood flood-opacity="0.451" flood-color="rgb(94,94,94)" result="flood1"/>
+      <feBlend in="flood1" in2="colormatrix1" mode="multiply" result="blend1"/>
+      <feBlend in2="blend1" mode="screen" result="blend2"/>
+      <feColorMatrix in="blend2" values="1" type="saturate" result="colormatrix2"/>
+      <feComposite in="colormatrix2" in2="SourceGraphic" operator="in" k2="1"/>
+    </filter>
+    <filter id="favicon-sail-orange" style="color-interpolation-filters:sRGB">
+      <feComposite in2="SourceGraphic" operator="arithmetic" k1="0" k2="1" result="composite1"/>
+      <feColorMatrix in="composite1" values="1" type="saturate" result="colormatrix1"/>
+      <feFlood flood-opacity="1" flood-color="rgb(229,130,18)" result="flood1"/>
+      <feBlend in="flood1" in2="colormatrix1" mode="multiply" result="blend1"/>
+      <feBlend in2="blend1" mode="screen" result="blend2"/>
+      <feColorMatrix in="blend2" values="1" type="saturate" result="colormatrix2"/>
+      <feComposite in="colormatrix2" in2="SourceGraphic" operator="in" k2="1"/>
+    </filter>
+    <filter id="favicon-sail-blue" style="color-interpolation-filters:sRGB">
+      <feComposite in2="SourceGraphic" operator="arithmetic" k1="0" k2="1" result="composite1"/>
+      <feColorMatrix in="composite1" values="1" type="saturate" result="colormatrix1"/>
+      <feFlood flood-opacity="1" flood-color="rgb(18,128,165)" result="flood1"/>
+      <feBlend in="flood1" in2="colormatrix1" mode="multiply" result="blend1"/>
+      <feBlend in2="blend1" mode="screen" result="blend2"/>
+      <feColorMatrix in="blend2" values="1" type="saturate" result="colormatrix2"/>
+      <feComposite in="colormatrix2" in2="SourceGraphic" operator="in" k2="1"/>
+    </filter>
+  </defs>
+  <g style="filter:url(#favicon-sail-blue)">
+    <path d="M82 14 L36 98 L82 98 Z" fill="#2768b0"/>
+  </g>
+  <g style="filter:url(#favicon-sail-orange)">
+    <path d="M82 14 L82 98 L128 98 Z" fill="#ca9810"/>
+  </g>
+  <line x1="82" y1="10" x2="82" y2="100" stroke="#1b3c6a" stroke-width="3.5" stroke-linecap="round"/>
+  <g style="filter:url(#favicon-hull-wash)">
+    <path d="M28 104 Q82 116 136 104" fill="none" stroke="#1b3c6a" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>
