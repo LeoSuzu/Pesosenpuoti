@@ -960,6 +960,13 @@ p {
 }
 
 /* Form */
+/* [hidden] alone loses to the display:flex below (author rules outrank the
+   UA [hidden] default), so form.hidden = true would leave the form visibly
+   laid out next to the success message without this override. */
+.yhteyslomake[hidden] {
+  display: none;
+}
+
 .yhteyslomake {
   display: flex;
   flex-direction: column;
@@ -1061,6 +1068,41 @@ p {
 
 .form-success p {
   color: oklch(0.220 0.080 150);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: none;
+}
+
+.form-honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.form-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  background: oklch(0.960 0.045 25);
+  border: 1px solid oklch(0.720 0.140 25);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  margin-top: 1rem;
+}
+
+.form-error__icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: oklch(0.460 0.170 25);
+  flex-shrink: 0;
+  margin-top: 0.1em;
+}
+
+.form-error p {
+  color: oklch(0.280 0.110 25);
   font-size: 1rem;
   line-height: 1.6;
   max-width: none;
