@@ -119,6 +119,15 @@
           "imagePositionX": 50,
           "imagePositionY": 50
         }
+      },
+      {
+        "image": "assets/uploads/images/telakka-tyomaa.jpg",
+        "imageAlt": "Telakka-alue täynnä käynnissä olevia töitä",
+        "imageSettings": {
+          "imageScale": 100,
+          "imagePositionX": 50,
+          "imagePositionY": 50
+        }
       }
     ]
   },

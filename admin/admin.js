@@ -10,7 +10,8 @@ import { createMediaCard } from './media-widget.js';
     ['services.0', 'Palvelut — korjaukset'], ['services.1', 'Palvelut — huollot'],
     ['services.2', 'Palvelut — erikoistyöt'], ['services.3', 'Palvelut — arviointi'],
     ['gallery.photos.0', 'Telakalla tapahtuu — kuva 1'], ['gallery.photos.1', 'Telakalla tapahtuu — kuva 2'],
-    ['gallery.photos.2', 'Telakalla tapahtuu — kuva 3'], ['iceCreamBoat', 'Jäätelövene'], ['welcome', 'Tuomon kuva'],
+    ['gallery.photos.2', 'Telakalla tapahtuu — kuva 3'], ['gallery.photos.3', 'Telakalla tapahtuu — kuva 4'],
+    ['iceCreamBoat', 'Jäätelövene'], ['welcome', 'Tuomon kuva'],
   ];
   const sectionNames = { hero: 'Aloitus', services: 'Palvelut', gallery: 'Telakalla tapahtuu', seasonal: 'Kausihuollot', iceCreamBoat: 'Jäätelövene', welcome: 'Tuomon kuva', contact: 'Yhteystiedot', form: 'Lomake' };
   let content;

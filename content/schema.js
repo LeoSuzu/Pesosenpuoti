@@ -15,6 +15,7 @@ export const contentTargetManifest = Object.freeze({
     { path: 'gallery.photos.0.image', attribute: 'src' }, { path: 'gallery.photos.0.imageAlt', attribute: 'alt' },
     { path: 'gallery.photos.1.image', attribute: 'src' }, { path: 'gallery.photos.1.imageAlt', attribute: 'alt' },
     { path: 'gallery.photos.2.image', attribute: 'src' }, { path: 'gallery.photos.2.imageAlt', attribute: 'alt' },
+    { path: 'gallery.photos.3.image', attribute: 'src' }, { path: 'gallery.photos.3.imageAlt', attribute: 'alt' },
     { path: 'seasonal.heading' }, { path: 'seasonal.lead' },
     { path: 'seasonal.cards.0.season' }, { path: 'seasonal.cards.0.title' }, { path: 'seasonal.cards.0.body' },
     { path: 'seasonal.cards.1.season' }, { path: 'seasonal.cards.1.title' }, { path: 'seasonal.cards.1.body' },
@@ -150,8 +151,8 @@ export function validateSiteContent(value) {
 
   if (exactObject(value.gallery, 'gallery', ['heading', 'photos'], issues)) {
     requiredString(value.gallery.heading, 'gallery.heading', issues);
-    if (!Array.isArray(value.gallery.photos) || value.gallery.photos.length !== 3) {
-      issues.push('gallery.photos must contain exactly three photos');
+    if (!Array.isArray(value.gallery.photos) || value.gallery.photos.length !== 4) {
+      issues.push('gallery.photos must contain exactly four photos');
     } else value.gallery.photos.forEach((photo, index) => validatePhoto(photo, `gallery.photos[${index}]`, issues));
   }
 

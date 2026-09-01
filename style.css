@@ -735,7 +735,7 @@ p {
 
 .galleria__grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: repeat(2, minmax(10rem, 1fr));
   gap: 0;
   background: var(--color-navy);
@@ -788,9 +788,7 @@ p {
     gap: 1px;
     padding: 1px;
   }
-  .galleria__item:nth-child(1),
-  .galleria__item:nth-child(2),
-  .galleria__item:nth-child(3) {
+  .galleria__item {
     grid-column: 1 / -1;
     grid-row: auto;
     min-height: 240px;
