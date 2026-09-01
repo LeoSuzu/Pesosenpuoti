@@ -11,15 +11,15 @@
   --color-surface: oklch(0.965 0.008 228);                    /* barely-tinted panel background */
   --color-navy:    oklch(44.5% 0.09 236);                     /* light scandinavian navy — headings, dark fills */
   --color-brand:   oklch(0.560 0.105 228);                    /* committed Baltic blue — links, borders, accents */
-  --color-amber:   oklch(75.303% 0.12323 75.343);             /* warm amber — primary CTAs, white text */
+  --color-amber:   oklch(70% 0.16 60 / 0.8);             /* warm amber — primary CTAs, white text */
   --color-ink:     oklch(0.170 0.020 232);                    /* near-black with blue cast — body copy */
   --color-muted:   oklch(0.480 0.018 228);                    /* secondary text — ≥3.5:1 vs bg */
   --color-white:   oklch(1.000 0.000 0);                      /* text on dark fills */
   --color-rule:    oklch(0.890 0.012 228);                    /* dividers, card borders */
   --color-navbar:  oklch(17.024% 0.02072 288.565 / 0.60);     /* navbar background top — overlays hero photo, same in both themes */
-  --color-navbar-scrolled: oklch(1.000 0.000 0 / 0.60);       /* navbar background scrolled (light theme) */
+  --color-navbar-scrolled: oklch(100% 0.00011 271.152 / 0.337);       /* navbar background scrolled (light theme) */
   --color-wave:    112 158 196;                                /* canvas wave fill "r g b" (light theme) — read by wave.js, not sampled from the photo */
-  --color-palvelut-bg: oklch(0.955 0.016 228);                 /* pale Baltic-blue section tint (light theme) */
+  --color-palvelut-bg:oklch(83.14% 0.05085 227.895);                 /* pale Baltic-blue section tint (light theme) */
 
   /* Typography */
   --font-heading: 'Barlow', system-ui, sans-serif;
