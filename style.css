@@ -1387,6 +1387,18 @@ p {
   height: 2.75rem;
   margin-bottom: 1rem;
   color: var(--color-brand);
+  position: relative;
+}
+
+.palvelu-card__icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -0.6rem;
+  width: 2.25rem;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-oak), var(--color-mahogany));
 }
 
 .palvelu-card__icon svg {
