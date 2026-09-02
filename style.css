@@ -1462,7 +1462,8 @@ p {
 .telakalle__map {
   position: relative;
   width: 100%;
-  height: clamp(280px, 38vw, 480px);
+  aspect-ratio: 2408 / 1076; /* matches map-hangosta-haminaan_compass.png so nothing is cropped off the sides */
+  min-height: 200px;
   background: var(--color-rule);
   overflow: hidden;
 }
