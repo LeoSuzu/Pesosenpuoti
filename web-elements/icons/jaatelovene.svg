@@ -1,19 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Jäätelövene" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-  <g id="snowflake-arms">
-    <line x1="32" y1="6" x2="32" y2="38"/>
-    <line x1="18" y1="30" x2="46" y2="14"/>
-    <line x1="18" y1="14" x2="46" y2="30"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Jäätelövene" fill="none" stroke="#d28f22" style="stroke: oklch(70% 0.16 60 / 0.8)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+  <g id="boat">
+    <path d="M8 43 H56 L49 55 H18 Z"/>
+    <path d="M19 43 L24 31 H43 L47 43"/>
+    <path d="M24 36 H44"/>
   </g>
-  <g id="snowflake-branch-tips">
-    <path d="M32 9 L29 12 M32 9 L35 12"/>
-    <path d="M32 35 L29 32 M32 35 L35 32"/>
-    <path d="M43 16 L41 19 M43 16 L46 18"/>
-    <path d="M21 16 L18 18 M21 16 L23 19"/>
+  <g id="ice-cream">
+    <path d="M30 31 L36 31 L33 41 Z"/>
+    <path d="M28 27 C28 23 31 20 34 20 C38 20 41 23 41 27 C41 29 39 31 36 31 H30 C28 31 26 29 28 27 Z"/>
+    <path d="M33 22 C32 18 35 15 39 16"/>
   </g>
-  <g id="water-ripple">
-    <path d="M8 44 Q16 41 24 44 Q32 47 40 44 Q48 41 56 44"/>
-  </g>
-  <g id="hull">
-    <path d="M10 50 H54 L48 62 H16 Z"/>
+  <g id="small-flag">
+    <path d="M49 16 V31"/>
+    <path d="M49 16 H58 L55 21 L58 26 H49"/>
   </g>
 </svg>

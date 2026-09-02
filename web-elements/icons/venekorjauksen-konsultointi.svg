@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Venekorjauksen konsultointi" fill="none" stroke="#d28f22" style="stroke: oklch(70% 0.16 60 / 0.8)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+  <g id="clipboard">
+    <path d="M18 10 H46 V54 H18 Z"/>
+    <path d="M26 10 C26 6 38 6 38 10"/>
+    <path d="M25 16 H39"/>
+  </g>
+  <g id="boat-plan">
+    <path d="M24 38 H42 L38 45 H29 Z"/>
+    <path d="M29 38 L32 30 H37 L40 38"/>
+  </g>
+  <g id="advice">
+    <path d="M24 24 H40"/>
+    <path d="M24 30 H34"/>
+    <path d="M45 26 H56 C58 26 59 27 59 29 V38 C59 40 58 41 56 41 H52 L47 47 V41 H45"/>
+    <path d="M50 32 H54"/>
+    <path d="M50 36 H55"/>
+  </g>
+</svg>
