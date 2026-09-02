@@ -86,7 +86,7 @@ test('service rows and gallery mosaic collapse without overlap on mobile', () =>
   const serviceCss = css.match(/\/\* --- Palvelut[\s\S]*?(?=\/\* ---|$)/)?.[0] ?? '';
   assert.match(serviceCss, /@media \(max-width: 720px\)[\s\S]*?\.palvelut__row[\s\S]*?grid-template-columns:\s*1fr/);
   assert.doesNotMatch(serviceCss, /translateY\(/);
-  assert.match(css, /\.galleria__grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\)/);
+  assert.match(css, /\.galleria__grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
   assert.equal((html.match(/class="galleria__note/g) ?? []).length, 4);
 });
 
