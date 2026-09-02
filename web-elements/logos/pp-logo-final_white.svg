@@ -506,14 +506,14 @@
      id="sail-left">
     <path
        d="M82 14 L36 98 L82 98 Z"
-       fill="#ffffff"
+       fill="#2768b0"
        id="path1" />
   </g>
   <g
      id="sail-right">
     <path
        d="M82 14 L82 98 L128 98 Z"
-       fill="#ffffff"
+       fill="#ca9810"
        id="path2" />
   </g>
   <g
