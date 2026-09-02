@@ -337,7 +337,7 @@
      transform="translate(-25.75,-8.25)">
     <path
        d="M 82,14 36,98 h 46 z"
-       fill="#ffffff"
+       fill="#2768b0"
        id="path1" />
   </g>
   <g
@@ -345,7 +345,7 @@
      transform="translate(-25.75,-8.25)">
     <path
        d="m 82,14 v 84 h 46 z"
-       fill="#ffffff"
+       fill="#ca9810"
        id="path2" />
   </g>
   <g
