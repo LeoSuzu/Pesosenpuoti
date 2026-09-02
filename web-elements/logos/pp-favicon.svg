@@ -345,7 +345,7 @@
        stroke-width="3.5"
        stroke-linecap="round"
        id="line2"
-       style="fill:#22241c;stroke:#000000;stroke-opacity:1" />
+       style="stroke:#1b3c6a;stroke-opacity:1" />
   </g>
   <g
      id="hull"
