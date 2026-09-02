@@ -9,9 +9,11 @@
   /* Palette — Finnish summer dawn on the Baltic */
   --color-bg:      oklch(1.000 0.000 0);                      /* pure white — brand carries atmosphere */
   --color-surface: oklch(0.965 0.008 228);                    /* barely-tinted panel background */
-  --color-navy:    oklch(44.5% 0.09 236);                     /* light scandinavian navy — headings, dark fills */
-  --color-brand:   oklch(0.560 0.105 228);                    /* committed Baltic blue — links, borders, accents */
-  --color-amber:   oklch(70% 0.16 60 / 0.8);             /* warm amber — primary CTAs, white text */
+  --color-navy:    oklch(44.5% 0.115 236);                    /* light scandinavian navy — headings, dark fills */
+  --color-brand:   oklch(0.560 0.145 232);                    /* committed Baltic blue — links, borders, accents */
+  --color-amber:   oklch(68% 0.19 48 / 0.9);             /* warm amber — primary CTAs, white text */
+  --color-oak:      oklch(72% 0.09 75);                       /* oak-tan wood accent */
+  --color-mahogany: oklch(38% 0.09 30);                       /* mahogany wood accent */
   --color-ink:     oklch(0.170 0.020 232);                    /* near-black with blue cast — body copy */
   --color-muted:   oklch(0.480 0.018 228);                    /* secondary text — ≥3.5:1 vs bg */
   --color-white:   oklch(1.000 0.000 0);                      /* text on dark fills */
@@ -283,7 +285,14 @@ p {
 
 .navbar__logo-mark {
   flex-shrink: 0;
-  color: inherit;
+  height: 2.1rem;
+  width: auto;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+  transition: height var(--dur-mid) var(--ease-in-out);
+}
+
+.navbar.scrolled .navbar__logo-mark {
+  height: 1.7rem;
 }
 
 .navbar__links {
@@ -466,7 +475,8 @@ p {
   font-size: 1.25rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-amber);
+  color: oklch(78% 0.15 60);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55), 0 1px 12px rgba(0, 0, 0, 0.35);
   margin-bottom: 1.25rem;
   animation: hero-rise 700ms var(--ease-out-quart) 120ms both;
 }
@@ -729,7 +739,7 @@ p {
 
 .galleria__grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: repeat(2, minmax(10rem, 1fr));
   gap: 0;
   background: var(--color-navy);
@@ -782,13 +792,60 @@ p {
     gap: 1px;
     padding: 1px;
   }
-  .galleria__item:nth-child(1),
-  .galleria__item:nth-child(2),
-  .galleria__item:nth-child(3) {
+  .galleria__item {
     grid-column: 1 / -1;
     grid-row: auto;
     min-height: 240px;
   }
+}
+
+/* --- Me teimme sen (referenssit) ------------------------------------ */
+.referenssit {
+  background: var(--color-bg);
+  padding-block: var(--pad-y);
+}
+
+.referenssit__header {
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.referenssit__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(1.25rem, 3vw, 2rem);
+}
+
+.referenssit__window {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--color-rule); /* placeholder while media loads */
+  margin: 0;
+}
+
+.referenssit__window img,
+.referenssit__window video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  object-position: var(--image-position-x, 50%) var(--image-position-y, 50%);
+  transform: scale(var(--image-scale, 1));
+  transform-origin: var(--image-position-x, 50%) var(--image-position-y, 50%);
+  transition: transform 560ms var(--ease-out-quart);
+}
+
+.referenssit__item:hover .referenssit__window img,
+.referenssit__item:hover .referenssit__window video {
+  transform: scale(calc(var(--image-scale, 1) * 1.04));
+}
+
+.referenssit__story {
+  margin-top: 1rem;
+  color: var(--color-navy);
+  font-size: 1rem;
+  line-height: 1.55;
+  max-width: none;
 }
 
 /* --- Kausi ---------------------------------------------------------- */
@@ -960,6 +1017,13 @@ p {
 }
 
 /* Form */
+/* [hidden] alone loses to the display:flex below (author rules outrank the
+   UA [hidden] default), so form.hidden = true would leave the form visibly
+   laid out next to the success message without this override. */
+.yhteyslomake[hidden] {
+  display: none;
+}
+
 .yhteyslomake {
   display: flex;
   flex-direction: column;
@@ -1040,6 +1104,14 @@ p {
   margin-top: 0.5rem;
 }
 
+/* [hidden] alone loses to the display:flex below (author rules outrank the
+   UA [hidden] default) — without this override both boxes stayed visible
+   on every page load, submitted or not. */
+.form-success[hidden],
+.form-error[hidden] {
+  display: none;
+}
+
 .form-success {
   display: flex;
   align-items: flex-start;
@@ -1061,6 +1133,41 @@ p {
 
 .form-success p {
   color: oklch(0.220 0.080 150);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: none;
+}
+
+.form-honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.form-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  background: oklch(0.960 0.045 25);
+  border: 1px solid oklch(0.720 0.140 25);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  margin-top: 1rem;
+}
+
+.form-error__icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: oklch(0.460 0.170 25);
+  flex-shrink: 0;
+  margin-top: 0.1em;
+}
+
+.form-error p {
+  color: oklch(0.280 0.110 25);
   font-size: 1rem;
   line-height: 1.6;
   max-width: none;
@@ -1116,22 +1223,17 @@ p {
   font-size: 0.95rem;
 }
 
-.map-link {
-  display: inline-block;
-  margin-top: 0.5rem;
-  color: var(--color-brand) !important;
-  font-size: 0.88rem !important;
-  font-weight: 500 !important;
-}
-
-.map-link:hover {
-  color: var(--color-navy) !important;
-}
-
 /* --- Footer --------------------------------------------------------- */
 .footer {
   background: var(--color-navy);
   color: var(--color-white);
+}
+
+.footer::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-oak), var(--color-mahogany));
 }
 
 .footer .container {
@@ -1267,22 +1369,33 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
+  width: 44px;
+  height: 44px;
   margin-bottom: 1.25rem;
-  padding: 0.7rem 1rem;
-  background: var(--color-navy);
-  color: var(--color-white);
-  font-family: var(--font-heading);
-  font-size: 0.92rem;
-  font-weight: 600;
-  text-align: center;
-  border-radius: var(--radius-sm);
-  transition: background var(--dur-fast), transform var(--dur-fast);
+  color: var(--color-muted);
+  border: 1px solid var(--color-rule);
+  border-radius: 50%;
+  opacity: 0.7;
+  transition: opacity var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
 }
 
 .editor-link:hover {
-  background: var(--color-brand);
-  transform: translateY(-1px);
+  opacity: 1;
+  color: var(--color-brand);
+  border-color: var(--color-brand);
+}
+
+.editor-link--footer {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 0;
+  color: oklch(1.000 0.000 0 / 0.55);
+  border-color: oklch(1.000 0.000 0 / 0.25);
+}
+
+.editor-link--footer:hover {
+  color: var(--color-white);
+  border-color: oklch(1.000 0.000 0 / 0.55);
 }
 
 /* --- Tervetuloa telakalle — map + quote ------------------------------ */
@@ -1295,14 +1408,23 @@ p {
 .telakalle__map {
   width: 100%;
   height: clamp(240px, 30vw, 340px);
-  background: var(--color-rule); /* placeholder tone while the iframe loads */
+  background: var(--color-rule); /* placeholder tone until Pesonen's map image is added */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
 }
 
-.telakalle__map iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
+.telakalle__map-icon {
+  opacity: 0.8;
+}
+
+.telakalle__map-label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-muted);
 }
 
 .telakalle__inner {

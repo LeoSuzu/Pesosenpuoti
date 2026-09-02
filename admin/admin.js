@@ -1,3 +1,5 @@
+import { createMediaCard } from './media-widget.js';
+
 (() => {
   'use strict';
 
@@ -8,9 +10,14 @@
     ['services.0', 'Palvelut — korjaukset'], ['services.1', 'Palvelut — huollot'],
     ['services.2', 'Palvelut — erikoistyöt'], ['services.3', 'Palvelut — arviointi'],
     ['gallery.photos.0', 'Telakalla tapahtuu — kuva 1'], ['gallery.photos.1', 'Telakalla tapahtuu — kuva 2'],
-    ['gallery.photos.2', 'Telakalla tapahtuu — kuva 3'], ['iceCreamBoat', 'Jäätelövene'], ['welcome', 'Tuomon kuva'],
+    ['gallery.photos.2', 'Telakalla tapahtuu — kuva 3'], ['gallery.photos.3', 'Telakalla tapahtuu — kuva 4'],
+    ['iceCreamBoat', 'Jäätelövene'], ['welcome', 'Tuomon kuva'],
   ];
-  const sectionNames = { hero: 'Aloitus', services: 'Palvelut', gallery: 'Telakalla tapahtuu', seasonal: 'Kausihuollot', iceCreamBoat: 'Jäätelövene', welcome: 'Tuomon kuva', contact: 'Yhteystiedot', form: 'Lomake' };
+  const referenceFields = [
+    ['reference.items.0', 'Me teimme sen — ikkuna 1'], ['reference.items.1', 'Me teimme sen — ikkuna 2'],
+    ['reference.items.2', 'Me teimme sen — ikkuna 3'],
+  ];
+  const sectionNames = { hero: 'Aloitus', services: 'Palvelut', gallery: 'Telakalla tapahtuu', reference: 'Me teimme sen', seasonal: 'Kausihuollot', iceCreamBoat: 'Jäätelövene', welcome: 'Tuomon kuva', contact: 'Yhteystiedot', form: 'Lomake' };
   let content;
   let localSession = false;
 
@@ -55,32 +62,44 @@
       label.append(input); label.classList.add('field-wide'); fields.append(label); return;
     }
     if (value && typeof value === 'object') Object.entries(value).forEach(([key, child]) => {
-      if (key === 'image' || key === 'imageAlt' || key === 'imageSettings' || key === 'id') return;
+      if (['image', 'imageAlt', 'imageSettings', 'id', 'media', 'mediaType', 'mediaAlt'].includes(key)) return;
       addTextFields(child, path ? `${path}.${key}` : key, fields);
     });
   }
 
+  async function uploadPhoto(file) {
+    if (isLocalDemo) { message('Demo: kuva näkyy tässä muokkaimessa. Pilvijulkaisua varten käytä Cloudflare-kirjautumista.', true); return URL.createObjectURL(file); }
+    const form = new FormData(); form.append('image', file);
+    const path = (await api('/api/upload-media', { method:'POST', body:form })).path;
+    return path;
+  }
+
   function renderPhoto(path, labelText) {
-    const photo = get(content, path); const settings = photo.imageSettings;
-    const card = document.createElement('article'); card.className = 'photo-card';
-    const preview = document.createElement('div'); preview.className = 'photo-preview';
-    const image = document.createElement('img'); image.src = photo.image; image.alt = photo.imageAlt;
-    preview.style.setProperty('--scale', settings.imageScale / 100); preview.style.setProperty('--x', `${settings.imagePositionX}%`); preview.style.setProperty('--y', `${settings.imagePositionY}%`); preview.append(image);
-    const controls = document.createElement('div'); controls.className = 'photo-controls'; controls.innerHTML = `<h3>${labelText}</h3>`;
-    const alt = document.createElement('label'); alt.textContent = 'Kuvan kuvaus'; const altInput = document.createElement('input'); altInput.value = photo.imageAlt; altInput.addEventListener('input', () => { photo.imageAlt = altInput.value; image.alt = altInput.value; saveDemo(); }); alt.append(altInput); controls.append(alt);
-    const file = document.createElement('label'); file.textContent = 'Vaihda kuva'; const fileInput = document.createElement('input'); fileInput.type = 'file'; fileInput.accept = 'image/png,image/jpeg,image/webp'; fileInput.addEventListener('change', async () => {
-      const selected = fileInput.files[0]; if (!selected) return; fileInput.disabled = true;
-      try {
-        if (isLocalDemo) { photo.image = URL.createObjectURL(selected); message('Demo: kuva näkyy tässä muokkaimessa. Pilvijulkaisua varten käytä Cloudflare-kirjautumista.', true); }
-        else { const form = new FormData(); form.append('image', selected); photo.image = (await api('/api/upload-image', { method:'POST', body:form })).path; message('Kuva ladattu. Julkaise muutokset, kun olet valmis.', true); }
-        image.src = photo.image; if (!isLocalDemo) saveDemo();
-      } catch (error) { message(error.message); } finally { fileInput.disabled = false; }
-    }); file.append(fileInput); controls.append(file);
-    [['imageScale','Kuvan koko',80,180],['imagePositionX','Vaakasuora sijainti',0,100],['imagePositionY','Pystysuora sijainti',0,100]].forEach(([key, name, min, max]) => {
-      const label = document.createElement('label'); label.className = 'range-label'; const output = document.createElement('span'); output.textContent = `${settings[key]}%`; label.append(`${name} `, output);
-      const input = document.createElement('input'); input.type = 'range'; input.min = min; input.max = max; input.value = settings[key]; input.addEventListener('input', () => { settings[key] = Number(input.value); output.textContent = `${input.value}%`; preview.style.setProperty(key === 'imageScale' ? '--scale' : key === 'imagePositionX' ? '--x' : '--y', key === 'imageScale' ? settings[key] / 100 : `${settings[key]}%`); saveDemo(); message('Muutoksia ei ole vielä julkaistu.'); }); label.append(input); controls.append(label);
+    const photo = get(content, path);
+    return createMediaCard({
+      media: photo,
+      labelText,
+      accept: 'image/png,image/jpeg,image/webp',
+      mediaType: 'image',
+      uploadFile: uploadPhoto,
+      onPersist: saveDemo,
+      onNotify: message,
     });
-    card.append(preview, controls); return card;
+  }
+
+  function renderReferenceItem(path, labelText) {
+    const item = get(content, path);
+    return createMediaCard({
+      media: item,
+      labelText,
+      accept: item.mediaType === 'video' ? 'video/mp4,video/webm' : 'image/png,image/jpeg,image/webp',
+      mediaType: item.mediaType,
+      imageKey: 'media',
+      altKey: 'mediaAlt',
+      uploadFile: uploadPhoto,
+      onPersist: saveDemo,
+      onNotify: message,
+    });
   }
 
   function renderEditor() {
@@ -89,7 +108,8 @@
       if (key === 'welcome') return;
       const section = document.createElement('section'); section.className = 'editor-section'; const heading = document.createElement('h2'); heading.textContent = sectionNames[key] || key; const fields = document.createElement('div'); fields.className = 'fields'; addTextFields(value, key, fields); section.append(heading, fields); root.append(section);
     });
-    const photos = document.createElement('section'); photos.className = 'editor-section'; photos.innerHTML = '<h2>Kuvat ja rajaus</h2>'; const grid = document.createElement('div'); grid.className = 'photo-grid'; imageFields.forEach(([path, labelText]) => grid.append(renderPhoto(path, labelText))); photos.append(grid); root.append(photos);
+    const photos = document.createElement('section'); photos.className = 'editor-section'; photos.innerHTML = '<h2>Kuvat ja rajaus</h2>'; const grid = document.createElement('div'); grid.className = 'media-grid'; imageFields.forEach(([path, labelText]) => grid.append(renderPhoto(path, labelText))); photos.append(grid); root.append(photos);
+    const reference = document.createElement('section'); reference.className = 'editor-section'; reference.innerHTML = '<h2>Me teimme sen — kuvat/videot</h2>'; const referenceGrid = document.createElement('div'); referenceGrid.className = 'media-grid'; referenceFields.forEach(([path, labelText]) => referenceGrid.append(renderReferenceItem(path, labelText))); reference.append(referenceGrid); root.append(reference);
   }
 
   async function authenticate(event) {

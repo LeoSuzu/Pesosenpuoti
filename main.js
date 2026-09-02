@@ -1,5 +1,5 @@
 /* main.js — Pesosenpuoti
-   Sticky navbar · hamburger menu · scroll fade-ins · form mockup */
+   Sticky navbar · hamburger menu · scroll fade-ins · contact form */
 
 (function () {
   'use strict';
@@ -123,13 +123,16 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* Form mockup — no real submission                                    */
+  /* Contact form — submits to /api/contact, which sends the email       */
   /* ------------------------------------------------------------------ */
-  const form    = document.getElementById('contact-form');
-  const success = document.getElementById('form-success');
+  const form      = document.getElementById('contact-form');
+  const success   = document.getElementById('form-success');
+  const failure   = document.getElementById('form-error');
+  const failureText = document.getElementById('form-error-text');
+  const defaultErrorText = failureText ? failureText.textContent : '';
 
-  if (form && success) {
-    form.addEventListener('submit', e => {
+  if (form && success && failure) {
+    form.addEventListener('submit', async e => {
       e.preventDefault();
 
       /* Validate required fields */
@@ -148,10 +151,25 @@
         return;
       }
 
-      /* Show success */
-      form.hidden  = true;
-      success.hidden = false;
-      success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const submitButton = form.querySelector('.form-submit');
+      failure.hidden = true;
+      if (submitButton) submitButton.disabled = true;
+
+      try {
+        const response = await fetch('/api/contact', { method: 'POST', body: new FormData(form) });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || defaultErrorText);
+
+        form.hidden  = true;
+        success.hidden = false;
+        success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (error) {
+        failureText.textContent = error.message || defaultErrorText;
+        failure.hidden = false;
+        failure.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } finally {
+        if (submitButton) submitButton.disabled = false;
+      }
     });
 
     /* Clear error state on input */

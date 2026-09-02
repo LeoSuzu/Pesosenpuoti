@@ -14,13 +14,21 @@ import { onRequestPost as login } from '../functions/api/login.js';
 import { onRequestPost as logout } from '../functions/api/logout.js';
 import { onRequestGet as session } from '../functions/api/session.js';
 import { onRequestGet as content } from '../functions/api/content.js';
-import { onRequestPost as uploadImage } from '../functions/api/upload-image.js';
+import { onRequestPost as uploadImage } from '../functions/api/upload-media.js';
+import { onRequestPost as contact } from '../functions/api/contact.js';
+import { sendEmail } from '../functions/_lib/resend.js';
 
 const env = {
   GITHUB_REPO: 'owner-name/repo-name',
   GITHUB_BRANCH: 'editor/test',
   GITHUB_TOKEN: 'test-token-that-must-stay-server-side',
   SESSION_SECRET: 'test-secret-that-is-not-used-in-production',
+};
+
+const contactEnv = {
+  RESEND_API_KEY: 'test-resend-key-that-must-stay-server-side',
+  CONTACT_TO_EMAIL: 'tuomo.pesonen@gmail.com',
+  CONTACT_FROM_EMAIL: 'Pesosenpuoti <lomake@pesosenpuoti.fi>',
 };
 
 const validContent = JSON.parse(await readFile(new URL('../content/site.json', import.meta.url), 'utf8'));
@@ -125,14 +133,14 @@ test('image upload requires a session and accepts only small supported image fil
   const anonymousForm = new FormData();
   anonymousForm.append('image', new Blob(['image'], { type: 'image/png' }), 'boat.png');
   const unauthorized = await uploadImage({
-    request: new Request('https://example.test/api/upload-image', { method: 'POST', body: anonymousForm }), env,
+    request: new Request('https://example.test/api/upload-media', { method: 'POST', body: anonymousForm }), env,
   });
   assert.equal(unauthorized.status, 401);
 
   const unsupportedForm = new FormData();
   unsupportedForm.append('image', new Blob(['text'], { type: 'text/plain' }), 'boat.txt');
   const unsupported = await uploadImage({
-    request: await authenticatedRequest('https://example.test/api/upload-image', { method: 'POST', body: unsupportedForm }), env,
+    request: await authenticatedRequest('https://example.test/api/upload-media', { method: 'POST', body: unsupportedForm }), env,
   });
   assert.equal(unsupported.status, 400);
 
@@ -140,10 +148,164 @@ test('image upload requires a session and accepts only small supported image fil
     const imageForm = new FormData();
     imageForm.append('image', new Blob([new Uint8Array([0, 255, 17])], { type: 'image/webp' }), 'Boat.webp');
     const response = await uploadImage({
-      request: await authenticatedRequest('https://example.test/api/upload-image', { method: 'POST', body: imageForm }), env,
+      request: await authenticatedRequest('https://example.test/api/upload-media', { method: 'POST', body: imageForm }), env,
     });
     assert.equal(response.status, 201);
     assert.match((await response.json()).path, /^assets\/uploads\/\d+-[a-z0-9]+\.webp$/);
+  });
+});
+
+test('media upload also accepts video within a larger size cap than images', async () => {
+  const oversizedImage = await uploadImage({
+    request: await authenticatedRequest('https://example.test/api/upload-media', {
+      method: 'POST',
+      body: (() => { const form = new FormData(); form.append('image', new Blob([new Uint8Array(9 * 1024 * 1024)], { type: 'image/png' }), 'big.png'); return form; })(),
+    }),
+    env,
+  });
+  assert.equal(oversizedImage.status, 400);
+
+  await withFetch(async () => new Response(JSON.stringify({ content: { sha: 'upload-sha' } }), { status: 201 }), async () => {
+    const videoForm = new FormData();
+    videoForm.append('image', new Blob([new Uint8Array(9 * 1024 * 1024)], { type: 'video/mp4' }), 'clip.mp4');
+    const response = await uploadImage({
+      request: await authenticatedRequest('https://example.test/api/upload-media', { method: 'POST', body: videoForm }), env,
+    });
+    assert.equal(response.status, 201);
+    assert.match((await response.json()).path, /^assets\/uploads\/\d+-[a-z0-9]+\.mp4$/);
+  });
+});
+
+function contactForm(fields) {
+  const form = new FormData();
+  Object.entries(fields).forEach(([key, value]) => {
+    if (Array.isArray(value)) value.forEach((item) => form.append(key, item));
+    else if (value !== undefined) form.append(key, value);
+  });
+  return form;
+}
+
+test('contact form is unavailable without Resend configuration', async () => {
+  const response = await contact({
+    request: new Request('https://example.test/api/contact', {
+      method: 'POST', body: contactForm({ nimi: 'Matti', yhteystieto: '050', kuvaus: 'Vuoto.' }),
+    }),
+    env: {},
+  });
+  assert.equal(response.status, 500);
+});
+
+test('contact form silently accepts honeypot submissions without emailing anyone', async () => {
+  let calls = 0;
+  await withFetch(async () => { calls += 1; return new Response('{}'); }, async () => {
+    const response = await contact({
+      request: new Request('https://example.test/api/contact', {
+        method: 'POST',
+        body: contactForm({ nimi: 'Bot', yhteystieto: 'bot@example.com', kuvaus: 'spam', yritys: 'Acme Spam Ltd' }),
+      }),
+      env: contactEnv,
+    });
+    assert.equal(response.status, 201);
+    assert.deepEqual(await response.json(), { ok: true });
+  });
+  assert.equal(calls, 0);
+});
+
+test('contact form requires name, contact info, and description', async () => {
+  const response = await contact({
+    request: new Request('https://example.test/api/contact', {
+      method: 'POST', body: contactForm({ nimi: '', yhteystieto: '050', kuvaus: 'Vuoto.' }),
+    }),
+    env: contactEnv,
+  });
+  assert.equal(response.status, 400);
+});
+
+test('contact form rejects unsupported or oversized photos', async () => {
+  const badType = await contact({
+    request: new Request('https://example.test/api/contact', {
+      method: 'POST',
+      body: contactForm({
+        nimi: 'Matti', yhteystieto: '050', kuvaus: 'Vuoto.',
+        kuvat: [new Blob(['x'], { type: 'text/plain' })],
+      }),
+    }),
+    env: contactEnv,
+  });
+  assert.equal(badType.status, 400);
+
+  const tooBig = await contact({
+    request: new Request('https://example.test/api/contact', {
+      method: 'POST',
+      body: contactForm({
+        nimi: 'Matti', yhteystieto: '050', kuvaus: 'Vuoto.',
+        kuvat: [new Blob([new Uint8Array(9 * 1024 * 1024)], { type: 'image/png' })],
+      }),
+    }),
+    env: contactEnv,
+  });
+  assert.equal(tooBig.status, 400);
+});
+
+test('contact form sends the email with a reply-to and base64 attachment, and never leaks the API key on failure', async () => {
+  let request;
+  await withFetch(async (url, options) => {
+    request = new Request(url, options);
+    return new Response(JSON.stringify({ id: 'email-1' }), { status: 200 });
+  }, async () => {
+    const response = await contact({
+      request: new Request('https://example.test/api/contact', {
+        method: 'POST',
+        body: contactForm({
+          nimi: 'Matti Virtanen', yhteystieto: 'matti@esimerkki.fi', vene: 'Nordic 28',
+          kuvaus: 'Rungossa on vuoto.',
+          kuvat: [new Blob([new Uint8Array([1, 2, 3])], { type: 'image/png' })],
+        }),
+      }),
+      env: contactEnv,
+    });
+    assert.equal(response.status, 201);
+    assert.deepEqual(await response.json(), { ok: true });
+  });
+
+  assert.equal(request.url, 'https://api.resend.com/emails');
+  assert.equal(request.headers.get('authorization'), `Bearer ${contactEnv.RESEND_API_KEY}`);
+  const body = await request.json();
+  assert.equal(body.from, contactEnv.CONTACT_FROM_EMAIL);
+  assert.deepEqual(body.to, [contactEnv.CONTACT_TO_EMAIL]);
+  assert.equal(body.reply_to, 'matti@esimerkki.fi');
+  assert.match(body.html, /Matti Virtanen/);
+  assert.match(body.html, /Nordic 28/);
+  assert.equal(body.attachments.length, 1);
+  assert.equal(body.attachments[0].content, Buffer.from([1, 2, 3]).toString('base64'));
+
+  await withFetch(async () => new Response(JSON.stringify({ message: 'domain not verified' }), { status: 403 }), async () => {
+    const response = await contact({
+      request: new Request('https://example.test/api/contact', {
+        method: 'POST', body: contactForm({ nimi: 'Matti', yhteystieto: '050', kuvaus: 'Vuoto.' }),
+      }),
+      env: contactEnv,
+    });
+    assert.equal(response.status, 502);
+    assert.doesNotMatch(JSON.stringify(await response.json()), new RegExp(contactEnv.RESEND_API_KEY));
+  });
+});
+
+test('Resend helper posts JSON with the bearer key and reports transport failures', async () => {
+  let request;
+  await withFetch(async (url, options) => {
+    request = new Request(url, options);
+    return new Response(JSON.stringify({ id: 'email-2' }), { status: 200 });
+  }, async () => {
+    const result = await sendEmail(contactEnv, { from: 'a@b.fi', to: ['c@d.fi'], subject: 'Hi', html: '<p>hi</p>' });
+    assert.deepEqual(result, { status: 200, data: { id: 'email-2' } });
+  });
+  assert.equal(request.headers.get('authorization'), `Bearer ${contactEnv.RESEND_API_KEY}`);
+  assert.equal(request.headers.get('content-type'), 'application/json');
+
+  await withFetch(async () => { throw new Error('network down'); }, async () => {
+    const result = await sendEmail(contactEnv, { from: 'a@b.fi', to: ['c@d.fi'], subject: 'Hi', html: '<p>hi</p>' });
+    assert.deepEqual(result, { status: 502, data: { message: 'Resend request failed' } });
   });
 });
 

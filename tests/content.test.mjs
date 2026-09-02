@@ -12,6 +12,11 @@ const rootTargetSpecs = [
   ['gallery.photos.0.image', { attribute: 'src', settings: 'gallery.photos.0.imageSettings' }], ['gallery.photos.0.imageAlt', { attribute: 'alt' }],
   ['gallery.photos.1.image', { attribute: 'src', settings: 'gallery.photos.1.imageSettings' }], ['gallery.photos.1.imageAlt', { attribute: 'alt' }],
   ['gallery.photos.2.image', { attribute: 'src', settings: 'gallery.photos.2.imageSettings' }], ['gallery.photos.2.imageAlt', { attribute: 'alt' }],
+  ['gallery.photos.3.image', { attribute: 'src', settings: 'gallery.photos.3.imageSettings' }], ['gallery.photos.3.imageAlt', { attribute: 'alt' }],
+  ['reference.heading'],
+  ['reference.items.0.media', { attribute: 'src', settings: 'reference.items.0.imageSettings' }], ['reference.items.0.mediaAlt', { attribute: 'alt' }], ['reference.items.0.story'],
+  ['reference.items.1.media', { attribute: 'src', settings: 'reference.items.1.imageSettings' }], ['reference.items.1.mediaAlt', { attribute: 'alt' }], ['reference.items.1.story'],
+  ['reference.items.2.media', { attribute: 'src', settings: 'reference.items.2.imageSettings' }], ['reference.items.2.mediaAlt', { attribute: 'alt' }], ['reference.items.2.story'],
   ['seasonal.heading'], ['seasonal.lead'],
   ['seasonal.cards.0.season'], ['seasonal.cards.0.title'], ['seasonal.cards.0.body'],
   ['seasonal.cards.1.season'], ['seasonal.cards.1.title'], ['seasonal.cards.1.body'],
@@ -100,6 +105,11 @@ test('content target manifest defines the complete fixed public target contract'
     'gallery.photos.0.image', 'gallery.photos.0.imageAlt',
     'gallery.photos.1.image', 'gallery.photos.1.imageAlt',
     'gallery.photos.2.image', 'gallery.photos.2.imageAlt',
+    'gallery.photos.3.image', 'gallery.photos.3.imageAlt',
+    'reference.heading',
+    'reference.items.0.media', 'reference.items.0.mediaAlt', 'reference.items.0.story',
+    'reference.items.1.media', 'reference.items.1.mediaAlt', 'reference.items.1.story',
+    'reference.items.2.media', 'reference.items.2.mediaAlt', 'reference.items.2.story',
     'seasonal.heading', 'seasonal.lead',
     'seasonal.cards.0.season', 'seasonal.cards.0.title', 'seasonal.cards.0.body',
     'seasonal.cards.1.season', 'seasonal.cards.1.title', 'seasonal.cards.1.body',
@@ -113,7 +123,7 @@ test('content target manifest defines the complete fixed public target contract'
     'form.descriptionLabel', 'form.descriptionPlaceholder', 'form.photosLabel',
     'form.photosHint', 'form.submitLabel', 'form.successHeading', 'form.successText',
   ]);
-  assert.deepEqual(contentTargetManifest.address, ['footer', 'map']);
+  assert.deepEqual(contentTargetManifest.address, ['footer']);
   assert.deepEqual(contentTargetManifest.service, [
     { path: 'title', selector: '.palvelu-card h3' },
     { path: 'lead' },
@@ -125,8 +135,6 @@ test('content target manifest defines the complete fixed public target contract'
     phone: 2,
     whatsapp: 1,
     email: 1,
-    'map-link': 1,
-    'map-frame': 1,
   });
   assert.deepEqual(contentTargetManifest.root, rootTargetSpecs.map(([path, options = {}]) => ({
     path,
@@ -148,7 +156,8 @@ test('static markup exposes the complete manifest with the production hero-alt t
   assert.equal((html.match(/data-content="image" data-content-attr="src"/g) ?? []).length, 4);
   assert.equal((html.match(/data-content="imageAlt" data-content-attr="alt"/g) ?? []).length, 4);
   assert.equal((html.match(/data-address-target="footer"/g) ?? []).length, 1);
-  assert.equal((html.match(/data-address-target="map"/g) ?? []).length, 1);
+  assert.equal((html.match(/data-address-target="map"/g) ?? []).length, 0);
+  assert.doesNotMatch(html, /maps\.google\.com/);
 });
 
 test('service bullet lists remain editable while requiring at least one item', () => {
@@ -216,11 +225,7 @@ function makeRoot() {
       ...(options.action ? { contactAction: options.action } : {}),
     },
   }));
-  targets.push(
-    new FakeElement({ dataset: { addressTarget: 'footer' } }),
-    new FakeElement({ dataset: { addressTarget: 'map', contactAction: 'map-frame' } }),
-    new FakeElement({ dataset: { contactAction: 'map-link' } }),
-  );
+  targets.push(new FakeElement({ dataset: { addressTarget: 'footer' } }));
   const serviceTemplates = content.services.map(service => new FakeTemplate(
     service.id,
     [
@@ -281,11 +286,7 @@ test('hydration applies every fixed target and derives safe matching contact act
   assert.equal(actionTarget(root, 'phone').getAttribute('href'), 'tel:0401234567');
   assert.equal(actionTarget(root, 'whatsapp').getAttribute('href'), 'https://wa.me/358407654321');
   assert.equal(actionTarget(root, 'email').getAttribute('href'), 'mailto:uusi@example.fi');
-  assert.match(actionTarget(root, 'map-link').getAttribute('href'), /Kapteeninkatu%205%20D%2055%2C%2000200%20Helsinki/);
-  assert.match(actionTarget(root, 'map-frame').getAttribute('src'), /output=embed$/);
   assert.equal(root.targets.find(target => target.dataset.addressTarget === 'footer').textContent, 'Kapteeninkatu 5 D 55, 00200 Helsinki');
-  assert.equal(actionTarget(root, 'map-frame').getAttribute('title'), 'Pesosenpuoti kartalla — Kapteeninkatu 5 D 55, 00200 Helsinki');
-  assert.equal(actionTarget(root, 'map-frame').getAttribute('aria-label'), 'Kartta: Pesosenpuoti, Kapteeninkatu 5 D 55, 00200 Helsinki');
   assert.equal(root.serviceTemplates[0].title.textContent, edited.services[0].title);
   assert.deepEqual(root.serviceTemplates[0].targets[1].children.map(item => item.textContent), edited.services[0].items);
 });
@@ -313,7 +314,7 @@ test('invalid content leaves all static targets untouched', () => {
 
 test('an unrenderable target set leaves all static targets untouched', () => {
   const root = makeRoot();
-  root.targets = root.targets.filter(target => target.dataset.contactAction !== 'map-frame');
+  root.targets = root.targets.filter(target => target.dataset.contactAction !== 'whatsapp');
   const before = JSON.stringify(root.targets.map(target => ({
     textContent: target.textContent,
     attributes: target.attributes,
