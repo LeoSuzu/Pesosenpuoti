@@ -1,10 +1,10 @@
 {
   "hero": {
-    "eyebrow": "Venekorjaamo · Helsinki",
-    "heading": "Veneen jäljet kertovat tarinaa — me pidämme sen vesillä.",
+    "eyebrow": "Hoidamme veneet Hangosta Haminaan",
+    "heading": "Jokaisella veneellä on sielu. Me huolehdimme sen kunnosta.",
     "slogan": "Emme voi muuttaa tuulen suuntaa, mutta voimme säätää purjeita.",
-    "sub": "Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt ja asiantunteva arviointi pääkaupunkiseudulla.",
-    "image": "assets/uploads/images/hero-purjevene.jpg",
+    "sub": "Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt ja asiantunteva arviointi Hangosta Haminaan.",
+    "image": "assets/uploads/images/IMG_5504.JPEG",
     "imageAlt": "Näkymä mereltä, vene vesillä suomalaisessa saaristossa",
     "imageSettings": {
       "imageScale": 100,
@@ -24,7 +24,7 @@
         "Lasikuitukorjaukset",
         "Kölipulttien teko ja vaihto"
       ],
-      "image": "assets/uploads/images/Vene_keula_vaurio.png",
+      "image": "assets/uploads/images/IMG_2625.JPEG",
       "imageAlt": "Vaurioitunutta veneen runkoa korjataan telakalla",
       "imageSettings": {
         "imageScale": 100,
@@ -43,7 +43,7 @@
         "Vesillelasku ja telakointi",
         "Kylmälaitehuollot"
       ],
-      "image": "assets/uploads/images/Sivellin.png",
+      "image": "assets/uploads/images/IMG_2834.JPEG",
       "imageAlt": "Veneen puukantta käsitellään siveltimellä",
       "imageSettings": {
         "imageScale": 100,
@@ -62,7 +62,7 @@
         "Konsultointi ja korjaussuositukset",
         "Materiaalit, tarvikkeet ja laitevuokraus"
       ],
-      "image": "assets/uploads/images/Telakka.png",
+      "image": "assets/uploads/images/IMG_1964.JPEG",
       "imageAlt": "Veneveistämön sisätila puuveneineen ja työkaluineen",
       "imageSettings": {
         "imageScale": 100,
@@ -81,7 +81,7 @@
         "Materiaalivalinnat ja toimittajat",
         "Tuki myös oman korjauksen suunnitteluun"
       ],
-      "image": "assets/uploads/images/Vene_Vaurioitunut.png",
+      "image": "assets/uploads/images/IMG_2585.JPEG",
       "imageAlt": "Veneen kansi korjaustyön aikana",
       "imageSettings": {
         "imageScale": 100,
@@ -94,8 +94,8 @@
     "heading": "Telakalla tapahtuu",
     "photos": [
       {
-        "image": "assets/uploads/images/huolellinen-tyo-alkaa.png",
-        "imageAlt": "Huolellinen työ veneen kannella",
+        "image": "assets/uploads/images/IMG_2827.JPEG",
+        "imageAlt": "Käsi pitelee laivalakkapurkkia veistämöllä — materiaalit tarkastetaan läheltä",
         "imageSettings": {
           "imageScale": 100,
           "imagePositionX": 50,
@@ -103,8 +103,8 @@
         }
       },
       {
-        "image": "assets/uploads/images/korjausjalki-kestaa.png",
-        "imageAlt": "Veneen korjausjälkeä lähikuvassa",
+        "image": "assets/uploads/images/IMG_2853.JPEG",
+        "imageAlt": "Moottorin osaa huolletaan työpajassa",
         "imageSettings": {
           "imageScale": 100,
           "imagePositionX": 50,
@@ -112,13 +112,60 @@
         }
       },
       {
-        "image": "assets/uploads/images/vesille-lahto-tuntuu.png",
-        "imageAlt": "Vene valmiina vesille",
+        "image": "assets/uploads/images/IMG_2570.JPEG",
+        "imageAlt": "Veneen jättämä aallokko avomerellä auringonpaisteessa",
         "imageSettings": {
           "imageScale": 100,
           "imagePositionX": 50,
           "imagePositionY": 50
         }
+      },
+      {
+        "image": "assets/uploads/images/IMG_2496.JPEG",
+        "imageAlt": "Näkymä ikkunasta telakka-alueelle, nosturi taustalla talvella",
+        "imageSettings": {
+          "imageScale": 100,
+          "imagePositionX": 50,
+          "imagePositionY": 50
+        }
+      }
+    ]
+  },
+  "reference": {
+    "heading": "Me teimme sen",
+    "items": [
+      {
+        "media": "assets/uploads/images/tyo-puurunko.jpg",
+        "mediaType": "image",
+        "mediaAlt": "Puuveneen runko korjattuna laudasta lautaan",
+        "imageSettings": {
+          "imageScale": 100,
+          "imagePositionX": 50,
+          "imagePositionY": 50
+        },
+        "story": "Puurungon korjaus vaati kärsivällisyyttä, mutta lopputulos kantaa vuosia."
+      },
+      {
+        "media": "assets/uploads/images/tyo-tiikkikansi.jpg",
+        "mediaType": "image",
+        "mediaAlt": "Uusittu tiikkikansi lähikuvassa",
+        "imageSettings": {
+          "imageScale": 100,
+          "imagePositionX": 50,
+          "imagePositionY": 50
+        },
+        "story": "Tiikkikansi uusittiin laudasta laudalle — jälki näkyy ja kestää."
+      },
+      {
+        "media": "assets/uploads/images/telakka-purjevene.jpg",
+        "mediaType": "image",
+        "mediaAlt": "Valmis purjevene telakalla lähdössä vesille",
+        "imageSettings": {
+          "imageScale": 100,
+          "imagePositionX": 50,
+          "imagePositionY": 50
+        },
+        "story": "Valmis vene vesillä on paras palaute, jonka työstä voi saada."
       }
     ]
   },
@@ -163,7 +210,7 @@
     }
   },
   "contact": {
-    "heading": "Kysy kipparilta arvio",
+    "heading": "Kysy kipparilta!",
     "intro": "Kerro veneestäsi ja työn tarpeesta — saat arvion siitä, miten korjaus kannattaa toteuttaa. Kuva veneestä tai vauriosta auttaa jo ensimmäisessä vastauksessa.",
     "phone": "050 312 0488",
     "whatsapp": "040 724 6494",

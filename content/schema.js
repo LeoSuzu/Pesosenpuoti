@@ -6,6 +6,9 @@ const formFields = [
   'photosLabel', 'photosHint', 'submitLabel', 'successHeading', 'successText',
 ];
 const imagePathPattern = /^(?!.*(?:^|\/)\.\.?\/)[A-Za-z0-9][A-Za-z0-9._%/-]*\.(?:avif|gif|jpe?g|png|svg|webp)$/i;
+const mediaPathPattern = /^(?!.*(?:^|\/)\.\.?\/)[A-Za-z0-9][A-Za-z0-9._%/-]*\.(?:avif|gif|jpe?g|png|svg|webp|mp4|webm)$/i;
+const imageExtensionPattern = /\.(?:avif|gif|jpe?g|png|svg|webp)$/i;
+const videoExtensionPattern = /\.(?:mp4|webm)$/i;
 
 export const contentTargetManifest = Object.freeze({
   root: Object.freeze([
@@ -15,6 +18,11 @@ export const contentTargetManifest = Object.freeze({
     { path: 'gallery.photos.0.image', attribute: 'src' }, { path: 'gallery.photos.0.imageAlt', attribute: 'alt' },
     { path: 'gallery.photos.1.image', attribute: 'src' }, { path: 'gallery.photos.1.imageAlt', attribute: 'alt' },
     { path: 'gallery.photos.2.image', attribute: 'src' }, { path: 'gallery.photos.2.imageAlt', attribute: 'alt' },
+    { path: 'gallery.photos.3.image', attribute: 'src' }, { path: 'gallery.photos.3.imageAlt', attribute: 'alt' },
+    { path: 'reference.heading' },
+    { path: 'reference.items.0.media', attribute: 'src' }, { path: 'reference.items.0.mediaAlt', attribute: 'alt' }, { path: 'reference.items.0.story' },
+    { path: 'reference.items.1.media', attribute: 'src' }, { path: 'reference.items.1.mediaAlt', attribute: 'alt' }, { path: 'reference.items.1.story' },
+    { path: 'reference.items.2.media', attribute: 'src' }, { path: 'reference.items.2.mediaAlt', attribute: 'alt' }, { path: 'reference.items.2.story' },
     { path: 'seasonal.heading' }, { path: 'seasonal.lead' },
     { path: 'seasonal.cards.0.season' }, { path: 'seasonal.cards.0.title' }, { path: 'seasonal.cards.0.body' },
     { path: 'seasonal.cards.1.season' }, { path: 'seasonal.cards.1.title' }, { path: 'seasonal.cards.1.body' },
@@ -35,8 +43,8 @@ export const contentTargetManifest = Object.freeze({
     { path: 'title', selector: '.palvelu-card h3' },
     { path: 'lead' }, { path: 'items' }, { path: 'image', attribute: 'src' }, { path: 'imageAlt', attribute: 'alt' },
   ]),
-  address: Object.freeze(['footer', 'map']),
-  actions: Object.freeze({ phone: 2, whatsapp: 1, email: 1, 'map-link': 1, 'map-frame': 1 }),
+  address: Object.freeze(['footer']),
+  actions: Object.freeze({ phone: 2, whatsapp: 1, email: 1 }),
 });
 
 function isObject(value) {
@@ -99,6 +107,26 @@ function validatePhoto(value, path, issues) {
   imageSettings(value.imageSettings, `${path}.imageSettings`, issues);
 }
 
+function validateReferenceItem(value, path, issues) {
+  if (!exactObject(value, path, ['media', 'mediaType', 'mediaAlt', 'imageSettings', 'story'], issues)) return;
+  if (value.mediaType !== 'image' && value.mediaType !== 'video') {
+    issues.push(`${path}.mediaType must be "image" or "video"`);
+  }
+  requiredString(value.media, `${path}.media`, issues);
+  if (typeof value.media === 'string' && value.media.trim() !== '') {
+    if (!mediaPathPattern.test(value.media) || /%(?!20)/i.test(value.media)) {
+      issues.push(`${path}.media must be a local media path`);
+    } else if (value.mediaType === 'image' && !imageExtensionPattern.test(value.media)) {
+      issues.push(`${path}.media must be an image file when mediaType is "image"`);
+    } else if (value.mediaType === 'video' && !videoExtensionPattern.test(value.media)) {
+      issues.push(`${path}.media must be a video file when mediaType is "video"`);
+    }
+  }
+  requiredString(value.mediaAlt, `${path}.mediaAlt`, issues);
+  requiredString(value.story, `${path}.story`, issues);
+  imageSettings(value.imageSettings, `${path}.imageSettings`, issues);
+}
+
 function validateService(value, index, issues) {
   const path = `services[${index}]`;
   if (!exactObject(value, path, ['id', 'title', 'lead', 'items', 'image', 'imageAlt', 'imageSettings'], issues)) return;
@@ -129,7 +157,7 @@ function validateEmail(value, path, issues) {
 
 export function validateSiteContent(value) {
   const issues = [];
-  if (!exactObject(value, 'site content', ['hero', 'services', 'gallery', 'seasonal', 'iceCreamBoat', 'welcome', 'contact', 'form'], issues)) {
+  if (!exactObject(value, 'site content', ['hero', 'services', 'gallery', 'reference', 'seasonal', 'iceCreamBoat', 'welcome', 'contact', 'form'], issues)) {
     return { valid: false, issues };
   }
 
@@ -150,9 +178,16 @@ export function validateSiteContent(value) {
 
   if (exactObject(value.gallery, 'gallery', ['heading', 'photos'], issues)) {
     requiredString(value.gallery.heading, 'gallery.heading', issues);
-    if (!Array.isArray(value.gallery.photos) || value.gallery.photos.length !== 3) {
-      issues.push('gallery.photos must contain exactly three photos');
+    if (!Array.isArray(value.gallery.photos) || value.gallery.photos.length !== 4) {
+      issues.push('gallery.photos must contain exactly four photos');
     } else value.gallery.photos.forEach((photo, index) => validatePhoto(photo, `gallery.photos[${index}]`, issues));
+  }
+
+  if (exactObject(value.reference, 'reference', ['heading', 'items'], issues)) {
+    requiredString(value.reference.heading, 'reference.heading', issues);
+    if (!Array.isArray(value.reference.items) || value.reference.items.length !== 3) {
+      issues.push('reference.items must contain exactly three items');
+    } else value.reference.items.forEach((item, index) => validateReferenceItem(item, `reference.items[${index}]`, issues));
   }
 
   if (exactObject(value.seasonal, 'seasonal', ['heading', 'lead', 'cards'], issues)) {
@@ -228,18 +263,13 @@ function whatsappNumber(value) {
 }
 
 function applyContactActions(root, contact) {
-  const address = encodeURIComponent(contact.address.join(', '));
   const links = {
     phone: `tel:${localPhone(contact.phone)}`,
     whatsapp: `https://wa.me/${whatsappNumber(contact.whatsapp)}`,
     email: `mailto:${contact.email}`,
-    'map-link': `https://maps.google.com/?q=${address}`,
-    'map-frame': `https://maps.google.com/?q=${address}&output=embed`,
   };
   root.querySelectorAll('[data-contact-action]').forEach(target => {
-    const action = target.dataset.contactAction;
-    if (action === 'map-frame') target.setAttribute('src', links[action]);
-    else target.setAttribute('href', links[action]);
+    target.setAttribute('href', links[target.dataset.contactAction]);
   });
 }
 
@@ -296,10 +326,6 @@ function applyAddressTargets(root, contact) {
   const address = contact.address.join(', ');
   root.querySelectorAll('[data-address-target]').forEach(target => {
     if (target.dataset.addressTarget === 'footer') target.textContent = address;
-    else {
-      target.setAttribute('title', `Pesosenpuoti kartalla — ${address}`);
-      target.setAttribute('aria-label', `Kartta: Pesosenpuoti, ${address}`);
-    }
   });
 }
 
