@@ -31,3 +31,9 @@ Tarjousmateriaalit/
 # Local tooling, not part of the site
 .agents/
 skills-lock.json
+
+# Local-only copy of the secrets listed in .env.example — never read by
+# Cloudflare, just a private reference. Never commit real credentials.
+.env
+.env.*
+!.env.example
