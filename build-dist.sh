@@ -21,6 +21,9 @@ if [ -d images ]; then
 fi
 mkdir -p dist/assets/uploads dist/content
 cp -R assets/uploads/images dist/assets/uploads/images
+if [ -d assets/uploads/videos ]; then
+  cp -R assets/uploads/videos dist/assets/uploads/videos
+fi
 cp content/site.json content/schema.js dist/content/
 
 # Editor UI — its protected API functions remain in the repository's
