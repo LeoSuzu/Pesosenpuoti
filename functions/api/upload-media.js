@@ -3,7 +3,7 @@ import { writeRepositoryFile } from '../_lib/github.js';
 import { json } from '../_lib/http.js';
 
 const MAX_IMAGE_SIZE = 8 * 1024 * 1024;
-const MAX_VIDEO_SIZE = 20 * 1024 * 1024;
+const MAX_VIDEO_SIZE = 30 * 1024 * 1024;
 const extensions = Object.freeze({
   'image/jpeg': 'jpg',
   'image/png': 'png',

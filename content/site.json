@@ -135,37 +135,37 @@
     "heading": "Me teimme sen",
     "items": [
       {
-        "media": "assets/uploads/images/tyo-puurunko.jpg",
-        "mediaType": "image",
-        "mediaAlt": "Puuveneen runko korjattuna laudasta lautaan",
-        "imageSettings": {
-          "imageScale": 100,
-          "imagePositionX": 50,
-          "imagePositionY": 50
-        },
-        "story": "Puurungon korjaus vaati kärsivällisyyttä, mutta lopputulos kantaa vuosia."
-      },
-      {
-        "media": "assets/uploads/images/tyo-tiikkikansi.jpg",
-        "mediaType": "image",
-        "mediaAlt": "Uusittu tiikkikansi lähikuvassa",
-        "imageSettings": {
-          "imageScale": 100,
-          "imagePositionX": 50,
-          "imagePositionY": 50
-        },
-        "story": "Tiikkikansi uusittiin laudasta laudalle — jälki näkyy ja kestää."
-      },
-      {
-        "media": "assets/uploads/images/telakka-purjevene.jpg",
-        "mediaType": "image",
-        "mediaAlt": "Valmis purjevene telakalla lähdössä vesille",
+        "media": "assets/uploads/videos/aura-boat.mp4",
+        "mediaType": "video",
+        "mediaAlt": "Vene liikkeellä vesillä",
         "imageSettings": {
           "imageScale": 100,
           "imagePositionX": 50,
           "imagePositionY": 50
         },
         "story": "Valmis vene vesillä on paras palaute, jonka työstä voi saada."
+      },
+      {
+        "media": "assets/uploads/videos/maalaus.mp4",
+        "mediaType": "video",
+        "mediaAlt": "Veneen maalaustyötä työpajassa",
+        "imageSettings": {
+          "imageScale": 100,
+          "imagePositionX": 50,
+          "imagePositionY": 50
+        },
+        "story": "Pintakäsittely tehdään huolella, kerros kerrokselta."
+      },
+      {
+        "media": "assets/uploads/videos/purjehdus.mp4",
+        "mediaType": "video",
+        "mediaAlt": "Purjehdusta kesäisellä merellä",
+        "imageSettings": {
+          "imageScale": 100,
+          "imagePositionX": 50,
+          "imagePositionY": 50
+        },
+        "story": "Kun vene on valmis, sen paikka on merellä — ei telakalla."
       }
     ]
   },

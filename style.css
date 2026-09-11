@@ -288,47 +288,42 @@ p {
   min-width: 7.2rem;
 }
 
+/* Fixed navy pill behind the (white-on-transparent) wordmark, matching the
+   agency's print/social artwork — the badge itself never swaps with the
+   page theme, so the logo reads the same against any background. */
+.navbar__logo-badge {
+  display: inline-flex;
+  align-items: center;
+  background: oklch(44.5% 0.115 236);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition: padding var(--dur-mid) var(--ease-in-out);
+}
+
+.navbar.scrolled .navbar__logo-badge {
+  padding: 0.4rem 0.65rem;
+}
+
 .navbar__logo-mark {
   flex-shrink: 0;
-  height: 3rem;
+  height: 1.6rem;
   width: auto;
+  display: block;
   transition: height var(--dur-mid) var(--ease-in-out);
 }
 
 .navbar.scrolled .navbar__logo-mark {
-  height: 2.4rem;
+  height: 1.3rem;
 }
 
-/* Two logo marks share the same slot: the white one reads against the hero
-   photo and the dark scrolled navbar in dark mode; the brand-colored one
-   swaps in only once the navbar has scrolled to its near-white light-theme
-   background, where white text would disappear. */
-.navbar__logo-mark--light {
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+.navbar__logo-badge--footer {
+  padding: 0.6rem 0.9rem;
 }
 
-.navbar__logo-mark--colored {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  display: none;
-}
-
-.navbar.scrolled .navbar__logo-mark--light {
-  display: none;
-}
-
-.navbar.scrolled .navbar__logo-mark--colored {
-  display: block;
-}
-
-[data-theme="dark"] .navbar.scrolled .navbar__logo-mark--light {
-  display: block;
-}
-
-[data-theme="dark"] .navbar.scrolled .navbar__logo-mark--colored {
-  display: none;
+.yhteystiedot__logo .navbar__logo-mark,
+.navbar__logo-badge--footer img {
+  height: 1.9rem;
 }
 
 .navbar__links {
@@ -1627,10 +1622,6 @@ p {
 
 [data-theme="dark"] .telakalle__map {
   background: oklch(0.220 0.055 232);
-}
-
-[data-theme="dark"] .yhteystiedot__logo img {
-  filter: brightness(1.15) saturate(0.95);
 }
 
 [data-theme="dark"] .footer {
