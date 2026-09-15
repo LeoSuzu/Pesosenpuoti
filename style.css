@@ -138,7 +138,7 @@ p {
   align-items: center;
   gap: 0.5em;
   padding: 0.85em 1.8em;
-  background: var(--color-amber);
+  background: var(--color-warm-tree);
   color: var(--color-white);
   font-family: var(--font-heading);
   font-weight: 700;
@@ -163,7 +163,7 @@ p {
 }
 
 .btn-primary:focus-visible {
-  outline: 3px solid var(--color-amber);
+  outline: 3px solid var(--color-warm-tree);
   outline-offset: 3px;
 }
 
@@ -350,7 +350,7 @@ p {
   left: 0;
   right: 100%;
   height: 1px;
-  background: var(--color-amber);
+  background: var(--color-warm-tree);
   transition: right var(--dur-mid) var(--ease-out-quart);
 }
 
@@ -546,7 +546,7 @@ p {
   bottom: 0.15em;
   width: 3px;
   border-radius: 2px;
-  background: var(--color-amber);
+  background: var(--color-warm-tree);
 }
 
 .hero__sub {
@@ -965,7 +965,7 @@ p {
   height: 4px;
   background: linear-gradient(to right,
     var(--color-brand) 0%,
-    var(--color-amber) 50%,
+    var(--color-warm-tree) 50%,
     var(--color-brand) 100%
   );
   opacity: 0.6;
@@ -984,7 +984,7 @@ p {
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-amber);
+  color: var(--color-warm-tree);
   margin-bottom: 1.25rem;
   display: block;
 }
@@ -1405,7 +1405,7 @@ p {
 .jaatelö__icon {
   width: 3.25rem;
   height: 3.25rem;
-  color: var(--color-amber);
+  color: var(--color-warm-tree);
   margin-bottom: 1.5rem;
 }
 
@@ -1529,7 +1529,7 @@ p {
   height: clamp(5.5rem, 9vw, 7.5rem);
   border-radius: 50%;
   background: oklch(0.220 0.055 232); /* fixed dark navy fill — same in both themes, unlike --color-navy which inverts */
-  border: 3px solid var(--color-amber);
+  border: 3px solid var(--color-warm-tree);
   box-shadow: var(--shadow-card-hover);
 }
 
@@ -1592,7 +1592,7 @@ p {
   --color-surface: oklch(0.192 0.050 230);
   --color-navy:    oklch(0.900 0.010 228);
   --color-brand:   oklch(0.680 0.115 228);
-  --color-amber:   oklch(0.750 0.128 73);
+  --color-warm-tree:   oklch(0.750 0.128 73);
   --color-ink:     oklch(0.860 0.012 228);
   --color-muted:   oklch(0.680 0.022 228);
   --color-white:   oklch(0.960 0.008 228);
