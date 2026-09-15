@@ -34,7 +34,7 @@
     },
     {
       "id": "huollot",
-      "title": "Kausi- ja perushuollot",
+      "title": "Veneiden huollot",
       "lead": "Vene valmiina joka kauteen — kevät ja syksy.",
       "items": [
         "Kevät- ja syyshuollot",
@@ -53,7 +53,7 @@
     },
     {
       "id": "erikoistyot",
-      "title": "Erikoistyöt",
+      "title": "Veneiden erikoistyöt",
       "lead": "Sähköt, rigaus, konsultointi ja materiaalit.",
       "items": [
         "Venesähköt, akkujen vaihdot, sähkökaaviot",

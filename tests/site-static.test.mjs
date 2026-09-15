@@ -71,8 +71,8 @@ test('services use four alternating image-and-copy repair rows in the expected o
   const titles = [...section.matchAll(/<h3>([^<]+)<\/h3>/g)].map((match) => match[1]);
   assert.deepEqual(titles, [
     'Veneiden korjaukset',
-    'Kausi- ja perushuollot',
-    'Erikoistyöt',
+    'Veneiden huollot',
+    'Veneiden erikoistyöt',
     'Arviointi ja konsultointi',
   ]);
   assert.equal((section.match(/class="palvelu-card palvelu-card--service"/g) ?? []).length, 4);
