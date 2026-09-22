@@ -137,18 +137,18 @@
       {
         "media": "assets/uploads/videos/aura-boat.mp4",
         "mediaType": "video",
-        "mediaAlt": "Vene liikkeellä vesillä",
+        "mediaAlt": "Puuvene Aura laiturissa satamassa",
         "imageSettings": {
           "imageScale": 100,
           "imagePositionX": 50,
           "imagePositionY": 50
         },
-        "story": "Valmis vene vesillä on paras palaute, jonka työstä voi saada."
+        "story": "Valmis vene laiturissa on paras palaute, jonka työstä voi saada."
       },
       {
         "media": "assets/uploads/videos/maalaus.mp4",
         "mediaType": "video",
-        "mediaAlt": "Veneen maalaustyötä työpajassa",
+        "mediaAlt": "Veneen rungon maalaustyötä telakalla",
         "imageSettings": {
           "imageScale": 100,
           "imagePositionX": 50,
@@ -159,13 +159,13 @@
       {
         "media": "assets/uploads/videos/purjehdus.mp4",
         "mediaType": "video",
-        "mediaAlt": "Purjehdusta kesäisellä merellä",
+        "mediaAlt": "Tuomo Pesonen tarkastaa vanhaa venehylkyä saaristossa",
         "imageSettings": {
           "imageScale": 100,
           "imagePositionX": 50,
           "imagePositionY": 50
         },
-        "story": "Kun vene on valmis, sen paikka on merellä — ei telakalla."
+        "story": "Jokainen korjaus alkaa tarinasta — vanhatkin rungot kertovat, mistä vene on tullut."
       }
     ]
   },
