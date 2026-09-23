@@ -43,7 +43,7 @@ test('admin provides a local demo login and editing controls for text and photos
   assert.match(adminScript, /localhost/);
   assert.match(adminScript, /pp-demo-content/);
   assert.match(main, /pp-demo-content/);
-  assert.match(html, /href="admin\/" class="editor-link editor-link--footer" aria-label="Muokkaa sivustoa/);
+  assert.match(html, /class="editor-link editor-link--copy" aria-label="Muokkaa sivustoa/);
 });
 
 test('media widget supports drag-and-drop upload and pointer-driven pan/zoom, and is reusable for video', async () => {
@@ -63,7 +63,7 @@ test('media widget supports drag-and-drop upload and pointer-driven pan/zoom, an
 test('Cloudflare build output includes the editor and every editable public asset', () => {
   assert.match(buildScript, /cp -R admin dist\/admin/);
   assert.match(buildScript, /cp content\/site\.json content\/schema\.js dist\/content\//);
-  assert.match(buildScript, /cp -R assets\/uploads\/images dist\/assets\/uploads\/images/);
+  assert.match(buildScript, /cp -R assets\/uploads dist\/assets\/uploads/);
 });
 
 test('services use four alternating image-and-copy repair rows in the expected order', () => {
@@ -90,10 +90,11 @@ test('service rows and gallery mosaic collapse without overlap on mobile', () =>
   assert.equal((html.match(/class="galleria__note/g) ?? []).length, 4);
 });
 
-test('the editor has a visible contact-area button and the hero waves use the slower motion speed', async () => {
+test('the editor link sits by the footer copyright, not in visitor-facing sections, and the hero waves use the slower motion speed', async () => {
   const wave = await readFile(new URL('../wave.js', import.meta.url), 'utf8');
 
-  assert.match(html, /class="editor-link" href="admin\/"/);
+  assert.match(html, /href="admin\/" class="editor-link editor-link--copy"/);
+  assert.match(html, /class="back-to-top" href="#"/);
   assert.match(css, /\.hero__canvas\s*\{[\s\S]*?z-index:\s*1/);
   assert.match(css, /\.hero__image\s*\{[\s\S]*?z-index:\s*0/);
   assert.match(wave, /speed:\s*0\.0000008/);

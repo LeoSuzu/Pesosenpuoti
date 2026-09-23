@@ -72,7 +72,8 @@
     <div class="navbar__inner">
       <a href="#" class="navbar__logo" aria-label="Pesosenpuoti — etusivulle">
         <span class="navbar__logo-badge">
-          <img class="navbar__logo-mark" src="web-elements/logos/logo.svg" alt="Pesosenpuoti" width="180" height="auto">
+          <img class="navbar__logo-mark navbar__logo-mark--light" src="web-elements/logos/logo-light.svg" alt="Pesosenpuoti" width="150" height="26">
+          <img class="navbar__logo-mark navbar__logo-mark--dark" src="web-elements/logos/logo.svg" alt="" width="150" height="26" aria-hidden="true">
         </span>
       </a>
 
@@ -364,7 +365,7 @@
         <article class="referenssit__item fade-in" style="--i:2">
           <figure class="referenssit__window" data-content="reference.items.2.mediaAlt" data-content-attr="alt">
             <video
-              src="assets/uploads/videos/venesatama.mp4" data-content="reference.items.2.media" data-content-attr="src" data-image-settings="reference.items.2.imageSettings"
+              src="assets/uploads/videos/puutavaran-purku.mp4" data-content="reference.items.2.media" data-content-attr="src" data-image-settings="reference.items.2.imageSettings"
               aria-label="Tuomo Pesonen tarkastaa vanhaa venehylkyä saaristossa"
               muted loop playsinline autoplay preload="metadata"
             ></video>
@@ -430,7 +431,7 @@
 
         <div class="jaatelö__image fade-in">
           <img
-            src="assets/uploads/images/Soutuvene_picnic.png" data-content="iceCreamBoat.image" data-content-attr="src" data-image-settings="iceCreamBoat.imageSettings"
+            src="assets/uploads/images/Purjehduskuva.JPEG" data-content="iceCreamBoat.image" data-content-attr="src" data-image-settings="iceCreamBoat.imageSettings"
             alt="Kesäinen tunnelmakuva vedeltä — saariston valoa ja rauhaa" data-content="iceCreamBoat.imageAlt" data-content-attr="alt"
             loading="lazy"
             decoding="async"
@@ -565,11 +566,11 @@
               <img src="web-elements/logos/logo.svg" alt="Pesosenpuoti" width="180" height="31">
             </span>
           </div>
-          <a class="editor-link" href="admin/" aria-label="Muokkaa sivustoa — kirjautuminen vaaditaan" title="Muokkaa sivustoa">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
-              <path d="m15 5 4 4"/>
+          <a class="back-to-top" href="#" aria-label="Takaisin sivun alkuun">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M12 19V5"/><path d="m5 12 7-7 7 7"/>
             </svg>
+            Takaisin alkuun
           </a>
           <div class="info-block">
             <p class="info-block__label">Puhelin</p>
@@ -654,12 +655,6 @@
           <span class="footer__ytunnus">Y-tunnus: 3354350-3</span>
         </div>
           <div class="footer__links">
-            <a href="admin/" class="editor-link editor-link--footer" aria-label="Muokkaa sivustoa — kirjautuminen vaaditaan" title="Muokkaa sivustoa">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
-                <path d="m15 5 4 4"/>
-              </svg>
-            </a>
             <a
             href="https://www.facebook.com/p/Pesosenpuoti-61576941811671/"
             target="_blank"
@@ -671,7 +666,15 @@
           <a href="#" aria-label="Tietosuojaseloste">Tietosuoja</a>
         </div>
       </div>
-      <p class="footer__copy">© 2026 Pesosenpuoti</p>
+      <p class="footer__copy">
+        © 2026 Pesosenpuoti
+        <a href="admin/" class="editor-link editor-link--copy" aria-label="Muokkaa sivustoa — kirjautuminen vaaditaan" title="Muokkaa sivustoa">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+            <path d="m15 5 4 4"/>
+          </svg>
+        </a>
+      </p>
     </div>
   </footer>
 

@@ -19,12 +19,11 @@ cp index.html style.css main.js wave.js _headers robots.txt sitemap.xml dist/
 if [ -d images ]; then
   cp -R images dist/images
 fi
-mkdir -p dist/assets/uploads dist/content
-cp -R assets/uploads/images dist/assets/uploads/images
-cp -R assets/uploads/icons dist/assets/uploads/icons
-if [ -d assets/uploads/videos ]; then
-  cp -R assets/uploads/videos dist/assets/uploads/videos
-fi
+mkdir -p dist/assets dist/content
+# The editor (functions/api/upload-media.js) writes new uploads straight into
+# assets/uploads/, not into a subfolder, so the whole tree is copied — not just
+# the images/icons/videos subfolders — or fresh uploads would never go live.
+cp -R assets/uploads dist/assets/uploads
 cp content/site.json content/schema.js dist/content/
 
 # Editor UI — its protected API functions remain in the repository's
