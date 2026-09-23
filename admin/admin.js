@@ -126,8 +126,15 @@ import { createMediaCard } from './media-widget.js';
         if (username !== demoCredentials.username || password !== demoCredentials.password) throw new Error('Demo-käyttäjätunnus tai salasana on väärä.');
         localSession = true; loginMessage('');
       } else await api('/api/login', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ username, password }) });
-      $('login-view').hidden = true; $('editor-view').hidden = false; await loadContent(); message(isLocalDemo ? 'Demo-tila: julkaisu lataa varmuuskopion, ei muuta live-sivua.' : 'Valmis muokattavaksi.', true);
-    } catch (error) { loginMessage(error.message); }
+    } catch (error) { loginMessage(error.message); return; }
+
+    // Login succeeded — switch views before loading content, so a content-load
+    // failure below is visible in the editor (not stuck in the now-hidden login view).
+    $('login-view').hidden = true; $('editor-view').hidden = false;
+    try {
+      await loadContent();
+      message(isLocalDemo ? 'Demo-tila: julkaisu lataa varmuuskopion, ei muuta live-sivua.' : 'Valmis muokattavaksi.', true);
+    } catch (error) { message(error.message); }
   }
 
   $('login-form').addEventListener('submit', authenticate);
@@ -143,6 +150,10 @@ import { createMediaCard } from './media-widget.js';
 
   (async () => {
     if (isLocalDemo) { $('login-help').textContent = 'Live Server -demo: käyttäjätunnus tuomo, salasana demo. Muutokset eivät julkaise sivua.'; return; }
-    try { if ((await api('/api/session')).authenticated) { $('login-view').hidden = true; $('editor-view').hidden = false; await loadContent(); } } catch { /* login stays available when Pages Functions are not configured */ }
+    let hasSession = false;
+    try { hasSession = (await api('/api/session')).authenticated; } catch { /* login stays available when Pages Functions are not configured */ }
+    if (!hasSession) return;
+    $('login-view').hidden = true; $('editor-view').hidden = false;
+    try { await loadContent(); } catch (error) { message(error.message); }
   })();
 })();
