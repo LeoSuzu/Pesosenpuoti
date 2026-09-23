@@ -74,6 +74,11 @@ import { createMediaCard } from './media-widget.js';
     return path;
   }
 
+  async function deleteMedia(path) {
+    if (isLocalDemo || !path || !path.startsWith('assets/uploads/')) return;
+    await api('/api/delete-media', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ path }) });
+  }
+
   function renderPhoto(path, labelText) {
     const photo = get(content, path);
     return createMediaCard({
@@ -82,6 +87,7 @@ import { createMediaCard } from './media-widget.js';
       accept: 'image/png,image/jpeg,image/webp',
       mediaType: 'image',
       uploadFile: uploadPhoto,
+      deleteFile: deleteMedia,
       onPersist: saveDemo,
       onNotify: message,
     });
@@ -97,6 +103,7 @@ import { createMediaCard } from './media-widget.js';
       imageKey: 'media',
       altKey: 'mediaAlt',
       uploadFile: uploadPhoto,
+      deleteFile: deleteMedia,
       onPersist: saveDemo,
       onNotify: message,
     });

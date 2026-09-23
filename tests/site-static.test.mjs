@@ -63,7 +63,7 @@ test('media widget supports drag-and-drop upload and pointer-driven pan/zoom, an
 test('Cloudflare build output includes the editor and every editable public asset', () => {
   assert.match(buildScript, /cp -R admin dist\/admin/);
   assert.match(buildScript, /cp content\/site\.json content\/schema\.js dist\/content\//);
-  assert.match(buildScript, /cp -R assets\/uploads\/images dist\/assets\/uploads\/images/);
+  assert.match(buildScript, /cp -R assets\/uploads dist\/assets\/uploads/);
 });
 
 test('services use four alternating image-and-copy repair rows in the expected order', () => {

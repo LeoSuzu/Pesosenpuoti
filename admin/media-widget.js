@@ -14,7 +14,15 @@ function pointerDistance(a, b) {
   return Math.hypot(a.x - b.x, a.y - b.y);
 }
 
-export function createMediaCard({ media, labelText, accept = 'image/*', mediaType = 'image', imageKey = 'image', altKey = 'imageAlt', uploadFile, onPersist, onNotify }) {
+// Uploaded/site paths are repo-relative ("assets/uploads/…"), which only resolves
+// correctly when the current document sits at the site root. The editor lives at
+// /admin/, so it must anchor these to the domain root to preview them at all.
+function toRootPath(path) {
+  if (!path || path.startsWith('/') || path.startsWith('blob:') || path.startsWith('data:') || /^https?:\/\//.test(path)) return path;
+  return `/${path}`;
+}
+
+export function createMediaCard({ media, labelText, accept = 'image/*', mediaType = 'image', imageKey = 'image', altKey = 'imageAlt', uploadFile, deleteFile, onPersist, onNotify }) {
   const settings = media.imageSettings;
 
   const card = document.createElement('article');
@@ -28,7 +36,7 @@ export function createMediaCard({ media, labelText, accept = 'image/*', mediaTyp
 
   const el = document.createElement(mediaType === 'video' ? 'video' : 'img');
   el.className = 'media-frame__el';
-  el.src = media[imageKey];
+  el.src = toRootPath(media[imageKey]);
   if (mediaType === 'video') { el.muted = true; el.loop = true; el.playsInline = true; el.autoplay = true; }
   else { el.alt = media[altKey]; }
 
@@ -68,14 +76,19 @@ export function createMediaCard({ media, labelText, accept = 'image/*', mediaTyp
 
   async function handleFile(file) {
     if (!file || !file.type.startsWith(mediaType === 'video' ? 'video/' : 'image/')) return;
+    const previousPath = media[imageKey];
     frame.classList.add('is-uploading');
     frame.setAttribute('aria-busy', 'true');
     fileInput.disabled = true;
     try {
       const path = await uploadFile(file);
       media[imageKey] = path;
-      el.src = path;
+      el.src = toRootPath(path);
       persist('Tiedosto ladattu. Julkaise muutokset, kun olet valmis.');
+      if (previousPath && previousPath !== path) {
+        // Best-effort cleanup of the file it just replaced — never blocks the UI on failure.
+        deleteFile?.(previousPath).catch(() => {});
+      }
     } catch (error) {
       onNotify?.(error.message, false);
     } finally {
