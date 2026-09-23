@@ -292,11 +292,21 @@ p {
   display: inline-flex;
   align-items: center;
   padding: 0.55rem 0.85rem;
-  transition: padding var(--dur-mid) var(--ease-in-out);
+  border-radius: 0.5rem;
+  transition: padding var(--dur-mid) var(--ease-in-out), background var(--dur-fast);
 }
 
 .navbar.scrolled .navbar__logo-badge {
   padding: 0.4rem 0.65rem;
+}
+
+/* Recognizable click target: a soft highlight fills in behind the wordmark on hover. */
+.navbar__logo:hover .navbar__logo-badge {
+  background: oklch(1.000 0.000 0 / 0.12);
+}
+
+.navbar.scrolled .navbar__logo:hover .navbar__logo-badge {
+  background: oklch(0.220 0.060 235 / 0.07);
 }
 
 .navbar__logo-mark {
@@ -310,6 +320,12 @@ p {
 .navbar.scrolled .navbar__logo-mark {
   height: 1.3rem;
 }
+
+/* Light wordmark reads against the dark hero overlay at the top of the page;
+   the dark wordmark takes over once the navbar itself turns light on scroll. */
+.navbar__logo-mark--dark { display: none; }
+.navbar.scrolled .navbar__logo-mark--light { display: none; }
+.navbar.scrolled .navbar__logo-mark--dark { display: block; }
 
 .navbar__logo-badge--footer {
   padding: 0.6rem 0.9rem;
@@ -333,19 +349,26 @@ p {
   font-weight: 500;
   font-size: 0.92rem;
   letter-spacing: 0.01em;
-  transition: color var(--dur-fast), opacity var(--dur-fast);
+  transition: color var(--dur-fast), opacity var(--dur-fast), transform var(--dur-fast);
   position: relative;
+  display: inline-block;
 }
 
 .navbar__links a::after {
   content: '';
   position: absolute;
-  bottom: -3px;
+  bottom: -4px;
   left: 0;
   right: 100%;
-  height: 1px;
+  height: 2px;
+  border-radius: 1px;
   background: var(--color-warm-tree);
   transition: right var(--dur-mid) var(--ease-out-quart);
+}
+
+.navbar__links a:hover {
+  color: var(--color-warm-tree);
+  transform: translateY(-1px);
 }
 
 .navbar__links a:hover::after { right: 0; }
@@ -356,6 +379,10 @@ p {
 
 .navbar.scrolled .navbar__links a:hover {
   color: var(--color-brand);
+}
+
+.navbar.scrolled .navbar__links a::after {
+  background: var(--color-brand);
 }
 
 /* Hamburger — 44x44 touch target */
@@ -1331,6 +1358,9 @@ p {
 }
 
 .footer__copy {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-size: 0.78rem;
   color: oklch(1.000 0.000 0 / 0.30);
 }
@@ -1458,17 +1488,40 @@ p {
   border-color: var(--color-brand);
 }
 
-.editor-link--footer {
-  width: 32px;
-  height: 32px;
+/* Discreet — sits next to the copyright line, not meant to invite visitor clicks. */
+.editor-link--copy {
+  width: 20px;
+  height: 20px;
   margin-bottom: 0;
-  color: oklch(1.000 0.000 0 / 0.55);
-  border-color: oklch(1.000 0.000 0 / 0.25);
+  border-color: transparent;
+  opacity: 0.4;
 }
 
-.editor-link--footer:hover {
+.editor-link--copy:hover {
+  opacity: 1;
   color: var(--color-white);
-  border-color: oklch(1.000 0.000 0 / 0.55);
+  border-color: oklch(1.000 0.000 0 / 0.4);
+}
+
+.editor-link--copy svg {
+  width: 12px;
+  height: 12px;
+}
+
+.back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color var(--dur-fast), transform var(--dur-fast);
+}
+
+.back-to-top:hover {
+  color: var(--color-brand);
+  transform: translateY(-2px);
 }
 
 /* --- Tervetuloa telakalle — map + quote ------------------------------ */
