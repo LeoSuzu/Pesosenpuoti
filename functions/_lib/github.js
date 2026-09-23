@@ -81,3 +81,13 @@ export function writeRepositoryFile(env, path, content, message, sha) {
     body: JSON.stringify(body),
   });
 }
+
+export function deleteRepositoryFile(env, path, message, sha) {
+  const body = { message, sha, branch: env.GITHUB_BRANCH };
+
+  return requestGitHub(env, path, {
+    method: 'DELETE',
+    headers: { ...githubHeaders(env), 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+}
