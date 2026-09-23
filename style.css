@@ -1488,13 +1488,16 @@ p {
   border-color: var(--color-brand);
 }
 
-/* Discreet — sits next to the copyright line, not meant to invite visitor clicks. */
+/* Discreet — sits next to the copyright line, not meant to invite visitor clicks.
+   The footer background is dark navy, so this needs its own (white-based)
+   color instead of the light-background --color-muted the base rule uses. */
 .editor-link--copy {
   width: 20px;
   height: 20px;
   margin-bottom: 0;
+  color: oklch(1.000 0.000 0 / 0.45);
   border-color: transparent;
-  opacity: 0.4;
+  opacity: 0.7;
 }
 
 .editor-link--copy:hover {
