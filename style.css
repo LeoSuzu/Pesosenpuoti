@@ -12,7 +12,7 @@
   --color-navy:    oklch(44.5% 0.115 236);                    /* light scandinavian navy — headings, dark fills */
   --color-brand:   oklch(0.560 0.145 232);                    /* committed Baltic blue — links, borders, accents */
   --color-warm-tree:   oklch(0.70 0.15 85);                   /* warm tree
-  --color-oak:      oklch(72% 0.09 75);                         /* oak-tan wood accent */
+  --color-warm-tree:      oklch(72% 0.09 75);                         /* oak-tan wood accent */
   --color-mahogany: oklch(38% 0.09 30);                       /* mahogany wood accent */
   --color-ink:     oklch(0.170 0.020 232);                    /* near-black with blue cast — body copy */
   --color-muted:   oklch(0.480 0.018 228);                    /* secondary text — ≥3.5:1 vs bg */
@@ -1282,7 +1282,7 @@ p {
   content: '';
   display: block;
   height: 4px;
-  background: linear-gradient(90deg, var(--color-oak), var(--color-mahogany));
+  background: linear-gradient(90deg, var(--color-warm-tree), var(--color-mahogany));
 }
 
 .footer .container {
@@ -1393,7 +1393,7 @@ p {
   width: 2.25rem;
   height: 3px;
   border-radius: 2px;
-  background: linear-gradient(90deg, var(--color-oak), var(--color-mahogany));
+  background: linear-gradient(90deg, var(--color-warm-tree), var(--color-mahogany));
 }
 
 .palvelu-card__icon svg {
