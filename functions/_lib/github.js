@@ -41,6 +41,9 @@ function githubHeaders(env) {
     Accept: 'application/vnd.github+json',
     Authorization: `Bearer ${env.GITHUB_TOKEN}`,
     'X-GitHub-Api-Version': '2022-11-28',
+    // GitHub's REST API rejects any request with no User-Agent with a 403 —
+    // see https://docs.github.com/en/rest/using-the-rest-api/troubleshooting-the-rest-api#user-agent-required
+    'User-Agent': 'Pesosenpuoti-editor',
   };
 }
 
