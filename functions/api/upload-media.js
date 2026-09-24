@@ -37,6 +37,8 @@ export async function onRequestPost({ request, env }) {
   const path = `assets/uploads/${Date.now()}-${randomSuffix()}.${extension}`;
   const bytes = new Uint8Array(await media.arrayBuffer());
   const result = await writeRepositoryFile(env, path, bytes, 'content: upload media');
-  if (result.status < 200 || result.status >= 300) return json({ error: 'Unable to upload media' }, { status: 502 });
+  if (result.status < 200 || result.status >= 300) {
+    return json({ error: `Unable to upload media (GitHub ${result.status}: ${result.data?.message || 'unknown error'})` }, { status: 502 });
+  }
   return json({ path }, { status: 201 });
 }

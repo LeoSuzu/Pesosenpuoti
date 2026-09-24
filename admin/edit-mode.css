@@ -271,3 +271,6 @@ body.pe-editing {
   .pe-toolbar .pe-toolbar__forms { display: none; }
   .hero > .pe-media-tools { bottom: 150px; }
 }
+
+/* While cropping, the image's own buttons would sit under the crop controls. */
+.pe-cropping > .pe-media-tools { display: none; }
