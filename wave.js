@@ -1,12 +1,12 @@
 /* wave.js — Canvas wave animation for Pesosenpuoti hero
    Scandinavian Sea feel: slow, layered, grey-blue, not tropical
-   prefers-reduced-motion: fully disabled, no canvas drawn */
+   prefers-reduced-motion: one still frame is drawn, no animation loop */
 
 
 (function () {
   'use strict';
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const canvas = document.getElementById('wave-canvas');
   if (!canvas) return;
@@ -43,7 +43,10 @@
   readWaveColor();
 
   /* Re-read when the theme toggle flips data-theme on <html> */
-  new MutationObserver(readWaveColor).observe(document.documentElement, {
+  new MutationObserver(() => {
+    readWaveColor();
+    if (reducedMotion.matches) drawStill(0);
+  }).observe(document.documentElement, {
     attributes: true,
     attributeFilter: ['data-theme'],
   });
@@ -95,35 +98,51 @@
 
   let rafId = null;
 
-  function frame(t) {
+  function drawStill(t) {
     /* Reset transform before clear so DPR scale doesn't stack */
     const dpr = window.devicePixelRatio || 1;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
     waves.forEach(wv => drawWave(wv, t));
+  }
+
+  function frame(t) {
+    drawStill(t);
     rafId = requestAnimationFrame(frame);
+  }
+
+  function start() {
+    if (rafId == null) rafId = requestAnimationFrame(frame);
+  }
+
+  function stop() {
+    if (rafId != null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
   }
 
   /* ResizeObserver keeps canvas pixel dimensions in sync */
   const ro = new ResizeObserver(() => {
     resize();
+    if (reducedMotion.matches) drawStill(0);
   });
   ro.observe(canvas);
   resize();
 
-  /* Start loop */
-  rafId = requestAnimationFrame(frame);
+  if (reducedMotion.matches) drawStill(0);
+  else start();
+
+  /* Follow the OS setting live: still frame when reduced, loop otherwise */
+  reducedMotion.addEventListener('change', () => {
+    if (reducedMotion.matches) { stop(); drawStill(0); }
+    else if (!document.hidden) start();
+  });
 
   /* Pause when tab is hidden — saves CPU and battery */
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      if (rafId != null) {
-        cancelAnimationFrame(rafId);
-        rafId = null;
-      }
-    } else if (rafId == null) {
-      rafId = requestAnimationFrame(frame);
-    }
+    if (document.hidden) stop();
+    else if (!reducedMotion.matches) start();
   });
 
 })();
