@@ -227,3 +227,47 @@ body.pe-editing {
   opacity: 0.55;
   cursor: progress;
 }
+/* Placement tweaks (hand-written): small round frames get their tools beside
+   the frame; the hero's tools sit bottom-left, clear of the fixed navbar. */
+.pe-media-tools--inline,
+.pe-crop__controls--inline {
+  position: static;
+  transform: none;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.hero > .pe-media-tools {
+  top: auto;
+  bottom: 24px;
+  left: 24px;
+}
+
+.pe-add:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* The hero fills the viewport, so keep its tools clear of the bottom bar. */
+.hero > .pe-media-tools { bottom: 96px; }
+.hero > .pe-crop .pe-crop__controls { bottom: 96px; }
+
+@media (max-width: 640px) {
+  body.pe-editing { padding-bottom: 132px; }
+  .pe-toolbar { gap: 6px; }
+  .pe-toolbar__title { display: none; }
+  .pe-toolbar__status { flex-basis: 100%; white-space: normal; }
+  .pe-toolbar .pe-btn { padding: 8px 10px; font-size: 13px; min-height: 36px; }
+  .hero > .pe-media-tools { bottom: 150px; left: 16px; }
+  .hero > .pe-crop .pe-crop__controls { bottom: 150px; }
+}
+
+/* Image tools sit at the bottom of their frame so they never collide with the
+   card tools in the top-right corner of narrow cards. */
+.pe-media-host > .pe-media-tools { top: auto; bottom: 10px; flex-wrap: wrap; max-width: calc(100% - 20px); }
+.hero > .pe-media-tools { bottom: 96px; }
+
+@media (max-width: 640px) {
+  .pe-toolbar .pe-toolbar__forms { display: none; }
+  .hero > .pe-media-tools { bottom: 150px; }
+}

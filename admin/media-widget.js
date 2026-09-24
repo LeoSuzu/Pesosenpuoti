@@ -83,7 +83,9 @@ export function createMediaCard({ media, labelText, accept = 'image/*', mediaTyp
     try {
       const path = await uploadFile(file);
       media[imageKey] = path;
-      el.src = toRootPath(path);
+      // The new file only reaches the deployed site after the next build, so
+      // preview the local copy instead of a URL that would 404 until then.
+      el.src = URL.createObjectURL(file);
       persist('Tiedosto ladattu. Julkaise muutokset, kun olet valmis.');
       if (previousPath && previousPath !== path) {
         // Best-effort cleanup of the file it just replaced — never blocks the UI on failure.

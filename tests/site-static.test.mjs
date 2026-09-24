@@ -93,7 +93,7 @@ test('service rows and gallery mosaic collapse without overlap on mobile', () =>
 test('the editor link sits by the footer copyright, not in visitor-facing sections, and the hero waves use the slower motion speed', async () => {
   const wave = await readFile(new URL('../wave.js', import.meta.url), 'utf8');
 
-  assert.match(html, /href="admin\/" class="editor-link editor-link--copy"/);
+  assert.match(html, /href="\/\?muokkaa" class="editor-link editor-link--copy"/);
   assert.match(html, /class="back-to-top" href="#"/);
   assert.match(css, /\.hero__canvas\s*\{[\s\S]*?z-index:\s*1/);
   assert.match(css, /\.hero__image\s*\{[\s\S]*?z-index:\s*0/);

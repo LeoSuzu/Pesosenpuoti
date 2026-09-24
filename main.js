@@ -25,7 +25,14 @@
     }
   }
 
-  loadSiteContent();
+  /* ?muokkaa opens the on-page editor, which loads (and saves) the content itself. */
+  if (new URLSearchParams(location.search).has('muokkaa')) {
+    import('/admin/edit-mode.js')
+      .then((module) => module.startEditMode())
+      .catch((error) => console.error('Edit mode failed to start.', error));
+  } else {
+    loadSiteContent();
+  }
 
   /* ------------------------------------------------------------------ */
   /* Sticky navbar — add .scrolled when hero bottom passes viewport top  */

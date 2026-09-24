@@ -6,6 +6,7 @@ import { shrinkVideo } from './shrink-video.js';
   'use strict';
 
   const isLocalDemo = ['localhost', '127.0.0.1'].includes(location.hostname);
+  const returnToPage = new URLSearchParams(location.search).get('next') === 'muokkaa';
   const demoCredentials = { username: 'tuomo', password: 'demo' };
   const imageFields = () => [
     ['hero', 'Aloituskuva'],
@@ -153,6 +154,9 @@ import { shrinkVideo } from './shrink-video.js';
       } else await api('/api/login', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ username, password }) });
     } catch (error) { loginMessage(error.message); return; }
 
+    // Came from the page's pencil link: go straight back to on-page editing.
+    if (returnToPage) { location.href = '/?muokkaa'; return; }
+
     // Login succeeded — switch views before loading content, so a content-load
     // failure below is visible in the editor (not stuck in the now-hidden login view).
     $('login-view').hidden = true; $('editor-view').hidden = false;
@@ -194,6 +198,7 @@ import { shrinkVideo } from './shrink-video.js';
     let hasSession = false;
     try { hasSession = (await api('/api/session')).authenticated; } catch { /* login stays available when Pages Functions are not configured */ }
     if (!hasSession) return;
+    if (returnToPage) { location.href = '/?muokkaa'; return; }
     $('login-view').hidden = true; $('editor-view').hidden = false;
     try { await loadContent(); } catch (error) { message(error.message); }
   })();
