@@ -14,9 +14,6 @@ const rootTargetSpecs = [
   ['gallery.photos.2.image', { attribute: 'src', alt: 'gallery.photos.2.imageAlt', settings: 'gallery.photos.2.imageSettings', tag: 'IMG' }],
   ['gallery.photos.3.image', { attribute: 'src', alt: 'gallery.photos.3.imageAlt', settings: 'gallery.photos.3.imageSettings', tag: 'IMG' }],
   ['reference.heading'],
-  ['reference.items.0.media', { attribute: 'src', settings: 'reference.items.0.imageSettings' }], ['reference.items.0.mediaAlt', { attribute: 'alt' }], ['reference.items.0.story'],
-  ['reference.items.1.media', { attribute: 'src', settings: 'reference.items.1.imageSettings' }], ['reference.items.1.mediaAlt', { attribute: 'alt' }], ['reference.items.1.story'],
-  ['reference.items.2.media', { attribute: 'src', settings: 'reference.items.2.imageSettings' }], ['reference.items.2.mediaAlt', { attribute: 'alt' }], ['reference.items.2.story'],
   ['seasonal.heading'], ['seasonal.lead'],
   ['seasonal.cards.0.season'], ['seasonal.cards.0.title'], ['seasonal.cards.0.body'],
   ['seasonal.cards.1.season'], ['seasonal.cards.1.title'], ['seasonal.cards.1.body'],
@@ -71,6 +68,15 @@ test('site content preserves the original two seasonal cards and two address lin
   assert.equal(validateSiteContent(extraAddressLine).valid, false);
 });
 
+test('services and reference cards can be added, removed and reordered', () => {
+  const edited = structuredClone(content);
+  [edited.services[0], edited.services[1]] = [edited.services[1], edited.services[0]];
+  edited.services.push({ ...structuredClone(edited.services[0]), id: 'uusi-palvelu', title: 'Uusi palvelu' });
+  edited.services.splice(2, 1);
+  edited.reference.items = [edited.reference.items[2]];
+  assert.deepEqual(validateSiteContent(edited), { valid: true, issues: [] });
+});
+
 test('site content rejects model values that cannot safely fill its fixed public targets', () => {
   const cases = [
     ['empty service list', value => { value.services[0].items = []; }],
@@ -80,8 +86,12 @@ test('site content rejects model values that cannot safely fill its fixed public
     ['wrong seasonal cardinality', value => { value.seasonal.cards.pop(); }],
     ['unknown root key', value => { value.script = 'not content'; }],
     ['unknown nested key', value => { value.services[0].layout = 'unsafe'; }],
-    ['wrong stable service ID', value => { value.services[0].id = 'other'; }],
-    ['service order change', value => { [value.services[0], value.services[1]] = [value.services[1], value.services[0]]; }],
+    ['service ID that is not a slug', value => { value.services[0].id = 'Ei Slug!'; }],
+    ['duplicate service ID', value => { value.services[1].id = value.services[0].id; }],
+    ['unknown service icon', value => { value.services[0].icon = 'assets/uploads/icons/../../secret.svg'; }],
+    ['no services', value => { value.services = []; }],
+    ['too many services', value => { value.services = Array.from({ length: 13 }, (_, i) => ({ ...value.services[0], id: `palvelu-${i}` })); }],
+    ['no reference items', value => { value.reference.items = []; }],
     ['URL scheme image path', value => { value.services[0].image = 'javascript:payload.png'; }],
     ['traversal image path', value => { value.hero.image = '../private.png'; }],
     ['encoded parent segment image path', value => { value.hero.image = 'images/%2e%2e/private.png'; }],
@@ -107,9 +117,6 @@ test('content target manifest defines the complete fixed public target contract'
     'gallery.photos.2.image',
     'gallery.photos.3.image',
     'reference.heading',
-    'reference.items.0.media', 'reference.items.0.mediaAlt', 'reference.items.0.story',
-    'reference.items.1.media', 'reference.items.1.mediaAlt', 'reference.items.1.story',
-    'reference.items.2.media', 'reference.items.2.mediaAlt', 'reference.items.2.story',
     'seasonal.heading', 'seasonal.lead',
     'seasonal.cards.0.season', 'seasonal.cards.0.title', 'seasonal.cards.0.body',
     'seasonal.cards.1.season', 'seasonal.cards.1.title', 'seasonal.cards.1.body',
@@ -126,9 +133,14 @@ test('content target manifest defines the complete fixed public target contract'
   assert.deepEqual(contentTargetManifest.address, ['footer']);
   assert.deepEqual(contentTargetManifest.service, [
     { path: 'title', selector: '.palvelu-card h3' },
+    { path: 'icon', style: '--icon-src' },
     { path: 'lead' },
     { path: 'items' },
     { path: 'image', attribute: 'src', alt: 'imageAlt' },
+  ]);
+  assert.deepEqual(contentTargetManifest.reference, [
+    { path: 'media', attribute: 'src', alt: 'mediaAlt' },
+    { path: 'story' },
   ]);
   assert.deepEqual(contentTargetManifest.actions, {
     phone: 2,
@@ -153,6 +165,10 @@ test('static markup exposes the complete manifest with the production hero-alt t
   assert.equal((html.match(/data-content="lead"/g) ?? []).length, 4);
   assert.equal((html.match(/data-content="items"/g) ?? []).length, 4);
   assert.equal((html.match(/data-content="image" data-content-attr="src"[^>]*data-content-alt="imageAlt"/g) ?? []).length, 4);
+  assert.equal((html.match(/data-content="icon" data-content-style="--icon-src"/g) ?? []).length, 4);
+  assert.equal((html.match(/data-reference-item/g) ?? []).length, 3);
+  assert.equal((html.match(/data-content="media" data-content-attr="src" data-content-alt="mediaAlt"/g) ?? []).length, 3);
+  assert.equal((html.match(/data-content="story"/g) ?? []).length, 3);
   assert.equal((html.match(/data-address-target="footer"/g) ?? []).length, 1);
   assert.equal((html.match(/data-address-target="map"/g) ?? []).length, 0);
   assert.doesNotMatch(html, /maps\.google\.com/);
@@ -180,6 +196,8 @@ class FakeElement {
     this.attributes = { ...attributes };
     this.serviceTemplate = serviceTemplate;
     this.children = [];
+    this.classes = new Set();
+    this.classList = { add: (name) => this.classes.add(name) };
     this.style = {
       setProperty(name, value) { this[name] = value; },
     };
@@ -194,24 +212,33 @@ class FakeElement {
   }
 
   closest(selector) {
-    return selector === '[data-service-id]' ? this.serviceTemplate : null;
+    return /\[data-(service-id|reference-item)\]/.test(selector) ? this.serviceTemplate : null;
   }
 
   replaceChildren(...children) {
     this.children = children;
   }
+
+  cloneNode() {
+    return new FakeElement({ dataset: { ...this.dataset }, textContent: this.textContent, attributes: this.attributes, tagName: this.tagName });
+  }
 }
 
+// A repeated card (service or reference) living in its root's card list.
 class FakeTemplate extends FakeElement {
-  constructor(id, targets, title) {
-    super({ dataset: { serviceId: id } });
+  constructor(kind, targets, title, list) {
+    super({ dataset: kind === 'service' ? { serviceId: 'x' } : { referenceItem: '' } });
+    this.kind = kind;
+    this.list = list;
     this.targets = targets.map(target => Object.assign(target, { serviceTemplate: this }));
     this.title = title;
-    this.titles = [title];
+    this.titles = title ? [title] : [];
   }
 
   querySelector(selector) {
-    return selector === '.palvelu-card h3' ? this.titles[0] : null;
+    if (selector === '.palvelu-card h3') return this.titles[0] ?? null;
+    if (selector === '[data-content="media"]') return this.targets.find(target => target.dataset.content === 'media') ?? null;
+    return null;
   }
 
   querySelectorAll(selector) {
@@ -219,6 +246,34 @@ class FakeTemplate extends FakeElement {
     if (selector === '.palvelu-card h3') return this.titles;
     return [];
   }
+
+  cloneNode() {
+    return new FakeTemplate(this.kind, this.targets.map(target => target.cloneNode()), this.title?.cloneNode(), this.list);
+  }
+
+  after(card) {
+    this.list.splice(this.list.indexOf(this) + 1, 0, card);
+  }
+
+  remove() {
+    this.list.splice(this.list.indexOf(this), 1);
+  }
+}
+
+function serviceCard(list) {
+  return new FakeTemplate('service', [
+    new FakeElement({ dataset: { content: 'icon', contentStyle: '--icon-src' } }),
+    new FakeElement({ dataset: { content: 'lead' } }),
+    new FakeElement({ dataset: { content: 'items' } }),
+    new FakeElement({ tagName: 'IMG', dataset: { content: 'image', contentAttr: 'src', contentAlt: 'imageAlt', imageSettings: 'imageSettings' } }),
+  ], new FakeElement(), list);
+}
+
+function referenceCard(list) {
+  return new FakeTemplate('reference', [
+    new FakeElement({ tagName: 'VIDEO', dataset: { content: 'media', contentAttr: 'src', contentAlt: 'mediaAlt', imageSettings: 'imageSettings' } }),
+    new FakeElement({ dataset: { content: 'story' } }),
+  ], null, list);
 }
 
 function makeRoot() {
@@ -234,23 +289,20 @@ function makeRoot() {
     },
   }));
   targets.push(new FakeElement({ dataset: { addressTarget: 'footer' } }));
-  const serviceTemplates = content.services.map(service => new FakeTemplate(
-    service.id,
-    [
-      new FakeElement({ dataset: { content: 'lead' } }),
-      new FakeElement({ dataset: { content: 'items' } }),
-      new FakeElement({ tagName: 'IMG', dataset: { content: 'image', contentAttr: 'src', contentAlt: 'imageAlt', imageSettings: 'imageSettings' } }),
-    ],
-    new FakeElement(),
-  ));
+  const serviceTemplates = [];
+  content.services.forEach(() => serviceTemplates.push(serviceCard(serviceTemplates)));
+  const referenceTemplates = [];
+  content.reference.items.forEach(() => referenceTemplates.push(referenceCard(referenceTemplates)));
   const document = { createElement: () => new FakeElement() };
   const root = {
     ownerDocument: document,
     targets,
     serviceTemplates,
+    referenceTemplates,
     querySelectorAll(selector) {
       if (selector === '[data-content]') return root.targets.filter(target => target.dataset.content);
       if (selector === '[data-service-id]') return root.serviceTemplates;
+      if (selector === '[data-reference-item]') return root.referenceTemplates;
       if (selector === '[data-contact-action]') return root.targets.filter(target => target.dataset.contactAction);
       if (selector === '[data-address-target]') return root.targets.filter(target => target.dataset.addressTarget);
       return [];
@@ -287,7 +339,10 @@ test('hydration applies every fixed target and derives safe matching contact act
   assert.equal(rootTarget(root, 'hero.image').getAttribute('alt'), 'Uusi hero-kuva');
   assert.equal(rootTarget(root, 'gallery.photos.2.image').getAttribute('src'), 'images/galleria.jpg');
   assert.equal(rootTarget(root, 'gallery.photos.2.image').getAttribute('alt'), edited.gallery.photos[2].imageAlt);
-  assert.equal(root.serviceTemplates[0].targets[2].getAttribute('alt'), edited.services[0].imageAlt);
+  assert.equal(root.serviceTemplates[0].targets[3].getAttribute('alt'), edited.services[0].imageAlt);
+  assert.equal(root.serviceTemplates[0].targets[0].style['--icon-src'], `url("${edited.services[0].icon}")`);
+  assert.equal(root.referenceTemplates[1].targets[1].textContent, edited.reference.items[1].story);
+  assert.equal(root.referenceTemplates[1].targets[0].getAttribute('aria-label'), edited.reference.items[1].mediaAlt);
   assert.equal(rootTarget(root, 'seasonal.cards.1.title').textContent, 'Uudistettu syyshuolto');
   assert.equal(rootTarget(root, 'iceCreamBoat.paragraphs.1').textContent, 'Uusi jäätelöveneteksti.');
   assert.equal(rootTarget(root, 'contact.address.1').textContent, '00200 Helsinki');
@@ -297,7 +352,23 @@ test('hydration applies every fixed target and derives safe matching contact act
   assert.equal(actionTarget(root, 'email').getAttribute('href'), 'mailto:uusi@example.fi');
   assert.equal(root.targets.find(target => target.dataset.addressTarget === 'footer').textContent, 'Kapteeninkatu 5 D 55, 00200 Helsinki');
   assert.equal(root.serviceTemplates[0].title.textContent, edited.services[0].title);
-  assert.deepEqual(root.serviceTemplates[0].targets[1].children.map(item => item.textContent), edited.services[0].items);
+  assert.deepEqual(root.serviceTemplates[0].targets[2].children.map(item => item.textContent), edited.services[0].items);
+});
+
+test('hydration clones or drops cards to match the number of services and reference items', () => {
+  const root = makeRoot();
+  const edited = structuredClone(content);
+  edited.services.push({ ...structuredClone(edited.services[0]), id: 'uusi-palvelu', title: 'Uusi palvelu', icon: 'assets/uploads/icons/jaatelovene.svg' });
+  edited.reference.items = [edited.reference.items[2]];
+
+  assert.equal(applySiteContent(root, edited), true);
+
+  assert.equal(root.serviceTemplates.length, 5);
+  assert.equal(root.serviceTemplates[4].dataset.serviceId, 'uusi-palvelu');
+  assert.equal(root.serviceTemplates[4].title.textContent, 'Uusi palvelu');
+  assert.ok(root.serviceTemplates[4].classes.has('visible'));
+  assert.equal(root.referenceTemplates.length, 1);
+  assert.equal(root.referenceTemplates[0].targets[1].textContent, edited.reference.items[0].story);
 });
 
 test('invalid content leaves all static targets untouched', () => {

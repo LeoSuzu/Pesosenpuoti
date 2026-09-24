@@ -1,4 +1,12 @@
-const serviceIds = ['korjaukset', 'huollot', 'erikoistyot', 'arviointi'];
+export const MAX_CARDS = 12;
+export const serviceIcons = Object.freeze([
+  'assets/uploads/icons/veneen-korjaukset.svg',
+  'assets/uploads/icons/veneen-huollot.svg',
+  'assets/uploads/icons/veneiden-erikoistyot.svg',
+  'assets/uploads/icons/arviointi-ja-konsultointi.svg',
+  'assets/uploads/icons/jaatelovene.svg',
+]);
+const serviceIdPattern = /^[a-z0-9][a-z0-9-]{0,39}$/;
 const imageSettingFields = ['imageScale', 'imagePositionX', 'imagePositionY'];
 const formFields = [
   'nameLabel', 'namePlaceholder', 'contactLabel', 'contactPlaceholder',
@@ -20,9 +28,6 @@ export const contentTargetManifest = Object.freeze({
     { path: 'gallery.photos.2.image', attribute: 'src', alt: 'gallery.photos.2.imageAlt' },
     { path: 'gallery.photos.3.image', attribute: 'src', alt: 'gallery.photos.3.imageAlt' },
     { path: 'reference.heading' },
-    { path: 'reference.items.0.media', attribute: 'src' }, { path: 'reference.items.0.mediaAlt', attribute: 'alt' }, { path: 'reference.items.0.story' },
-    { path: 'reference.items.1.media', attribute: 'src' }, { path: 'reference.items.1.mediaAlt', attribute: 'alt' }, { path: 'reference.items.1.story' },
-    { path: 'reference.items.2.media', attribute: 'src' }, { path: 'reference.items.2.mediaAlt', attribute: 'alt' }, { path: 'reference.items.2.story' },
     { path: 'seasonal.heading' }, { path: 'seasonal.lead' },
     { path: 'seasonal.cards.0.season' }, { path: 'seasonal.cards.0.title' }, { path: 'seasonal.cards.0.body' },
     { path: 'seasonal.cards.1.season' }, { path: 'seasonal.cards.1.title' }, { path: 'seasonal.cards.1.body' },
@@ -39,9 +44,15 @@ export const contentTargetManifest = Object.freeze({
     { path: 'form.photosLabel' }, { path: 'form.photosHint' }, { path: 'form.submitLabel' },
     { path: 'form.successHeading' }, { path: 'form.successText' },
   ]),
+  // Repeated cards: every [data-service-id] / [data-reference-item] element is
+  // a template; the page clones or removes them to match the content length.
   service: Object.freeze([
     { path: 'title', selector: '.palvelu-card h3' },
+    { path: 'icon', style: '--icon-src' },
     { path: 'lead' }, { path: 'items' }, { path: 'image', attribute: 'src', alt: 'imageAlt' },
+  ]),
+  reference: Object.freeze([
+    { path: 'media', attribute: 'src', alt: 'mediaAlt' }, { path: 'story' },
   ]),
   address: Object.freeze(['footer']),
   actions: Object.freeze({ phone: 2, whatsapp: 1, email: 1 }),
@@ -129,9 +140,10 @@ function validateReferenceItem(value, path, issues) {
 
 function validateService(value, index, issues) {
   const path = `services[${index}]`;
-  if (!exactObject(value, path, ['id', 'title', 'lead', 'items', 'image', 'imageAlt', 'imageSettings'], issues)) return;
+  if (!exactObject(value, path, ['id', 'title', 'icon', 'lead', 'items', 'image', 'imageAlt', 'imageSettings'], issues)) return;
   requiredString(value.id, `${path}.id`, issues);
-  if (value.id !== serviceIds[index]) issues.push(`${path}.id must be ${serviceIds[index]}`);
+  if (typeof value.id === 'string' && !serviceIdPattern.test(value.id)) issues.push(`${path}.id must be a short lowercase slug`);
+  if (!serviceIcons.includes(value.icon)) issues.push(`${path}.icon must be one of the service icons`);
   requiredString(value.title, `${path}.title`, issues);
   requiredString(value.lead, `${path}.lead`, issues);
   nonEmptyStringArray(value.items, `${path}.items`, issues);
@@ -167,11 +179,11 @@ export function validateSiteContent(value) {
     imageSettings(value.hero.imageSettings, 'hero.imageSettings', issues);
   }
 
-  if (!Array.isArray(value.services) || value.services.length !== serviceIds.length) {
-    issues.push('services must contain exactly four services');
+  if (!Array.isArray(value.services) || value.services.length < 1 || value.services.length > MAX_CARDS) {
+    issues.push(`services must contain 1–${MAX_CARDS} services`);
   } else {
     value.services.forEach((service, index) => validateService(service, index, issues));
-    if (new Set(value.services.map(service => service?.id)).size !== serviceIds.length) {
+    if (new Set(value.services.map(service => service?.id)).size !== value.services.length) {
       issues.push('services IDs must be unique');
     }
   }
@@ -185,8 +197,8 @@ export function validateSiteContent(value) {
 
   if (exactObject(value.reference, 'reference', ['heading', 'items'], issues)) {
     requiredString(value.reference.heading, 'reference.heading', issues);
-    if (!Array.isArray(value.reference.items) || value.reference.items.length !== 3) {
-      issues.push('reference.items must contain exactly three items');
+    if (!Array.isArray(value.reference.items) || value.reference.items.length < 1 || value.reference.items.length > MAX_CARDS) {
+      issues.push(`reference.items must contain 1–${MAX_CARDS} items`);
     } else value.reference.items.forEach((item, index) => validateReferenceItem(item, `reference.items[${index}]`, issues));
   }
 
@@ -237,6 +249,7 @@ function applyTarget(target, content, document) {
   const attribute = target.dataset.contentAttr;
   const styleProperty = target.dataset.contentStyle;
   if (attribute) target.setAttribute(attribute, value);
+  else if (styleProperty?.startsWith('--')) target.style.setProperty(styleProperty, `url("${value}")`);
   else if (styleProperty) target.style[styleProperty] = `url("${value}")`;
   else if (Array.isArray(value)) target.replaceChildren(...value.map(item => {
     const listItem = document.createElement('li');
@@ -308,20 +321,63 @@ function hasExactActionTargets(root) {
     Object.entries(contentTargetManifest.actions).every(([action, count]) => counts[action] === count);
 }
 
+export const SERVICE_SELECTOR = '[data-service-id]';
+export const REFERENCE_SELECTOR = '[data-reference-item]';
+const REPEATED_SELECTOR = `${SERVICE_SELECTOR}, ${REFERENCE_SELECTOR}`;
+
+function templateMatches(template, manifest) {
+  if (!manifest.filter(target => target.selector).every(target => template.querySelectorAll(target.selector).length === 1)) return false;
+  return hasExactTargets([...template.querySelectorAll('[data-content]')], manifest.filter(target => !target.selector));
+}
+
 function canApplySiteContent(root) {
-  const rootTargets = [...root.querySelectorAll('[data-content]')].filter(target => !target.closest('[data-service-id]'));
+  const rootTargets = [...root.querySelectorAll('[data-content]')].filter(target => !target.closest(REPEATED_SELECTOR));
   if (!hasExactTargets(rootTargets, contentTargetManifest.root)) return false;
 
   const addressTargets = [...root.querySelectorAll('[data-address-target]')].map(target => target.dataset.addressTarget).sort();
   if (addressTargets.join('\n') !== [...contentTargetManifest.address].sort().join('\n')) return false;
 
-  const templates = [...root.querySelectorAll('[data-service-id]')];
-  const templatesMatch = templates.length === serviceIds.length && templates.every((template, index) => {
-    const titleTargets = template.querySelectorAll(contentTargetManifest.service[0].selector);
-    if (template.dataset.serviceId !== serviceIds[index] || titleTargets.length !== 1) return false;
-    return hasExactTargets([...template.querySelectorAll('[data-content]')], contentTargetManifest.service.slice(1));
+  const repeatsMatch = [[SERVICE_SELECTOR, contentTargetManifest.service], [REFERENCE_SELECTOR, contentTargetManifest.reference]]
+    .every(([selector, manifest]) => {
+      const templates = [...root.querySelectorAll(selector)];
+      return templates.length > 0 && templates.every(template => templateMatches(template, manifest));
+    });
+  return repeatsMatch && hasExactActionTargets(root);
+}
+
+// Make the number of card elements match the content: clone the first card for
+// extra items, drop surplus ones. Returns the cards in content order.
+function syncRepeated(root, selector, count) {
+  const cards = [...root.querySelectorAll(selector)];
+  while (cards.length < count) {
+    const clone = cards[0].cloneNode(true);
+    clone.classList.add('visible');
+    cards[cards.length - 1].after(clone);
+    cards.push(clone);
+  }
+  cards.splice(count).forEach(card => card.remove());
+  return cards;
+}
+
+// A reference card shows either a looping video or a still image.
+function ensureMediaElement(card, item, document) {
+  const current = card.querySelector('[data-content="media"]');
+  const tag = item.mediaType === 'video' ? 'VIDEO' : 'IMG';
+  if (!current || current.tagName === tag) return;
+  const next = document.createElement(tag.toLowerCase());
+  ['data-content', 'data-content-attr', 'data-content-alt', 'data-image-settings', 'class'].forEach(name => {
+    const value = current.getAttribute(name);
+    if (value !== null && value !== undefined) next.setAttribute(name, value);
   });
-  return templatesMatch && hasExactActionTargets(root);
+  if (tag === 'VIDEO') {
+    ['muted', 'loop', 'playsinline', 'autoplay'].forEach(name => next.setAttribute(name, ''));
+    next.setAttribute('preload', 'metadata');
+    next.muted = true;
+  } else {
+    next.setAttribute('loading', 'lazy');
+    next.setAttribute('decoding', 'async');
+  }
+  current.replaceWith(next);
 }
 
 function applyAddressTargets(root, contact) {
@@ -332,22 +388,29 @@ function applyAddressTargets(root, contact) {
 }
 
 export function applySiteContent(root, content) {
-  if (!validateSiteContent(content).valid) return;
-  if (!canApplySiteContent(root)) return;
+  if (!validateSiteContent(content).valid) return false;
+  if (!canApplySiteContent(root)) return false;
 
   const document = root.ownerDocument || root;
-  if (!document?.createElement) return;
-
-  const templates = [...root.querySelectorAll('[data-service-id]')];
+  if (!document?.createElement) return false;
 
   root.querySelectorAll('[data-content]').forEach(target => {
-    if (!target.closest('[data-service-id]')) applyTarget(target, content, document);
+    if (!target.closest(REPEATED_SELECTOR)) applyTarget(target, content, document);
   });
-  templates.forEach((template, index) => {
+  syncRepeated(root, SERVICE_SELECTOR, content.services.length).forEach((card, index) => {
     const service = content.services[index];
-    template.querySelector('.palvelu-card h3').textContent = service.title;
-    template.querySelectorAll('[data-content]').forEach(target => applyTarget(target, service, document));
+    card.dataset.serviceId = service.id;
+    card.style.setProperty('--i', String(index));
+    card.querySelector('.palvelu-card h3').textContent = service.title;
+    card.querySelectorAll('[data-content]').forEach(target => applyTarget(target, service, document));
+  });
+  syncRepeated(root, REFERENCE_SELECTOR, content.reference.items.length).forEach((card, index) => {
+    const item = content.reference.items[index];
+    ensureMediaElement(card, item, document);
+    card.style.setProperty('--i', String(index));
+    card.querySelectorAll('[data-content]').forEach(target => applyTarget(target, item, document));
   });
   applyContactActions(root, content.contact);
   applyAddressTargets(root, content.contact);
+  return true;
 }

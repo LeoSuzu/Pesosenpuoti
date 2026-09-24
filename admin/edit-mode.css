@@ -1,0 +1,229 @@
+/* On-page edit mode. Drafted by the local Ollama fleet (qwen2.5-coder:7b),
+   reviewed and fixed. Loaded only when the page is opened with ?muokkaa. */
+:root {
+  --pe-bar: #10233d;
+  --pe-ink: #ffffff;
+  --pe-accent: #c9970e;
+  --pe-danger: #b3261e;
+  --pe-outline: #2f8fd8;
+  --pe-font: system-ui, -apple-system, sans-serif;
+}
+
+body.pe-editing {
+  padding-bottom: 76px;
+}
+
+.pe-toolbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 64px;
+  z-index: 1000;
+  background: var(--pe-bar);
+  color: var(--pe-ink);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  box-sizing: border-box;
+  font-family: var(--pe-font);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 640px) {
+  .pe-toolbar {
+    height: auto;
+    flex-wrap: wrap;
+    padding: 8px;
+  }
+}
+
+.pe-toolbar__title {
+  font-weight: bold;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.pe-toolbar__status {
+  flex: 1;
+  font-size: 14px;
+  opacity: 0.85;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.pe-btn {
+  appearance: none;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-family: var(--pe-font);
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+  color: inherit;
+  min-height: 40px;
+  transition: background-color 0.15s;
+}
+
+.pe-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.pe-btn:focus-visible {
+  outline: 3px solid var(--pe-accent);
+  outline-offset: 2px;
+}
+
+.pe-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pe-btn--primary {
+  background: var(--pe-accent);
+  border-color: var(--pe-accent);
+  color: #1b1300;
+}
+
+.pe-btn--danger {
+  background: var(--pe-danger);
+  border-color: var(--pe-danger);
+  color: white;
+}
+
+.pe-btn--small {
+  padding: 6px 10px;
+  font-size: 13px;
+  min-height: 32px;
+}
+
+.pe-editable {
+  outline: 1px dashed transparent;
+  outline-offset: 3px;
+  cursor: text;
+  transition: outline-color 0.15s;
+}
+
+.pe-editable:hover {
+  outline-color: var(--pe-outline);
+}
+
+.pe-editable:focus {
+  outline: 2px solid var(--pe-outline);
+  background: rgba(47, 143, 216, 0.08);
+}
+
+.pe-media-host {
+  position: relative;
+}
+
+.pe-media-tools {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 20;
+  display: flex;
+  gap: 6px;
+}
+
+.pe-media-tools .pe-btn,
+.pe-media-tools .pe-btn--small {
+  background: rgba(16, 35, 61, 0.85);
+  color: white;
+}
+
+.pe-crop {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  cursor: grab;
+  touch-action: none;
+  outline: 3px solid var(--pe-accent);
+  outline-offset: -3px;
+  background: transparent;
+}
+
+.pe-crop:active {
+  cursor: grabbing;
+}
+
+.pe-crop__controls {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 8px;
+  background: rgba(16, 35, 61, 0.9);
+  z-index: 31;
+}
+
+.pe-cropping {
+  z-index: 40 !important;
+}
+
+.pe-card-tools {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 25;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: calc(100% - 20px);
+}
+
+.pe-card-tools .pe-btn--small {
+  background: rgba(16, 35, 61, 0.85);
+  color: white;
+}
+
+.pe-card-host {
+  position: relative;
+  outline: 1px dashed rgba(47, 143, 216, 0.5);
+  outline-offset: 6px;
+}
+
+.pe-add {
+  display: block;
+  width: 100%;
+  margin: 16px 0;
+  padding: 18px;
+  border: 2px dashed var(--pe-outline);
+  border-radius: 10px;
+  background: rgba(47, 143, 216, 0.06);
+  color: var(--pe-outline);
+  font-family: var(--pe-font);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.pe-add:hover {
+  background: rgba(47, 143, 216, 0.14);
+}
+
+.pe-dragover {
+  outline: 3px dashed var(--pe-accent) !important;
+  outline-offset: -3px;
+}
+
+.pe-busy {
+  opacity: 0.55;
+  cursor: progress;
+}

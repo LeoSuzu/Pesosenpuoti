@@ -7,18 +7,14 @@ import { shrinkVideo } from './shrink-video.js';
 
   const isLocalDemo = ['localhost', '127.0.0.1'].includes(location.hostname);
   const demoCredentials = { username: 'tuomo', password: 'demo' };
-  const imageFields = [
+  const imageFields = () => [
     ['hero', 'Aloituskuva'],
-    ['services.0', 'Palvelut — korjaukset'], ['services.1', 'Palvelut — huollot'],
-    ['services.2', 'Palvelut — erikoistyöt'], ['services.3', 'Palvelut — arviointi'],
+    ...content.services.map((service, index) => [`services.${index}`, `Palvelut — ${service.title}`]),
     ['gallery.photos.0', 'Telakalla tapahtuu — kuva 1'], ['gallery.photos.1', 'Telakalla tapahtuu — kuva 2'],
     ['gallery.photos.2', 'Telakalla tapahtuu — kuva 3'], ['gallery.photos.3', 'Telakalla tapahtuu — kuva 4'],
     ['iceCreamBoat', 'Jäätelövene'], ['welcome', 'Tuomon kuva'],
   ];
-  const referenceFields = [
-    ['reference.items.0', 'Me teimme sen — ikkuna 1'], ['reference.items.1', 'Me teimme sen — ikkuna 2'],
-    ['reference.items.2', 'Me teimme sen — ikkuna 3'],
-  ];
+  const referenceFields = () => content.reference.items.map((_, index) => [`reference.items.${index}`, `Me teimme sen — ikkuna ${index + 1}`]);
   const sectionNames = { hero: 'Aloitus', services: 'Palvelut', gallery: 'Telakalla tapahtuu', reference: 'Me teimme sen', seasonal: 'Kausihuollot', iceCreamBoat: 'Jäätelövene', welcome: 'Tuomon kuva', contact: 'Yhteystiedot', form: 'Lomake' };
   let content;
   let localSession = false;
@@ -68,7 +64,7 @@ import { shrinkVideo } from './shrink-video.js';
       label.append(input); label.classList.add('field-wide'); fields.append(label); return;
     }
     if (value && typeof value === 'object') Object.entries(value).forEach(([key, child]) => {
-      if (['image', 'imageAlt', 'imageSettings', 'id', 'media', 'mediaType', 'mediaAlt'].includes(key)) return;
+      if (['image', 'imageAlt', 'imageSettings', 'id', 'icon', 'media', 'mediaType', 'mediaAlt'].includes(key)) return;
       addTextFields(child, path ? `${path}.${key}` : key, fields);
     });
   }
@@ -144,8 +140,8 @@ import { shrinkVideo } from './shrink-video.js';
       if (key === 'welcome') return;
       const section = document.createElement('section'); section.className = 'editor-section'; const heading = document.createElement('h2'); heading.textContent = sectionNames[key] || key; const fields = document.createElement('div'); fields.className = 'fields'; addTextFields(value, key, fields); section.append(heading, fields); root.append(section);
     });
-    const photos = document.createElement('section'); photos.className = 'editor-section'; photos.innerHTML = '<h2>Kuvat ja rajaus</h2>'; const grid = document.createElement('div'); grid.className = 'media-grid'; imageFields.forEach(([path, labelText]) => grid.append(renderPhoto(path, labelText))); photos.append(grid); root.append(photos);
-    const reference = document.createElement('section'); reference.className = 'editor-section'; reference.innerHTML = '<h2>Me teimme sen — kuvat/videot</h2>'; const referenceGrid = document.createElement('div'); referenceGrid.className = 'media-grid'; referenceFields.forEach(([path, labelText]) => referenceGrid.append(renderReferenceItem(path, labelText))); reference.append(referenceGrid); root.append(reference);
+    const photos = document.createElement('section'); photos.className = 'editor-section'; photos.innerHTML = '<h2>Kuvat ja rajaus</h2>'; const grid = document.createElement('div'); grid.className = 'media-grid'; imageFields().forEach(([path, labelText]) => grid.append(renderPhoto(path, labelText))); photos.append(grid); root.append(photos);
+    const reference = document.createElement('section'); reference.className = 'editor-section'; reference.innerHTML = '<h2>Me teimme sen — kuvat/videot</h2>'; const referenceGrid = document.createElement('div'); referenceGrid.className = 'media-grid'; referenceFields().forEach(([path, labelText]) => referenceGrid.append(renderReferenceItem(path, labelText))); reference.append(referenceGrid); root.append(reference);
   }
 
   async function authenticate(event) {

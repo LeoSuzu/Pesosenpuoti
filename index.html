@@ -165,7 +165,7 @@
         <article class="palvelut__row fade-in" style="--i:0" data-service-id="korjaukset">
           <div class="palvelu-card palvelu-card--service">
             <div class="palvelu-card__icon" aria-hidden="true">
-              <span class="palvelu-card__icon-img" style="--icon-src:url('assets/uploads/icons/veneen-korjaukset.svg')"></span>
+              <span class="palvelu-card__icon-img" data-content="icon" data-content-style="--icon-src" style="--icon-src:url('assets/uploads/icons/veneen-korjaukset.svg')"></span>
             </div>
             <!-- <div class="palvelu-card__num" aria-hidden="true">01</div> -->
             <h3>Veneiden korjaukset</h3>
@@ -194,7 +194,7 @@
         <article class="palvelut__row fade-in" style="--i:1" data-service-id="huollot">
           <div class="palvelu-card palvelu-card--service">
             <div class="palvelu-card__icon" aria-hidden="true">
-              <span class="palvelu-card__icon-img" style="--icon-src:url('assets/uploads/icons/veneen-huollot.svg')"></span>
+              <span class="palvelu-card__icon-img" data-content="icon" data-content-style="--icon-src" style="--icon-src:url('assets/uploads/icons/veneen-huollot.svg')"></span>
             </div>
             <!-- <div class="palvelu-card__num" aria-hidden="true">02</div> -->
             <h3>Veneiden huollot</h3>
@@ -222,7 +222,7 @@
         <article class="palvelut__row fade-in" style="--i:2" data-service-id="erikoistyot">
           <div class="palvelu-card palvelu-card--service">
             <div class="palvelu-card__icon" aria-hidden="true">
-              <span class="palvelu-card__icon-img" style="--icon-src:url('assets/uploads/icons/veneiden-erikoistyot.svg')"></span>
+              <span class="palvelu-card__icon-img" data-content="icon" data-content-style="--icon-src" style="--icon-src:url('assets/uploads/icons/veneiden-erikoistyot.svg')"></span>
             </div>
             <!-- div class="palvelu-card__num" aria-hidden="true">03</div> -->
             <h3>Veneiden erikoistyöt</h3>
@@ -251,7 +251,7 @@
         <article class="palvelut__row fade-in" style="--i:3" data-service-id="arviointi">
           <div class="palvelu-card palvelu-card--service">
             <div class="palvelu-card__icon" aria-hidden="true">
-              <span class="palvelu-card__icon-img" style="--icon-src:url('assets/uploads/icons/arviointi-ja-konsultointi.svg')"></span>
+              <span class="palvelu-card__icon-img" data-content="icon" data-content-style="--icon-src" style="--icon-src:url('assets/uploads/icons/arviointi-ja-konsultointi.svg')"></span>
             </div>
 
             <h3>Arviointi ja konsultointi</h3>
@@ -340,37 +340,37 @@
       </header>
 
       <div class="referenssit__grid">
-        <article class="referenssit__item fade-in" style="--i:0">
-          <figure class="referenssit__window" data-content="reference.items.0.mediaAlt" data-content-attr="alt">
+        <article class="referenssit__item fade-in" style="--i:0" data-reference-item>
+          <figure class="referenssit__window">
             <video
-              src="assets/uploads/videos/venesatama.mp4" data-content="reference.items.0.media" data-content-attr="src" data-image-settings="reference.items.0.imageSettings"
+              src="assets/uploads/videos/venesatama.mp4" data-content="media" data-content-attr="src" data-content-alt="mediaAlt" data-image-settings="imageSettings"
               aria-label="Puuvene Aura laiturissa satamassa"
               muted loop playsinline autoplay preload="metadata"
             ></video>
           </figure>
-          <p class="referenssit__story" data-content="reference.items.0.story">Valmis vene laiturissa on paras palaute, jonka työstä voi saada.</p>
+          <p class="referenssit__story" data-content="story">Valmis vene laiturissa on paras palaute, jonka työstä voi saada.</p>
         </article>
 
-        <article class="referenssit__item fade-in" style="--i:1">
-          <figure class="referenssit__window" data-content="reference.items.1.mediaAlt" data-content-attr="alt">
+        <article class="referenssit__item fade-in" style="--i:1" data-reference-item>
+          <figure class="referenssit__window">
             <video
-              src="assets/uploads/videos/maalaus.mp4" data-content="reference.items.1.media" data-content-attr="src" data-image-settings="reference.items.1.imageSettings"
+              src="assets/uploads/videos/maalaus.mp4" data-content="media" data-content-attr="src" data-content-alt="mediaAlt" data-image-settings="imageSettings"
               aria-label="Veneen rungon maalaustyötä telakalla"
               muted loop playsinline autoplay preload="metadata"
             ></video>
           </figure>
-          <p class="referenssit__story" data-content="reference.items.1.story">Pintakäsittely tehdään huolella, kerros kerrokselta.</p>
+          <p class="referenssit__story" data-content="story">Pintakäsittely tehdään huolella, kerros kerrokselta.</p>
         </article>
 
-        <article class="referenssit__item fade-in" style="--i:2">
-          <figure class="referenssit__window" data-content="reference.items.2.mediaAlt" data-content-attr="alt">
+        <article class="referenssit__item fade-in" style="--i:2" data-reference-item>
+          <figure class="referenssit__window">
             <video
-              src="assets/uploads/videos/puutavaran-purku.mp4" data-content="reference.items.2.media" data-content-attr="src" data-image-settings="reference.items.2.imageSettings"
+              src="assets/uploads/videos/puutavaran-purku.mp4" data-content="media" data-content-attr="src" data-content-alt="mediaAlt" data-image-settings="imageSettings"
               aria-label="Tuomo Pesonen tarkastaa vanhaa venehylkyä saaristossa"
               muted loop playsinline autoplay preload="metadata"
             ></video>
           </figure>
-          <p class="referenssit__story" data-content="reference.items.2.story">Jokainen korjaus alkaa tarinasta — vanhatkin rungot kertovat, mistä vene on tullut.</p>
+          <p class="referenssit__story" data-content="story">Jokainen korjaus alkaa tarinasta — vanhatkin rungot kertovat, mistä vene on tullut.</p>
         </article>
       </div>
     </div>

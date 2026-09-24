@@ -15,6 +15,7 @@
   "services": [
     {
       "id": "korjaukset",
+      "icon": "assets/uploads/icons/veneen-korjaukset.svg",
       "title": "Veneiden korjaukset",
       "lead": "Puuveneet, lasikuitu ja purjeveneet käsiemme kautta.",
       "items": [
@@ -34,6 +35,7 @@
     },
     {
       "id": "huollot",
+      "icon": "assets/uploads/icons/veneen-huollot.svg",
       "title": "Veneiden huollot",
       "lead": "Vene valmiina joka kauteen — kevät ja syksy.",
       "items": [
@@ -53,6 +55,7 @@
     },
     {
       "id": "erikoistyot",
+      "icon": "assets/uploads/icons/veneiden-erikoistyot.svg",
       "title": "Veneiden erikoistyöt",
       "lead": "Sähköt, rigaus, konsultointi ja materiaalit.",
       "items": [
@@ -72,6 +75,7 @@
     },
     {
       "id": "arviointi",
+      "icon": "assets/uploads/icons/arviointi-ja-konsultointi.svg",
       "title": "Arviointi ja konsultointi",
       "lead": "Epäselvä vaurio tai iso projekti? Tuomo katsoo tilanteen ensin.",
       "items": [
