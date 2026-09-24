@@ -86,7 +86,7 @@ test("login accepts Tuomo's own account, separately from Leo's, and flags an exp
     request: new Request('https://example.test/api/login', { method: 'POST', body: JSON.stringify({ username: 'tuomo', password: 'starter-pw' }) }),
     env: tuomoEnv,
   });
-  assert.deepEqual(await usingInitial.json(), { authenticated: true, role: 'tuomo', passwordExpired: false });
+  assert.deepEqual(await usingInitial.json(), { authenticated: true, role: 'tuomo', passwordExpired: true });
 
   // Leo's credentials must keep working once Tuomo has his own account too.
   const leoStillWorks = await login({
@@ -149,10 +149,13 @@ test('password hashing: verifies the right password, rejects everything else, ne
   assert.equal(await safeEqual('same', 'different'), false);
 });
 
-test("Tuomo's account: initial password works until he sets his own, which then expires after a year", async () => {
+test("Tuomo's account: the initial password always forces an immediate change, his own then expires after a year", async () => {
   const tuomoEnv = { TUOMO_INITIAL_PASSWORD: 'starter', EDITOR_KV: fakeKv() };
-  assert.deepEqual(await verifyTuomoPassword(tuomoEnv, 'starter'), { valid: true, expired: false });
-  assert.equal(await isTuomoPasswordExpired(tuomoEnv), false);
+  // Logging in on the initial password is itself "expired" — forces the change screen right away.
+  assert.deepEqual(await verifyTuomoPassword(tuomoEnv, 'starter'), { valid: true, expired: true });
+  assert.equal(await isTuomoPasswordExpired(tuomoEnv), true);
+  // A wrong password against the initial one is neither valid nor (falsely) reported as expired.
+  assert.deepEqual(await verifyTuomoPassword(tuomoEnv, 'not-it'), { valid: false, expired: false });
 
   const now = Date.now();
   await setTuomoPassword(tuomoEnv, 'chosen-by-tuomo', now);

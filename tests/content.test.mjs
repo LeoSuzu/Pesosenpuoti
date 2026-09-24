@@ -42,8 +42,10 @@ test('site content accepts the fixed public model and rejects a missing image al
   });
 });
 
-test('every public photo has editable scale and crop-position settings', () => {
-  const expected = { imageScale: 100, imagePositionX: 50, imagePositionY: 50 };
+test('every public photo has editable scale and crop-position settings in range', () => {
+  // Real crops (via the "Rajaa" tool) move these away from the 50/50/100
+  // defaults, and that's expected — only the shape and valid ranges matter
+  // here, not fixed values. See imageSettings() in content/schema.js.
   const photos = [
     content.hero,
     ...content.services,
@@ -52,7 +54,12 @@ test('every public photo has editable scale and crop-position settings', () => {
     content.welcome,
   ];
 
-  photos.forEach((photo) => assert.deepEqual(photo.imageSettings, expected));
+  photos.forEach((photo) => {
+    assert.deepEqual(Object.keys(photo.imageSettings).sort(), ['imagePositionX', 'imagePositionY', 'imageScale']);
+    assert.ok(photo.imageSettings.imageScale >= 80 && photo.imageSettings.imageScale <= 180);
+    assert.ok(photo.imageSettings.imagePositionX >= 0 && photo.imageSettings.imagePositionX <= 100);
+    assert.ok(photo.imageSettings.imagePositionY >= 0 && photo.imageSettings.imagePositionY <= 100);
+  });
 });
 
 test('site content preserves the original two seasonal cards and two address lines', () => {

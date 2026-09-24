@@ -23,10 +23,11 @@ async function readStored(env) {
   }
 }
 
-// Checks `password` against Tuomo's account. `expired` is only ever true for
-// a record he has actually set himself — the one-time TUOMO_INITIAL_PASSWORD
-// fallback (used before his first change) never counts as expired, since Leo
-// controls that value directly and can change it any time.
+// Checks `password` against Tuomo's account. `expired` covers two cases that
+// both route him through the mandatory change-password screen: a record he
+// set himself more than a year ago, and — just as importantly — still being
+// on the one-time TUOMO_INITIAL_PASSWORD Leo handed him, which must always
+// force an immediate change rather than silently letting him keep using it.
 export async function verifyTuomoPassword(env, password, now = Date.now()) {
   const stored = await readStored(env);
   if (stored) {
@@ -35,13 +36,16 @@ export async function verifyTuomoPassword(env, password, now = Date.now()) {
   }
   const hasInitial = typeof env.TUOMO_INITIAL_PASSWORD === 'string' && env.TUOMO_INITIAL_PASSWORD !== '';
   const valid = hasInitial && (await safeEqual(password, env.TUOMO_INITIAL_PASSWORD));
-  return { valid, expired: false };
+  return { valid, expired: valid };
 }
 
 // Cheap expiry check for /api/session (doesn't need to verify a password).
+// No KV record yet means Tuomo is still on the initial password (if one is
+// configured at all) — that always counts as needing a change.
 export async function isTuomoPasswordExpired(env, now = Date.now()) {
   const stored = await readStored(env);
-  return stored ? isExpired(stored.setAt, now) : false;
+  if (stored) return isExpired(stored.setAt, now);
+  return typeof env.TUOMO_INITIAL_PASSWORD === 'string' && env.TUOMO_INITIAL_PASSWORD !== '';
 }
 
 export async function setTuomoPassword(env, password, now = Date.now()) {
