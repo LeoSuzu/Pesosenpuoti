@@ -19,6 +19,8 @@ import { shrinkVideo } from './shrink-video.js';
   const sectionNames = { hero: 'Aloitus', services: 'Palvelut', gallery: 'Telakalla tapahtuu', reference: 'Me teimme sen', seasonal: 'Kausihuollot', iceCreamBoat: 'Jäätelövene', welcome: 'Tuomon kuva', contact: 'Yhteystiedot', form: 'Lomake' };
   let content;
   let localSession = false;
+  let currentRole = null;
+  let afterPasswordChange = null; // set only for the mandatory (expired) flow
   // Replaced files are only removed after a successful publish, so the live
   // page never points at a file that is already gone.
   const pendingDeletes = new Set();
@@ -145,28 +147,80 @@ import { shrinkVideo } from './shrink-video.js';
     const reference = document.createElement('section'); reference.className = 'editor-section'; reference.innerHTML = '<h2>Me teimme sen — kuvat/videot</h2>'; const referenceGrid = document.createElement('div'); referenceGrid.className = 'media-grid'; referenceFields().forEach(([path, labelText]) => referenceGrid.append(renderReferenceItem(path, labelText))); reference.append(referenceGrid); root.append(reference);
   }
 
+  function goToEditor() {
+    if (returnToPage) { location.href = '/?muokkaa'; return; }
+    $('login-view').hidden = true; $('password-view').hidden = true; $('editor-view').hidden = false;
+    loadContent()
+      .then(() => message(isLocalDemo ? 'Demo-tila: julkaisu lataa varmuuskopion, ei muuta live-sivua.' : 'Valmis muokattavaksi.', true))
+      .catch((error) => message(error.message));
+  }
+
+  // Tuomo's password has expired (a year since he last set it): he must pick
+  // a new one — with the current (still-valid-until-now) password — before
+  // he can reach the editor or go back to on-page editing.
+  function requirePasswordChange() {
+    $('login-view').hidden = true; $('editor-view').hidden = true;
+    $('password-view').hidden = false;
+    $('password-help').textContent = 'Vuosi on kulunut edellisestä salasanan vaihdosta — aseta uusi salasana jatkaaksesi.';
+    $('current-password-label').hidden = false;
+    $('password-form').currentPassword.required = true;
+    $('password-cancel').hidden = true;
+    afterPasswordChange = goToEditor;
+  }
+
   async function authenticate(event) {
     event.preventDefault(); const data = new FormData(event.currentTarget); const username = data.get('username'); const password = data.get('password');
     try {
       if (isLocalDemo) {
         if (username !== demoCredentials.username || password !== demoCredentials.password) throw new Error('Demo-käyttäjätunnus tai salasana on väärä.');
-        localSession = true; loginMessage('');
-      } else await api('/api/login', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ username, password }) });
-    } catch (error) { loginMessage(error.message); return; }
-
-    // Came from the page's pencil link: go straight back to on-page editing.
-    if (returnToPage) { location.href = '/?muokkaa'; return; }
-
-    // Login succeeded — switch views before loading content, so a content-load
-    // failure below is visible in the editor (not stuck in the now-hidden login view).
-    $('login-view').hidden = true; $('editor-view').hidden = false;
-    try {
-      await loadContent();
-      message(isLocalDemo ? 'Demo-tila: julkaisu lataa varmuuskopion, ei muuta live-sivua.' : 'Valmis muokattavaksi.', true);
-    } catch (error) { message(error.message); }
+        localSession = true; currentRole = 'tuomo'; loginMessage('');
+        goToEditor();
+        return;
+      }
+      const result = await api('/api/login', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ username, password }) });
+      currentRole = result.role;
+      loginMessage('');
+      if (result.passwordExpired) requirePasswordChange();
+      else goToEditor();
+    } catch (error) { loginMessage(error.message); }
   }
 
   $('login-form').addEventListener('submit', authenticate);
+
+  $('change-password').addEventListener('click', () => {
+    $('editor-view').hidden = true; $('password-view').hidden = false;
+    $('current-password-label').hidden = currentRole !== 'tuomo';
+    $('password-form').currentPassword.required = currentRole === 'tuomo';
+    $('password-help').textContent = currentRole === 'leo'
+      ? 'Tämä asettaa Tuomon salasanan uudeksi (esim. jos hän on unohtanut sen tai se on vanhentunut).'
+      : 'Salasana kannattaa vaihtaa kerran vuodessa — järjestelmä muistuttaa siitä automaattisesti.';
+    $('password-cancel').hidden = false;
+    afterPasswordChange = null;
+    $('password-message').textContent = '';
+  });
+  $('password-cancel').addEventListener('click', () => { $('password-view').hidden = true; $('editor-view').hidden = false; });
+  $('password-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    // event.currentTarget is nulled out by the browser once the handler
+    // yields past an `await`, so the form element must be captured now.
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const newPassword = data.get('newPassword'); const newPassword2 = data.get('newPassword2');
+    const passwordMessage = (value) => { $('password-message').textContent = value; };
+    if (newPassword !== newPassword2) { passwordMessage('Uudet salasanat eivät täsmää.'); return; }
+    if (newPassword.length < 8) { passwordMessage('Uuden salasanan pitää olla vähintään 8 merkkiä.'); return; }
+    try {
+      await api('/api/change-password', {
+        method:'POST', headers:{ 'content-type':'application/json' },
+        body: JSON.stringify({ currentPassword: data.get('currentPassword'), newPassword }),
+      });
+      form.reset();
+      passwordMessage('');
+      const next = afterPasswordChange; afterPasswordChange = null;
+      if (next) next();
+      else { $('password-view').hidden = true; $('editor-view').hidden = false; message('Salasana vaihdettu.', true); }
+    } catch (error) { passwordMessage(error.message); }
+  });
   $('reset').addEventListener('click', async () => {
     if (isLocalDemo) localStorage.removeItem('pp-demo-content');
     try {
@@ -178,7 +232,7 @@ import { shrinkVideo } from './shrink-video.js';
       message('Muutokset hylätty.', true);
     } catch (error) { message(error.message); }
   });
-  $('logout').addEventListener('click', async () => { if (!isLocalDemo) await api('/api/logout', { method:'POST' }); localSession = false; $('editor-view').hidden = true; $('login-view').hidden = false; $('login-form').reset(); });
+  $('logout').addEventListener('click', async () => { if (!isLocalDemo) await api('/api/logout', { method:'POST' }); localSession = false; currentRole = null; $('editor-view').hidden = true; $('password-view').hidden = true; $('login-view').hidden = false; $('login-form').reset(); });
   $('publish').addEventListener('click', async () => {
     const button = $('publish'); button.disabled = true;
     try {
@@ -195,11 +249,11 @@ import { shrinkVideo } from './shrink-video.js';
 
   (async () => {
     if (isLocalDemo) { $('login-help').textContent = 'Live Server -demo: käyttäjätunnus tuomo, salasana demo. Muutokset eivät julkaise sivua.'; return; }
-    let hasSession = false;
-    try { hasSession = (await api('/api/session')).authenticated; } catch { /* login stays available when Pages Functions are not configured */ }
-    if (!hasSession) return;
-    if (returnToPage) { location.href = '/?muokkaa'; return; }
-    $('login-view').hidden = true; $('editor-view').hidden = false;
-    try { await loadContent(); } catch (error) { message(error.message); }
+    let session = { authenticated: false };
+    try { session = await api('/api/session'); } catch { /* login stays available when Pages Functions are not configured */ }
+    if (!session.authenticated) return;
+    currentRole = session.role;
+    if (session.passwordExpired) requirePasswordChange();
+    else goToEditor();
   })();
 })();

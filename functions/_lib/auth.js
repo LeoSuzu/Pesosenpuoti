@@ -57,35 +57,56 @@ function cookieValue(cookieHeader) {
   return null;
 }
 
-export async function createSession(secret, now = Date.now()) {
+const ROLE_PATTERN = /^[a-z]+$/;
+
+// v2 carries a role (leo|tuomo) so endpoints can tell who is logged in — v1
+// sessions (no role) are rejected outright rather than guessed at; they just
+// expire naturally within SESSION_DURATION_MS of the old code being replaced.
+export async function createSession(secret, role, now = Date.now()) {
   const expiresAt = now + SESSION_DURATION_MS;
-  const payload = `v1.${expiresAt}`;
+  const payload = `v2.${role}.${expiresAt}`;
   const signature = bytesToBase64Url(await signatureFor(payload, secret));
   const value = `${payload}.${signature}`;
 
   return { value, expiresAt, cookie: sessionCookie(value) };
 }
 
-export async function isSessionValid(value, secret, now = Date.now()) {
-  if (typeof value !== 'string' || typeof secret !== 'string' || !secret) return false;
+// Returns the session's role ('leo' | 'tuomo') when valid, otherwise null.
+export async function sessionRole(value, secret, now = Date.now()) {
+  if (typeof value !== 'string' || typeof secret !== 'string' || !secret) return null;
 
   const parts = value.split('.');
-  if (parts.length !== 3 || parts[0] !== 'v1' || !/^\d+$/.test(parts[1])) return false;
+  if (parts.length !== 4 || parts[0] !== 'v2' || !ROLE_PATTERN.test(parts[1]) || !/^\d+$/.test(parts[2])) return null;
 
-  const expiresAt = Number(parts[1]);
-  if (!Number.isSafeInteger(expiresAt) || now >= expiresAt) return false;
+  const expiresAt = Number(parts[2]);
+  if (!Number.isSafeInteger(expiresAt) || now >= expiresAt) return null;
 
-  const receivedSignature = base64UrlToBytes(parts[2]);
-  if (!receivedSignature) return false;
+  const receivedSignature = base64UrlToBytes(parts[3]);
+  if (!receivedSignature) return null;
 
-  const expectedSignature = await signatureFor(`${parts[0]}.${parts[1]}`, secret);
-  return bytesEqual(expectedSignature, receivedSignature);
+  const expectedSignature = await signatureFor(`${parts[0]}.${parts[1]}.${parts[2]}`, secret);
+  return bytesEqual(expectedSignature, receivedSignature) ? parts[1] : null;
+}
+
+export async function isSessionValid(value, secret, now = Date.now()) {
+  return (await sessionRole(value, secret, now)) !== null;
 }
 
 export async function requireSession(request, env) {
   const value = cookieValue(request.headers.get('cookie'));
   if (await isSessionValid(value, env.SESSION_SECRET)) return null;
   return json({ error: 'Unauthorized' }, { status: 401 });
+}
+
+// Like requireSession, but also hands back the caller's role so an endpoint
+// can act differently for Leo (master) vs Tuomo (his own account) — e.g.
+// change-password.js. Returns { role } on success, or an unauthorized
+// Response (same shape requireSession returns) to short-circuit on failure.
+export async function requireRole(request, env) {
+  const value = cookieValue(request.headers.get('cookie'));
+  const role = await sessionRole(value, env.SESSION_SECRET);
+  if (role === null) return { response: json({ error: 'Unauthorized' }, { status: 401 }) };
+  return { role };
 }
 
 export { SESSION_COOKIE, SESSION_DURATION_MS };

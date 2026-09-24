@@ -547,7 +547,9 @@ function guardNavigation() {
 export async function startEditMode() {
   if (!isLocalDemo) {
     const session = await fetch('/api/session').then((response) => response.json()).catch(() => ({}));
-    if (!session.authenticated) {
+    // Also redirected when Tuomo's yearly-expiring password needs changing —
+    // /admin/ shows him the mandatory change form, then sends him back here.
+    if (!session.authenticated || session.passwordExpired) {
       location.href = '/admin/?next=muokkaa';
       return;
     }

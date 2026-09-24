@@ -26,6 +26,20 @@
       <p id="login-message" class="message" role="alert"></p>
     </section>
 
+    <section id="password-view" class="login-card" hidden aria-labelledby="password-title">
+      <p class="eyebrow">Sivuston muokkaus</p>
+      <h1 id="password-title">Vaihda salasana</h1>
+      <p id="password-help"></p>
+      <form id="password-form">
+        <label id="current-password-label">Nykyinen salasana<input name="currentPassword" type="password" autocomplete="current-password"></label>
+        <label>Uusi salasana (vähintään 8 merkkiä)<input name="newPassword" type="password" autocomplete="new-password" minlength="8" required></label>
+        <label>Uusi salasana uudelleen<input name="newPassword2" type="password" autocomplete="new-password" minlength="8" required></label>
+        <button type="submit">Vaihda salasana</button>
+        <button id="password-cancel" class="quiet" type="button" hidden>Peruuta</button>
+      </form>
+      <p id="password-message" class="message" role="alert"></p>
+    </section>
+
     <section id="editor-view" hidden>
       <div class="editor-head">
         <div>
@@ -35,6 +49,7 @@
         </div>
         <div class="editor-actions">
           <button id="reset" class="quiet" type="button">Hylkää muutokset</button>
+          <button id="change-password" class="quiet" type="button">Vaihda salasana</button>
           <button id="logout" class="quiet" type="button">Kirjaudu ulos</button>
           <button id="publish" type="button">Julkaise muutokset</button>
         </div>

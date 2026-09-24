@@ -1,4 +1,5 @@
-import { isSessionValid, SESSION_COOKIE } from '../_lib/auth.js';
+import { sessionRole, SESSION_COOKIE } from '../_lib/auth.js';
+import { isTuomoPasswordExpired } from '../_lib/tuomo-account.js';
 import { json } from '../_lib/http.js';
 
 function sessionValue(request) {
@@ -10,5 +11,8 @@ function sessionValue(request) {
 }
 
 export async function onRequestGet({ request, env }) {
-  return json({ authenticated: await isSessionValid(sessionValue(request), env.SESSION_SECRET) });
+  const role = await sessionRole(sessionValue(request), env.SESSION_SECRET);
+  if (!role) return json({ authenticated: false });
+  const passwordExpired = role === 'tuomo' && (await isTuomoPasswordExpired(env));
+  return json({ authenticated: true, role, passwordExpired });
 }

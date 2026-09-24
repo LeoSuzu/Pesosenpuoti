@@ -16,6 +16,9 @@ import { onRequestGet as session } from '../functions/api/session.js';
 import { onRequestGet as content } from '../functions/api/content.js';
 import { onRequestPost as uploadImage } from '../functions/api/upload-media.js';
 import { onRequestPost as deleteMedia } from '../functions/api/delete-media.js';
+import { onRequestPost as changePassword } from '../functions/api/change-password.js';
+import { hashPassword, verifyPassword, safeEqual } from '../functions/_lib/password.js';
+import { verifyTuomoPassword, isTuomoPasswordExpired, setTuomoPassword } from '../functions/_lib/tuomo-account.js';
 import { onRequestPost as contact } from '../functions/api/contact.js';
 import { sendEmail } from '../functions/_lib/resend.js';
 
@@ -25,6 +28,16 @@ const env = {
   GITHUB_TOKEN: 'test-token-that-must-stay-server-side',
   SESSION_SECRET: 'test-secret-that-is-not-used-in-production',
 };
+
+// Minimal in-memory stand-in for the Cloudflare KV binding used in tests.
+function fakeKv(initial = {}) {
+  const store = new Map(Object.entries(initial));
+  return {
+    async get(key) { return store.has(key) ? store.get(key) : null; },
+    async put(key, value) { store.set(key, value); },
+    store,
+  };
+}
 
 const contactEnv = {
   RESEND_API_KEY: 'test-resend-key-that-must-stay-server-side',
@@ -43,7 +56,7 @@ test('publish rejects an unauthenticated request before calling GitHub', async (
   assert.equal(response.status, 401);
 });
 
-test('login creates a secure session only for the configured credentials', async () => {
+test('login creates a secure session only for the configured master (Leo) credentials', async () => {
   const authenticated = await login({
     request: new Request('https://example.test/api/login', {
       method: 'POST',
@@ -53,7 +66,7 @@ test('login creates a secure session only for the configured credentials', async
   });
   assert.equal(authenticated.status, 200);
   assert.match(authenticated.headers.get('set-cookie'), new RegExp(`^${SESSION_COOKIE}=`));
-  assert.deepEqual(await authenticated.json(), { authenticated: true });
+  assert.deepEqual(await authenticated.json(), { authenticated: true, role: 'leo', passwordExpired: false });
 
   const rejected = await login({
     request: new Request('https://example.test/api/login', {
@@ -66,7 +79,40 @@ test('login creates a secure session only for the configured credentials', async
   assert.doesNotMatch(JSON.stringify(await rejected.json()), /correct-password/);
 });
 
-test('session reports authentication state and logout clears the session cookie', async () => {
+test("login accepts Tuomo's own account, separately from Leo's, and flags an expired password", async () => {
+  const tuomoEnv = { ...env, ADMIN_USERNAME: 'leo', ADMIN_PASSWORD: 'leo-master-pw', TUOMO_USERNAME: 'tuomo', TUOMO_INITIAL_PASSWORD: 'starter-pw', EDITOR_KV: fakeKv() };
+
+  const usingInitial = await login({
+    request: new Request('https://example.test/api/login', { method: 'POST', body: JSON.stringify({ username: 'tuomo', password: 'starter-pw' }) }),
+    env: tuomoEnv,
+  });
+  assert.deepEqual(await usingInitial.json(), { authenticated: true, role: 'tuomo', passwordExpired: false });
+
+  // Leo's credentials must keep working once Tuomo has his own account too.
+  const leoStillWorks = await login({
+    request: new Request('https://example.test/api/login', { method: 'POST', body: JSON.stringify({ username: 'leo', password: 'leo-master-pw' }) }),
+    env: tuomoEnv,
+  });
+  assert.deepEqual(await leoStillWorks.json(), { authenticated: true, role: 'leo', passwordExpired: false });
+
+  // Tuomo sets his own password (a year ago) — the initial one must stop working, and login must report expiry.
+  const yearAgo = Date.now() - 366 * 24 * 60 * 60 * 1000;
+  await setTuomoPassword(tuomoEnv, 'tuomos-own-pw', yearAgo);
+
+  const oldPasswordRejected = await login({
+    request: new Request('https://example.test/api/login', { method: 'POST', body: JSON.stringify({ username: 'tuomo', password: 'starter-pw' }) }),
+    env: tuomoEnv,
+  });
+  assert.equal(oldPasswordRejected.status, 401);
+
+  const expired = await login({
+    request: new Request('https://example.test/api/login', { method: 'POST', body: JSON.stringify({ username: 'tuomo', password: 'tuomos-own-pw' }) }),
+    env: tuomoEnv,
+  });
+  assert.deepEqual(await expired.json(), { authenticated: true, role: 'tuomo', passwordExpired: true });
+});
+
+test('session reports authentication state, role, password expiry, and logout clears the cookie', async () => {
   const anonymous = await session({ request: new Request('https://example.test/api/session'), env });
   assert.deepEqual(await anonymous.json(), { authenticated: false });
 
@@ -74,12 +120,99 @@ test('session reports authentication state and logout clears the session cookie'
     request: await authenticatedRequest('https://example.test/api/session'),
     env,
   });
-  assert.deepEqual(await authenticated.json(), { authenticated: true });
+  assert.deepEqual(await authenticated.json(), { authenticated: true, role: 'leo', passwordExpired: false });
+
+  const tuomoEnv = { ...env, EDITOR_KV: fakeKv() };
+  await setTuomoPassword(tuomoEnv, 'tuomos-pw', Date.now() - 366 * 24 * 60 * 60 * 1000);
+  const tuomoExpired = await session({
+    request: await authenticatedRequest('https://example.test/api/session', {}, 'tuomo'),
+    env: tuomoEnv,
+  });
+  assert.deepEqual(await tuomoExpired.json(), { authenticated: true, role: 'tuomo', passwordExpired: true });
 
   const response = await logout({ request: new Request('https://example.test/api/logout', { method: 'POST' }), env });
   assert.equal(response.status, 200);
   assert.match(response.headers.get('set-cookie'), new RegExp(`^${SESSION_COOKIE}=; Max-Age=0; HttpOnly; Secure; SameSite=Strict; Path=/$`));
   assert.deepEqual(await response.json(), { authenticated: false });
+});
+
+test('password hashing: verifies the right password, rejects everything else, never throws', async () => {
+  const stored = await hashPassword('correct horse battery staple');
+  assert.equal(await verifyPassword('correct horse battery staple', stored), true);
+  assert.equal(await verifyPassword('wrong', stored), false);
+  for (const bad of [null, undefined, '', 'no-dot-here', 'a.b.c', 'not base64!.also not!']) {
+    assert.equal(await verifyPassword('anything', bad), false, JSON.stringify(bad));
+  }
+  const stored2 = await hashPassword('correct horse battery staple');
+  assert.notEqual(stored, stored2, 'salts must differ between calls');
+  assert.equal(await safeEqual('same', 'same'), true);
+  assert.equal(await safeEqual('same', 'different'), false);
+});
+
+test("Tuomo's account: initial password works until he sets his own, which then expires after a year", async () => {
+  const tuomoEnv = { TUOMO_INITIAL_PASSWORD: 'starter', EDITOR_KV: fakeKv() };
+  assert.deepEqual(await verifyTuomoPassword(tuomoEnv, 'starter'), { valid: true, expired: false });
+  assert.equal(await isTuomoPasswordExpired(tuomoEnv), false);
+
+  const now = Date.now();
+  await setTuomoPassword(tuomoEnv, 'chosen-by-tuomo', now);
+  assert.deepEqual(await verifyTuomoPassword(tuomoEnv, 'starter'), { valid: false, expired: false });
+  assert.deepEqual(await verifyTuomoPassword(tuomoEnv, 'chosen-by-tuomo', now), { valid: true, expired: false });
+
+  const almostAYear = now + 364 * 24 * 60 * 60 * 1000;
+  const overAYear = now + 366 * 24 * 60 * 60 * 1000;
+  assert.equal(await isTuomoPasswordExpired(tuomoEnv, almostAYear), false);
+  assert.equal(await isTuomoPasswordExpired(tuomoEnv, overAYear), true);
+  assert.deepEqual(await verifyTuomoPassword(tuomoEnv, 'chosen-by-tuomo', overAYear), { valid: true, expired: true });
+  // A wrong password is never reported as "expired" — that would leak that the account exists.
+  assert.deepEqual(await verifyTuomoPassword(tuomoEnv, 'wrong', overAYear), { valid: false, expired: false });
+});
+
+test('change-password: Tuomo must prove his current password, Leo can reset it without one', async () => {
+  const tuomoEnv = { ...env, EDITOR_KV: fakeKv(), TUOMO_INITIAL_PASSWORD: 'starter' };
+
+  const anonymous = await changePassword({
+    request: new Request('https://example.test/api/change-password', { method: 'POST', body: JSON.stringify({ newPassword: 'whatever1' }) }),
+    env: tuomoEnv,
+  });
+  assert.equal(anonymous.status, 401);
+
+  const tooShort = await changePassword({
+    request: await authenticatedRequest('https://example.test/api/change-password', {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ currentPassword: 'starter', newPassword: 'short' }),
+    }, 'tuomo'),
+    env: tuomoEnv,
+  });
+  assert.equal(tooShort.status, 400);
+
+  const wrongCurrent = await changePassword({
+    request: await authenticatedRequest('https://example.test/api/change-password', {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ currentPassword: 'not-it', newPassword: 'new-password-1' }),
+    }, 'tuomo'),
+    env: tuomoEnv,
+  });
+  assert.equal(wrongCurrent.status, 400);
+
+  const changed = await changePassword({
+    request: await authenticatedRequest('https://example.test/api/change-password', {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ currentPassword: 'starter', newPassword: 'new-password-1' }),
+    }, 'tuomo'),
+    env: tuomoEnv,
+  });
+  assert.equal(changed.status, 200);
+  assert.deepEqual(await verifyTuomoPassword(tuomoEnv, 'new-password-1'), { valid: true, expired: false });
+
+  // Leo resets it again with no current password at all — his recovery path.
+  const leoReset = await changePassword({
+    request: await authenticatedRequest('https://example.test/api/change-password', {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ newPassword: 'leo-picked-this' }),
+    }, 'leo'),
+    env: tuomoEnv,
+  });
+  assert.equal(leoReset.status, 200);
+  assert.deepEqual(await verifyTuomoPassword(tuomoEnv, 'leo-picked-this'), { valid: true, expired: false });
+  // ...and the reset password isn't "expired" the moment Leo sets it.
+  assert.equal(await isTuomoPasswordExpired(tuomoEnv), false);
 });
 
 test('content requires a session and returns the current repository JSON', async () => {
@@ -360,15 +493,15 @@ async function withFetch(fetchStub, callback) {
   }
 }
 
-async function authenticatedRequest(url, init = {}) {
-  const session = await createSession(env.SESSION_SECRET);
+async function authenticatedRequest(url, init = {}, role = 'leo') {
+  const session = await createSession(env.SESSION_SECRET, role);
   const headers = new Headers(init.headers);
   headers.set('cookie', `${SESSION_COOKIE}=${session.value}`);
   return new Request(url, { ...init, headers });
 }
 
 test('session expires at its exact expiry and rejects malformed signatures', async () => {
-  const session = await createSession(env.SESSION_SECRET, 1_000);
+  const session = await createSession(env.SESSION_SECRET, 'leo', 1_000);
   assert.equal(await isSessionValid(session.value, env.SESSION_SECRET, session.expiresAt - 1), true);
   assert.equal(await isSessionValid(session.value, env.SESSION_SECRET, session.expiresAt), false);
   assert.equal(await isSessionValid(session.value, env.SESSION_SECRET, session.expiresAt + 1), false);
@@ -377,7 +510,7 @@ test('session expires at its exact expiry and rejects malformed signatures', asy
 });
 
 test('session cookie is secure and session guard returns JSON 401 without it', async () => {
-  const session = await createSession(env.SESSION_SECRET);
+  const session = await createSession(env.SESSION_SECRET, 'leo');
   assert.match(session.cookie, new RegExp(`^${SESSION_COOKIE}=`));
   assert.match(session.cookie, /Max-Age=43200/);
   assert.match(session.cookie, /HttpOnly/);
