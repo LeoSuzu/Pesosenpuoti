@@ -63,14 +63,20 @@
 
   let w = 0, h = 0;
 
+  /* Setting canvas.width/height wipes the canvas. The ResizeObserver runs after
+     this frame's drawing and before paint, so a resize must redraw at once —
+     otherwise every iOS toolbar show/hide while scrolling paints a blank frame. */
   function resize() {
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
+    const pixelWidth = Math.round(rect.width * dpr);
+    const pixelHeight = Math.round(rect.height * dpr);
+    if (pixelWidth === canvas.width && pixelHeight === canvas.height) return;
     w = rect.width;
     h = rect.height;
-    canvas.width  = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-    ctx.scale(dpr, dpr);
+    canvas.width  = pixelWidth;
+    canvas.height = pixelHeight;
+    drawStill(lastT);
   }
 
   function drawWave(wave, t) {
@@ -97,6 +103,7 @@
   }
 
   let rafId = null;
+  let lastT = 0;
 
   function drawStill(t) {
     /* Reset transform before clear so DPR scale doesn't stack */
@@ -107,6 +114,7 @@
   }
 
   function frame(t) {
+    lastT = t;
     drawStill(t);
     rafId = requestAnimationFrame(frame);
   }
@@ -125,7 +133,6 @@
   /* ResizeObserver keeps canvas pixel dimensions in sync */
   const ro = new ResizeObserver(() => {
     resize();
-    if (reducedMotion.matches) drawStill(0);
   });
   ro.observe(canvas);
   resize();

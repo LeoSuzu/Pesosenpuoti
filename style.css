@@ -487,7 +487,10 @@ p {
 /* --- Hero ----------------------------------------------------------- */
 .hero {
   position: relative;
-  min-height: 100dvh;
+  /* svh, not dvh: dvh follows the phone toolbar as it hides/shows on scroll,
+     which resized the hero (and its wave canvas) mid-scroll. */
+  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
   overflow: hidden;
