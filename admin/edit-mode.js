@@ -287,7 +287,13 @@ function startCrop(media, host, settingsPath, small) {
 
   host.classList.add('pe-cropping');
   host.append(overlay);
-  if (small) host.after(controls); else overlay.append(controls);
+  // Controls must NOT be a descendant of overlay: overlay calls
+  // setPointerCapture(pointerId) on its own pointerdown, which — once set —
+  // redirects the click synthesized on pointerup to overlay instead of the
+  // button underneath, so a button nested inside it never fires. Keeping
+  // controls as a sibling (inside host, which is already position:relative)
+  // gives the same visual placement without capturing its clicks.
+  if (small) host.after(controls); else host.append(controls);
   status('Rajaus: raahaa kuvaa, vieritä tai nipistä suurentaaksesi. Paina Valmis kun kuva on kohdallaan.');
 }
 
