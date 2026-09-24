@@ -1,5 +1,6 @@
 import { createMediaCard } from './media-widget.js';
 import { shrinkImage } from './shrink-image.js';
+import { shrinkVideo } from './shrink-video.js';
 
 (() => {
   'use strict';
@@ -74,11 +75,18 @@ import { shrinkImage } from './shrink-image.js';
 
   const MAX_VIDEO_MB = 30;
 
-  async function uploadPhoto(file) {
-    if (file.type.startsWith('video/') && file.size >= MAX_VIDEO_MB * 1024 * 1024) {
-      throw new Error(`Video on liian suuri (${Math.round(file.size / 1024 / 1024)} Mt, raja ${MAX_VIDEO_MB} Mt). Lyhennä videota tai tallenna se pienemmällä laadulla.`);
+  async function shrinkMedia(file) {
+    if (!file.type.startsWith('video/')) return shrinkImage(file);
+    message('Pienennetään videota… 0 %');
+    const video = await shrinkVideo(file, { onProgress: (share) => message(`Pienennetään videota… ${Math.round(share * 100)} %`) });
+    if (video.size >= MAX_VIDEO_MB * 1024 * 1024) {
+      throw new Error(`Video on liian suuri (${Math.round(video.size / 1024 / 1024)} Mt, raja ${MAX_VIDEO_MB} Mt) vielä pienennyksen jälkeenkin. Lyhennä videota.`);
     }
-    const upload = await shrinkImage(file);
+    return video;
+  }
+
+  async function uploadPhoto(file) {
+    const upload = await shrinkMedia(file);
     if (isLocalDemo) { message('Demo: kuva näkyy tässä muokkaimessa. Pilvijulkaisua varten käytä Cloudflare-kirjautumista.', true); return URL.createObjectURL(upload); }
     const form = new FormData(); form.append('image', upload);
     const path = (await api('/api/upload-media', { method:'POST', body:form })).path;

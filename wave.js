@@ -139,6 +139,20 @@
     else if (!document.hidden) start();
   });
 
+  /* ?wavedebug shows what the device reports — for diagnosing phones */
+  if (new URLSearchParams(location.search).has('wavedebug')) {
+    const box = document.createElement('div');
+    box.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:9999;padding:6px 8px;font:12px/1.4 monospace;background:#000c;color:#fff;border-radius:4px';
+    document.body.append(box);
+    let frames = 0;
+    const count = () => { frames++; requestAnimationFrame(count); };
+    requestAnimationFrame(count);
+    setInterval(() => {
+      box.textContent = `reduce-motion: ${reducedMotion.matches ? 'ON' : 'off'} · loop: ${rafId != null ? 'running' : 'stopped'} · ${frames} fps · canvas ${canvas.width}x${canvas.height}`;
+      frames = 0;
+    }, 1000);
+  }
+
   /* Pause when tab is hidden — saves CPU and battery */
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) stop();
