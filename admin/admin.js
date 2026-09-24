@@ -1,4 +1,5 @@
 import { createMediaCard } from './media-widget.js';
+import { shrinkImage } from './shrink-image.js';
 
 (() => {
   'use strict';
@@ -20,6 +21,10 @@ import { createMediaCard } from './media-widget.js';
   const sectionNames = { hero: 'Aloitus', services: 'Palvelut', gallery: 'Telakalla tapahtuu', reference: 'Me teimme sen', seasonal: 'Kausihuollot', iceCreamBoat: 'Jäätelövene', welcome: 'Tuomon kuva', contact: 'Yhteystiedot', form: 'Lomake' };
   let content;
   let localSession = false;
+  // Replaced files are only removed after a successful publish, so the live
+  // page never points at a file that is already gone.
+  const pendingDeletes = new Set();
+  const sessionUploads = new Set();
 
   const $ = (id) => document.getElementById(id);
   const get = (object, path) => path.split('.').reduce((value, key) => value?.[/^\d+$/.test(key) ? Number(key) : key], object);
@@ -67,16 +72,32 @@ import { createMediaCard } from './media-widget.js';
     });
   }
 
+  const MAX_VIDEO_MB = 30;
+
   async function uploadPhoto(file) {
-    if (isLocalDemo) { message('Demo: kuva näkyy tässä muokkaimessa. Pilvijulkaisua varten käytä Cloudflare-kirjautumista.', true); return URL.createObjectURL(file); }
-    const form = new FormData(); form.append('image', file);
+    if (file.type.startsWith('video/') && file.size >= MAX_VIDEO_MB * 1024 * 1024) {
+      throw new Error(`Video on liian suuri (${Math.round(file.size / 1024 / 1024)} Mt, raja ${MAX_VIDEO_MB} Mt). Lyhennä videota tai tallenna se pienemmällä laadulla.`);
+    }
+    const upload = await shrinkImage(file);
+    if (isLocalDemo) { message('Demo: kuva näkyy tässä muokkaimessa. Pilvijulkaisua varten käytä Cloudflare-kirjautumista.', true); return URL.createObjectURL(upload); }
+    const form = new FormData(); form.append('image', upload);
     const path = (await api('/api/upload-media', { method:'POST', body:form })).path;
+    sessionUploads.add(path);
     return path;
   }
 
   async function deleteMedia(path) {
-    if (isLocalDemo || !path || !path.startsWith('assets/uploads/')) return;
-    await api('/api/delete-media', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ path }) });
+    if (!isLocalDemo && path?.startsWith('assets/uploads/')) pendingDeletes.add(path);
+  }
+
+  const isReferenced = (path) => JSON.stringify(content).includes(`"${path}"`);
+
+  async function removeUnreferenced(paths) {
+    for (const path of paths) {
+      if (isReferenced(path)) continue;
+      // The server also refuses anything site.json or index.html still uses.
+      await api('/api/delete-media', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ path }) }).catch(() => {});
+    }
   }
 
   function renderPhoto(path, labelText) {
@@ -138,13 +159,29 @@ import { createMediaCard } from './media-widget.js';
   }
 
   $('login-form').addEventListener('submit', authenticate);
-  $('reset').addEventListener('click', () => { if (isLocalDemo) localStorage.removeItem('pp-demo-content'); loadContent().then(() => message('Muutokset hylätty.', true)).catch((error) => message(error.message)); });
+  $('reset').addEventListener('click', async () => {
+    if (isLocalDemo) localStorage.removeItem('pp-demo-content');
+    try {
+      await loadContent();
+      // Uploads that were never published are orphans once the edits are discarded.
+      const orphans = [...sessionUploads];
+      pendingDeletes.clear(); sessionUploads.clear();
+      await removeUnreferenced(orphans);
+      message('Muutokset hylätty.', true);
+    } catch (error) { message(error.message); }
+  });
   $('logout').addEventListener('click', async () => { if (!isLocalDemo) await api('/api/logout', { method:'POST' }); localSession = false; $('editor-view').hidden = true; $('login-view').hidden = false; $('login-form').reset(); });
   $('publish').addEventListener('click', async () => {
     const button = $('publish'); button.disabled = true;
     try {
       if (isLocalDemo) { const url = URL.createObjectURL(new Blob([JSON.stringify(content, null, 2)], { type:'application/json' })); const link = document.createElement('a'); link.href = url; link.download = 'pesosenpuoti-site.json'; link.click(); URL.revokeObjectURL(url); message('Demo: varmuuskopio ladattu. Cloudflare-julkaisun jälkeen tämä painike julkaisee sivun.', true); }
-      else { await api('/api/publish-content', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ content }) }); message('Julkaistu. Cloudflare päivittää sivun pian.', true); }
+      else {
+        await api('/api/publish-content', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ content }) });
+        const replaced = [...pendingDeletes];
+        pendingDeletes.clear(); sessionUploads.clear();
+        await removeUnreferenced(replaced);
+        message('Julkaistu. Cloudflare päivittää sivun pian.', true);
+      }
     } catch (error) { message(error.message); } finally { button.disabled = false; }
   });
 

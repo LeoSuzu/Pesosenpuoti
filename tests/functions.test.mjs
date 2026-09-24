@@ -15,6 +15,7 @@ import { onRequestPost as logout } from '../functions/api/logout.js';
 import { onRequestGet as session } from '../functions/api/session.js';
 import { onRequestGet as content } from '../functions/api/content.js';
 import { onRequestPost as uploadImage } from '../functions/api/upload-media.js';
+import { onRequestPost as deleteMedia } from '../functions/api/delete-media.js';
 import { onRequestPost as contact } from '../functions/api/contact.js';
 import { sendEmail } from '../functions/_lib/resend.js';
 
@@ -184,6 +185,46 @@ function contactForm(fields) {
   });
   return form;
 }
+
+test('media delete never removes a file the live page still references', async () => {
+  const deleteRequest = async (path) => deleteMedia({
+    request: await authenticatedRequest('https://example.test/api/delete-media', {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ path }),
+    }),
+    env,
+  });
+  const unauthorized = await deleteMedia({
+    request: new Request('https://example.test/api/delete-media', { method: 'POST', body: '{"path":"assets/uploads/a.jpg"}' }), env,
+  });
+  assert.equal(unauthorized.status, 401);
+  assert.equal((await deleteRequest('content/site.json')).status, 400);
+
+  const b64 = (text) => Buffer.from(text, 'utf8').toString('base64');
+  const calls = [];
+  const repo = {
+    'content/site.json': '{"hero":{"image":"assets/uploads/in-use.jpg"}}',
+    'index.html': '<img src="assets/uploads/images/fallback.JPEG">',
+  };
+  await withFetch(async (url, init = {}) => {
+    const path = decodeURIComponent(new URL(url).pathname.split('/contents/')[1]);
+    calls.push(`${init.method || 'GET'} ${path}`);
+    if (repo[path]) return new Response(JSON.stringify({ sha: 'ref-sha', content: b64(repo[path]) }));
+    if ((init.method || 'GET') === 'GET') return new Response(JSON.stringify({ sha: 'file-sha', content: '' }));
+    assert.equal(JSON.parse(init.body).sha, 'file-sha');
+    return new Response('{}', { status: 200 });
+  }, async () => {
+    for (const inUse of ['assets/uploads/in-use.jpg', 'assets/uploads/images/fallback.JPEG']) {
+      const response = await deleteRequest(inUse);
+      assert.equal(response.status, 409, inUse);
+    }
+    assert.ok(!calls.some((call) => call.startsWith('DELETE')));
+
+    const response = await deleteRequest('assets/uploads/replaced.jpg');
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { deleted: true });
+    assert.ok(calls.includes('DELETE assets/uploads/replaced.jpg'));
+  });
+});
 
 test('contact form is unavailable without Resend configuration', async () => {
   const response = await contact({

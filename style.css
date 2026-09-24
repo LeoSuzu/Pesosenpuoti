@@ -1547,7 +1547,7 @@ p {
 .telakalle__map {
   position: relative;
   width: 100%;
-  aspect-ratio: 2966 / 1333; /* matches map-logo-compass.png so nothing is cropped off the sides */
+  aspect-ratio: 2966 / 1333; /* matches map-logo-compass.jpg so nothing is cropped off the sides */
   min-height: 200px;
   background: var(--color-rule);
   overflow: hidden;
