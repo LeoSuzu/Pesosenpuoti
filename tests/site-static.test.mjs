@@ -25,7 +25,7 @@ test('static fallback image sources match editable uploaded images', () => {
 test('Tuomo portrait has a static fallback and editable public content target', () => {
   assert.match(html, /class="telakalle__avatar"[\s\S]*?src="assets\/uploads\/images\/Tuomo-Pesonen\.jpg"/);
   assert.match(html, /data-content="welcome\.image" data-content-attr="src"/);
-  assert.match(html, /data-content="welcome\.imageAlt" data-content-attr="alt"/);
+  assert.match(html, /data-content-alt="welcome\.imageAlt"/);
 });
 
 test('admin provides a local demo login and editing controls for text and photos', async () => {

@@ -6,13 +6,13 @@ import { applySiteContent, contentTargetManifest, validateSiteContent } from '..
 const content = JSON.parse(await readFile(new URL('../content/site.json', import.meta.url), 'utf8'));
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 const rootTargetSpecs = [
-  ['hero.image', { attribute: 'src', alt: 'hero.imageAlt', settings: 'hero.imageSettings' }],
+  ['hero.image', { attribute: 'src', alt: 'hero.imageAlt', settings: 'hero.imageSettings', tag: 'IMG' }],
   ['hero.eyebrow'], ['hero.heading'], ['hero.slogan'], ['hero.sub'], ['contact.phone', { action: 'phone' }],
   ['gallery.heading'],
-  ['gallery.photos.0.image', { attribute: 'src', settings: 'gallery.photos.0.imageSettings' }], ['gallery.photos.0.imageAlt', { attribute: 'alt' }],
-  ['gallery.photos.1.image', { attribute: 'src', settings: 'gallery.photos.1.imageSettings' }], ['gallery.photos.1.imageAlt', { attribute: 'alt' }],
-  ['gallery.photos.2.image', { attribute: 'src', settings: 'gallery.photos.2.imageSettings' }], ['gallery.photos.2.imageAlt', { attribute: 'alt' }],
-  ['gallery.photos.3.image', { attribute: 'src', settings: 'gallery.photos.3.imageSettings' }], ['gallery.photos.3.imageAlt', { attribute: 'alt' }],
+  ['gallery.photos.0.image', { attribute: 'src', alt: 'gallery.photos.0.imageAlt', settings: 'gallery.photos.0.imageSettings', tag: 'IMG' }],
+  ['gallery.photos.1.image', { attribute: 'src', alt: 'gallery.photos.1.imageAlt', settings: 'gallery.photos.1.imageSettings', tag: 'IMG' }],
+  ['gallery.photos.2.image', { attribute: 'src', alt: 'gallery.photos.2.imageAlt', settings: 'gallery.photos.2.imageSettings', tag: 'IMG' }],
+  ['gallery.photos.3.image', { attribute: 'src', alt: 'gallery.photos.3.imageAlt', settings: 'gallery.photos.3.imageSettings', tag: 'IMG' }],
   ['reference.heading'],
   ['reference.items.0.media', { attribute: 'src', settings: 'reference.items.0.imageSettings' }], ['reference.items.0.mediaAlt', { attribute: 'alt' }], ['reference.items.0.story'],
   ['reference.items.1.media', { attribute: 'src', settings: 'reference.items.1.imageSettings' }], ['reference.items.1.mediaAlt', { attribute: 'alt' }], ['reference.items.1.story'],
@@ -22,8 +22,8 @@ const rootTargetSpecs = [
   ['seasonal.cards.1.season'], ['seasonal.cards.1.title'], ['seasonal.cards.1.body'],
   ['iceCreamBoat.eyebrow'], ['iceCreamBoat.heading'],
   ['iceCreamBoat.paragraphs.0'], ['iceCreamBoat.paragraphs.1'],
-  ['iceCreamBoat.image', { attribute: 'src', settings: 'iceCreamBoat.imageSettings' }], ['iceCreamBoat.imageAlt', { attribute: 'alt' }],
-  ['welcome.image', { attribute: 'src', settings: 'welcome.imageSettings' }], ['welcome.imageAlt', { attribute: 'alt' }],
+  ['iceCreamBoat.image', { attribute: 'src', alt: 'iceCreamBoat.imageAlt', settings: 'iceCreamBoat.imageSettings', tag: 'IMG' }],
+  ['welcome.image', { attribute: 'src', alt: 'welcome.imageAlt', settings: 'welcome.imageSettings', tag: 'IMG' }],
   ['contact.heading'], ['contact.intro'], ['contact.phone', { action: 'phone' }],
   ['contact.whatsapp', { action: 'whatsapp' }], ['contact.email', { action: 'email' }],
   ['contact.address.0'], ['contact.address.1'],
@@ -102,10 +102,10 @@ test('content target manifest defines the complete fixed public target contract'
   assert.deepEqual(contentTargetManifest.root.map(target => target.path), [
     'hero.image', 'hero.eyebrow', 'hero.heading', 'hero.slogan', 'hero.sub', 'contact.phone',
     'gallery.heading',
-    'gallery.photos.0.image', 'gallery.photos.0.imageAlt',
-    'gallery.photos.1.image', 'gallery.photos.1.imageAlt',
-    'gallery.photos.2.image', 'gallery.photos.2.imageAlt',
-    'gallery.photos.3.image', 'gallery.photos.3.imageAlt',
+    'gallery.photos.0.image',
+    'gallery.photos.1.image',
+    'gallery.photos.2.image',
+    'gallery.photos.3.image',
     'reference.heading',
     'reference.items.0.media', 'reference.items.0.mediaAlt', 'reference.items.0.story',
     'reference.items.1.media', 'reference.items.1.mediaAlt', 'reference.items.1.story',
@@ -115,7 +115,7 @@ test('content target manifest defines the complete fixed public target contract'
     'seasonal.cards.1.season', 'seasonal.cards.1.title', 'seasonal.cards.1.body',
     'iceCreamBoat.eyebrow', 'iceCreamBoat.heading',
     'iceCreamBoat.paragraphs.0', 'iceCreamBoat.paragraphs.1',
-    'iceCreamBoat.image', 'iceCreamBoat.imageAlt', 'welcome.image', 'welcome.imageAlt',
+    'iceCreamBoat.image', 'welcome.image',
     'contact.heading', 'contact.intro', 'contact.phone', 'contact.whatsapp',
     'contact.email', 'contact.address.0', 'contact.address.1',
     'form.nameLabel', 'form.namePlaceholder', 'form.contactLabel',
@@ -128,8 +128,7 @@ test('content target manifest defines the complete fixed public target contract'
     { path: 'title', selector: '.palvelu-card h3' },
     { path: 'lead' },
     { path: 'items' },
-    { path: 'image', attribute: 'src' },
-    { path: 'imageAlt', attribute: 'alt' },
+    { path: 'image', attribute: 'src', alt: 'imageAlt' },
   ]);
   assert.deepEqual(contentTargetManifest.actions, {
     phone: 2,
@@ -150,14 +149,21 @@ test('static markup exposes the complete manifest with the production hero-alt t
     const actualCount = (html.match(new RegExp(`data-content="${path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`, 'g')) ?? []).length;
     assert.equal(actualCount, expectedCount, path);
   }
-  assert.match(html, /data-content="hero\.image" data-content-attr="src"[\s\S]*data-content="hero\.imageAlt" data-content-attr="alt"/);
+  assert.match(html, /data-content="hero\.image" data-content-attr="src"[^>]*data-content-alt="hero\.imageAlt"/);
   assert.equal((html.match(/data-content="lead"/g) ?? []).length, 4);
   assert.equal((html.match(/data-content="items"/g) ?? []).length, 4);
-  assert.equal((html.match(/data-content="image" data-content-attr="src"/g) ?? []).length, 4);
-  assert.equal((html.match(/data-content="imageAlt" data-content-attr="alt"/g) ?? []).length, 4);
+  assert.equal((html.match(/data-content="image" data-content-attr="src"[^>]*data-content-alt="imageAlt"/g) ?? []).length, 4);
   assert.equal((html.match(/data-address-target="footer"/g) ?? []).length, 1);
   assert.equal((html.match(/data-address-target="map"/g) ?? []).length, 0);
   assert.doesNotMatch(html, /maps\.google\.com/);
+});
+
+test('no element carries more than one data-content binding', () => {
+  // Browsers keep only the first of duplicate attributes, which silently broke
+  // the manifest match and disabled all live hydration.
+  const tags = html.match(/<[a-z][^>]*>/gi) ?? [];
+  const doubled = tags.filter(tag => (tag.match(/\sdata-content=/g) ?? []).length > 1 || (tag.match(/\sdata-content-attr=/g) ?? []).length > 1);
+  assert.deepEqual(doubled, []);
 });
 
 test('service bullet lists remain editable while requiring at least one item', () => {
@@ -167,7 +173,8 @@ test('service bullet lists remain editable while requiring at least one item', (
 });
 
 class FakeElement {
-  constructor({ dataset = {}, textContent = '', attributes = {}, serviceTemplate = null } = {}) {
+  constructor({ dataset = {}, textContent = '', attributes = {}, serviceTemplate = null, tagName = 'SPAN' } = {}) {
+    this.tagName = tagName;
     this.dataset = dataset;
     this.textContent = textContent;
     this.attributes = { ...attributes };
@@ -216,6 +223,7 @@ class FakeTemplate extends FakeElement {
 
 function makeRoot() {
   const targets = rootTargetSpecs.map(([path, options = {}]) => new FakeElement({
+    ...(options.tag ? { tagName: options.tag } : {}),
     dataset: {
       content: path,
       ...(options.attribute ? { contentAttr: options.attribute } : {}),
@@ -231,8 +239,7 @@ function makeRoot() {
     [
       new FakeElement({ dataset: { content: 'lead' } }),
       new FakeElement({ dataset: { content: 'items' } }),
-      new FakeElement({ dataset: { content: 'image', contentAttr: 'src', imageSettings: 'imageSettings' } }),
-      new FakeElement({ dataset: { content: 'imageAlt', contentAttr: 'alt' } }),
+      new FakeElement({ tagName: 'IMG', dataset: { content: 'image', contentAttr: 'src', contentAlt: 'imageAlt', imageSettings: 'imageSettings' } }),
     ],
     new FakeElement(),
   ));
@@ -277,8 +284,10 @@ test('hydration applies every fixed target and derives safe matching contact act
   applySiteContent(root, edited);
 
   assert.equal(rootTarget(root, 'hero.image').getAttribute('src'), 'images/uusi-hero.jpg');
-  assert.equal(rootTarget(root, 'hero.image').getAttribute('aria-label'), 'Uusi hero-kuva');
+  assert.equal(rootTarget(root, 'hero.image').getAttribute('alt'), 'Uusi hero-kuva');
   assert.equal(rootTarget(root, 'gallery.photos.2.image').getAttribute('src'), 'images/galleria.jpg');
+  assert.equal(rootTarget(root, 'gallery.photos.2.image').getAttribute('alt'), edited.gallery.photos[2].imageAlt);
+  assert.equal(root.serviceTemplates[0].targets[2].getAttribute('alt'), edited.services[0].imageAlt);
   assert.equal(rootTarget(root, 'seasonal.cards.1.title').textContent, 'Uudistettu syyshuolto');
   assert.equal(rootTarget(root, 'iceCreamBoat.paragraphs.1').textContent, 'Uusi jäätelöveneteksti.');
   assert.equal(rootTarget(root, 'contact.address.1').textContent, '00200 Helsinki');

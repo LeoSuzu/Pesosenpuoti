@@ -15,10 +15,10 @@ export const contentTargetManifest = Object.freeze({
     { path: 'hero.image', attribute: 'src', alt: 'hero.imageAlt' },
     { path: 'hero.eyebrow' }, { path: 'hero.heading' }, { path: 'hero.slogan' }, { path: 'hero.sub' }, { path: 'contact.phone' },
     { path: 'gallery.heading' },
-    { path: 'gallery.photos.0.image', attribute: 'src' }, { path: 'gallery.photos.0.imageAlt', attribute: 'alt' },
-    { path: 'gallery.photos.1.image', attribute: 'src' }, { path: 'gallery.photos.1.imageAlt', attribute: 'alt' },
-    { path: 'gallery.photos.2.image', attribute: 'src' }, { path: 'gallery.photos.2.imageAlt', attribute: 'alt' },
-    { path: 'gallery.photos.3.image', attribute: 'src' }, { path: 'gallery.photos.3.imageAlt', attribute: 'alt' },
+    { path: 'gallery.photos.0.image', attribute: 'src', alt: 'gallery.photos.0.imageAlt' },
+    { path: 'gallery.photos.1.image', attribute: 'src', alt: 'gallery.photos.1.imageAlt' },
+    { path: 'gallery.photos.2.image', attribute: 'src', alt: 'gallery.photos.2.imageAlt' },
+    { path: 'gallery.photos.3.image', attribute: 'src', alt: 'gallery.photos.3.imageAlt' },
     { path: 'reference.heading' },
     { path: 'reference.items.0.media', attribute: 'src' }, { path: 'reference.items.0.mediaAlt', attribute: 'alt' }, { path: 'reference.items.0.story' },
     { path: 'reference.items.1.media', attribute: 'src' }, { path: 'reference.items.1.mediaAlt', attribute: 'alt' }, { path: 'reference.items.1.story' },
@@ -28,8 +28,8 @@ export const contentTargetManifest = Object.freeze({
     { path: 'seasonal.cards.1.season' }, { path: 'seasonal.cards.1.title' }, { path: 'seasonal.cards.1.body' },
     { path: 'iceCreamBoat.eyebrow' }, { path: 'iceCreamBoat.heading' },
     { path: 'iceCreamBoat.paragraphs.0' }, { path: 'iceCreamBoat.paragraphs.1' },
-    { path: 'iceCreamBoat.image', attribute: 'src' }, { path: 'iceCreamBoat.imageAlt', attribute: 'alt' },
-    { path: 'welcome.image', attribute: 'src' }, { path: 'welcome.imageAlt', attribute: 'alt' },
+    { path: 'iceCreamBoat.image', attribute: 'src', alt: 'iceCreamBoat.imageAlt' },
+    { path: 'welcome.image', attribute: 'src', alt: 'welcome.imageAlt' },
     { path: 'contact.heading' }, { path: 'contact.intro' }, { path: 'contact.phone' },
     { path: 'contact.whatsapp' }, { path: 'contact.email' }, { path: 'contact.address.0' }, { path: 'contact.address.1' },
     { path: 'form.nameLabel' }, { path: 'form.namePlaceholder', attribute: 'placeholder' },
@@ -41,7 +41,7 @@ export const contentTargetManifest = Object.freeze({
   ]),
   service: Object.freeze([
     { path: 'title', selector: '.palvelu-card h3' },
-    { path: 'lead' }, { path: 'items' }, { path: 'image', attribute: 'src' }, { path: 'imageAlt', attribute: 'alt' },
+    { path: 'lead' }, { path: 'items' }, { path: 'image', attribute: 'src', alt: 'imageAlt' },
   ]),
   address: Object.freeze(['footer']),
   actions: Object.freeze({ phone: 2, whatsapp: 1, email: 1 }),
@@ -244,7 +244,9 @@ function applyTarget(target, content, document) {
     return listItem;
   }));
   else target.textContent = value;
-  if (target.dataset.contentAlt) target.setAttribute('aria-label', contentAtPath(content, target.dataset.contentAlt));
+  // An element carries only one data-content binding, so an image's alt text
+  // rides along as data-content-alt on the same element.
+  if (target.dataset.contentAlt) target.setAttribute(target.tagName === 'IMG' ? 'alt' : 'aria-label', contentAtPath(content, target.dataset.contentAlt));
   if (target.dataset.imageSettings) {
     const settings = contentAtPath(content, target.dataset.imageSettings);
     target.style.setProperty('--image-scale', String(settings.imageScale / 100));

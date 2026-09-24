@@ -1,6 +1,6 @@
 {
   "hero": {
-    "eyebrow": "Hoidamme veneet Hangosta Haminaan",
+    "eyebrow": "Palvelemme Hangosta Haminaan",
     "heading": "Jokaisella veneellä on sielu. Me huolehdimme sen kunnosta.",
     "slogan": "Emme voi muuttaa tuulen suuntaa, mutta voimme säätää purjeita.",
     "sub": "Puuveneet, lasikuitu ja purjeveneet. Kausihuollot, erikoistyöt ja asiantunteva arviointi Hangosta Haminaan.",
@@ -24,7 +24,7 @@
         "Lasikuitukorjaukset",
         "Kölipulttien teko ja vaihto"
       ],
-      "image": "assets/uploads/images/IMG_2625.JPEG",
+      "image": "assets/uploads/images/hoyla.JPEG",
       "imageAlt": "Vaurioitunutta veneen runkoa korjataan telakalla",
       "imageSettings": {
         "imageScale": 100,
@@ -43,7 +43,7 @@
         "Vesillelasku ja telakointi",
         "Kylmälaitehuollot"
       ],
-      "image": "assets/uploads/images/IMG_2834.JPEG",
+      "image": "assets/uploads/images/puuvene-lakattu.JPEG",
       "imageAlt": "Veneen puukantta käsitellään siveltimellä",
       "imageSettings": {
         "imageScale": 100,
@@ -62,7 +62,7 @@
         "Konsultointi ja korjaussuositukset",
         "Materiaalit, tarvikkeet ja laitevuokraus"
       ],
-      "image": "assets/uploads/images/IMG_1964.JPEG",
+      "image": "assets/uploads/images/moottorin-korjaus.JPEG",
       "imageAlt": "Veneveistämön sisätila puuveneineen ja työkaluineen",
       "imageSettings": {
         "imageScale": 100,
@@ -81,7 +81,7 @@
         "Materiaalivalinnat ja toimittajat",
         "Tuki myös oman korjauksen suunnitteluun"
       ],
-      "image": "assets/uploads/images/IMG_2585.JPEG",
+      "image": "assets/uploads/images/mittaristo.JPEG",
       "imageAlt": "Veneen kansi korjaustyön aikana",
       "imageSettings": {
         "imageScale": 100,
@@ -94,7 +94,7 @@
     "heading": "Telakalla tapahtuu",
     "photos": [
       {
-        "image": "assets/uploads/images/IMG_2827.JPEG",
+        "image": "assets/uploads/images/pesonen-venekorjaus.JPEG",
         "imageAlt": "Käsi pitelee laivalakkapurkkia veistämöllä — materiaalit tarkastetaan läheltä",
         "imageSettings": {
           "imageScale": 100,
@@ -103,7 +103,7 @@
         }
       },
       {
-        "image": "assets/uploads/images/IMG_2853.JPEG",
+        "image": "assets/uploads/images/vene-kylki.JPEG",
         "imageAlt": "Moottorin osaa huolletaan työpajassa",
         "imageSettings": {
           "imageScale": 100,
@@ -112,7 +112,7 @@
         }
       },
       {
-        "image": "assets/uploads/images/IMG_2570.JPEG",
+        "image": "assets/uploads/images/purjevene.JPEG",
         "imageAlt": "Veneen jättämä aallokko avomerellä auringonpaisteessa",
         "imageSettings": {
           "imageScale": 100,
@@ -121,7 +121,7 @@
         }
       },
       {
-        "image": "assets/uploads/images/IMG_2496.JPEG",
+        "image": "assets/uploads/images/telakantalvi.JPEG",
         "imageAlt": "Näkymä ikkunasta telakka-alueelle, nosturi taustalla talvella",
         "imageSettings": {
           "imageScale": 100,
@@ -135,7 +135,7 @@
     "heading": "Me teimme sen",
     "items": [
       {
-        "media": "assets/uploads/videos/aura-boat.mp4",
+        "media": "assets/uploads/videos/venesatama.mp4",
         "mediaType": "video",
         "mediaAlt": "Puuvene Aura laiturissa satamassa",
         "imageSettings": {
@@ -157,7 +157,7 @@
         "story": "Pintakäsittely tehdään huolella, kerros kerrokselta."
       },
       {
-        "media": "assets/uploads/videos/purjehdus.mp4",
+        "media": "assets/uploads/videos/puutavaran-purku.mp4",
         "mediaType": "video",
         "mediaAlt": "Tuomo Pesonen tarkastaa vanhaa venehylkyä saaristossa",
         "imageSettings": {
@@ -192,7 +192,7 @@
       "Korjaamon ohella Pesosenpuodilla kulkee oma tarina — jäätelövene, joka on yhtä paljon asenne kuin ajoneuvo. Se muistuttaa siitä, miksi veneet ovat olemassa: elämyksiä varten.",
       "Seuraa matkoja ja korjausprojekteja Facebookissa."
     ],
-    "image": "assets/uploads/images/Soutuvene_picnic.png",
+    "image": "assets/uploads/images/Purjehduskuva.JPEG",
     "imageAlt": "Puuvene järvellä piknik-varusteineen",
     "imageSettings": {
       "imageScale": 100,
